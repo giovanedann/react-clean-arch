@@ -1,4 +1,4 @@
-import { HttpPostClientSpy } from 'data/tests/http-client-mock'
+import { HttpPostClientSpy } from 'data/tests/mocks'
 import RemoteAuthentication from './remote-authentication'
 import { faker } from '@faker-js/faker'
 import { mockAccountModel, mockAuthentication } from 'domain/tests/mocks'
