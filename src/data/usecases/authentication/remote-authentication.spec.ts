@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker'
 import { mockAuthentication } from 'domain/tests/authentication-mock'
 import { HttpStatusCode } from 'data/protocols/http/http-response'
 import { InvalidCredentialsError } from 'domain/errors/invalid-credentials'
+import { UnexpectedError } from 'domain/errors/unexpected'
 
 type SutTypes = {
   sut: RemoteAuthentication
@@ -36,7 +37,7 @@ describe('RemoteAuthentication', () => {
     expect(httpPostClientSpy.body).toStrictEqual(loginCredentials)
   })
 
-  it('should throw InvalidCredentialsErrors if HttpPostClient returns 401', async () => {
+  it('should throw InvalidCredentialsError if HttpPostClient returns 401', async () => {
     const { sut, httpPostClientSpy } = createSut()
 
     httpPostClientSpy.response = {
@@ -47,5 +48,44 @@ describe('RemoteAuthentication', () => {
     const response = sut.auth(loginCredentials)
 
     await expect(response).rejects.toThrow(new InvalidCredentialsError())
+  })
+
+  it('should throw UnexpectedError if HttpPostClient returns 400', async () => {
+    const { sut, httpPostClientSpy } = createSut()
+
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest
+    }
+
+    const loginCredentials = mockAuthentication()
+    const response = sut.auth(loginCredentials)
+
+    await expect(response).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('should throw UnexpectedError if HttpPostClient returns 500', async () => {
+    const { sut, httpPostClientSpy } = createSut()
+
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    const loginCredentials = mockAuthentication()
+    const response = sut.auth(loginCredentials)
+
+    await expect(response).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('should throw UnexpectedError if HttpPostClient returns 404', async () => {
+    const { sut, httpPostClientSpy } = createSut()
+
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.notFound
+    }
+
+    const loginCredentials = mockAuthentication()
+    const response = sut.auth(loginCredentials)
+
+    await expect(response).rejects.toThrow(new UnexpectedError())
   })
 })
