@@ -7,8 +7,12 @@ const config: Config = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/node_modules/',
-    '!<rootDir>/src/**/index.ts'
+    '!<rootDir>/src/**/index.ts',
+    '!**/*.d.ts'
   ],
+  moduleNameMapper: {
+    '\\.scss$': 'identity-obj-proxy'
+  },
   moduleDirectories: ['node_modules', '<rootDir>/src', '<rootDir>/.jest'],
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
