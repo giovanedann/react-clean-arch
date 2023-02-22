@@ -1,14 +1,11 @@
 import styles from './styles.scss'
 import Spinner from 'presentation/components/Spinner'
-import Logo from 'presentation/components/Logo'
+import Header from 'presentation/components/Header'
 
 function Login(): JSX.Element {
   return (
     <div className={styles.login}>
-      <header className={styles.header}>
-        <Logo />
-        <h1>4Dev - Enquetes para Programadores</h1>
-      </header>
+      <Header />
       <form className={styles.form}>
         <h2>Login</h2>
         <div className={styles.inputWrap}>
@@ -24,7 +21,7 @@ function Login(): JSX.Element {
           <span className={styles.status}>🔴</span>
         </div>
         <button className={styles.submit} type="submit">
-          Entrarwwww
+          Entrar
         </button>
         <span className={styles.link}>Criar conta</span>
         <div className={styles.errorWrap}>
