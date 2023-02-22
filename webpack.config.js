@@ -1,8 +1,15 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   mode: 'development',
-  entry: './src/main/index.tsx',
+  entry: path.resolve(__dirname, 'src', 'main', 'index.tsx'),
+  output: {
+    path: path.join(__dirname, 'dist'),
+    publicPath: '/',
+    filename: 'main-bundle-[hash].js'
+  },
   module: {
     rules: [
       {
@@ -29,13 +36,16 @@ module.exports = {
       }
     ]
   },
-  output: {
-    path: path.join(__dirname, 'public/js'),
-    publicPath: '/public/js',
-    filename: 'bundle.js'
+  devServer: {
+    liveReload: true,
+    devMiddleware: {
+      writeToDisk: true
+    },
+    historyApiFallback: true,
+    port: 3000
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     modules: [
       path.resolve(__dirname, 'node_modules'),
       path.resolve(__dirname, 'src')
@@ -44,5 +54,11 @@ module.exports = {
   externals: {
     react: 'React',
     'react-dom': 'ReactDOM'
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.relative(__dirname, 'public', 'index.html')
+    }),
+    new CleanWebpackPlugin()
+  ]
 }
