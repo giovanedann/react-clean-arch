@@ -9,9 +9,6 @@
     "typeRoots": ["node_modules/@types", "./src/@types"],
     "rootDirs": ["src", "."],
     "baseUrl": "src",
-    "paths": {
-      "@/*": ["*"]
-    },
     "allowJs": true,
     "strict": true,
     "resolveJsonModule": true,
