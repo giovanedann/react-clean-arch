@@ -1,6 +1,7 @@
 import styles from './styles.scss'
 import Spinner from 'presentation/components/Spinner'
 import Header from 'presentation/components/Header'
+import Footer from 'presentation/components/Footer'
 
 function Login(): JSX.Element {
   return (
@@ -29,7 +30,7 @@ function Login(): JSX.Element {
           <span className={styles.error}>Erro</span>
         </div>
       </form>
-      <footer className={styles.footer} />
+      <Footer />
     </div>
   )
 }
