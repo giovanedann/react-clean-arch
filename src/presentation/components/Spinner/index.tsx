@@ -1,11 +1,11 @@
 import React from 'react'
-import Styles from './styles.scss'
+import styles from './styles.scss'
 
 type Props = React.HTMLAttributes<HTMLElement>
 
 function Spinner(props: Props): JSX.Element {
   return (
-    <div {...props} className={[Styles.spinner, props.className].join(' ')}>
+    <div {...props} className={[styles.spinner, props.className].join(' ')}>
       <div />
       <div />
       <div />
