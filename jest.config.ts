@@ -7,6 +7,7 @@ const config: Config = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/node_modules/',
+    '!<rootDir>/dist/**',
     '!<rootDir>/src/**/index.ts',
     '!**/*.d.ts'
   ],
