@@ -6,7 +6,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "jsx": "react-jsx",
-    "rootDir": "src",
+    "rootDirs": ["src", "."],
     "baseUrl": "src",
     "paths": {
       "@/*": ["*"]
@@ -14,8 +14,7 @@
     "allowJs": true,
     "strict": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true
+    "isolatedModules": true
   },
   "inlude": ["src"]
 }
