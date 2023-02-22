@@ -1,7 +1,8 @@
 import Logo from 'presentation/components/Logo'
+import { memo } from 'react'
 import styles from './styles.scss'
 
-export default function Header(): JSX.Element {
+function Header(): JSX.Element {
   return (
     <header className={styles.header}>
       <Logo />
@@ -9,3 +10,5 @@ export default function Header(): JSX.Element {
     </header>
   )
 }
+
+export default memo(Header)
