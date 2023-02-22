@@ -11,9 +11,9 @@ const config: Config = {
   ],
   moduleDirectories: ['node_modules', '<rootDir>/src', '<rootDir>/.jest'],
   coverageDirectory: 'coverage',
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   transform: {
-    '.+\\.ts$': 'ts-jest'
+    '.+\\.(ts|tsx)$': 'ts-jest'
   }
 }
 
