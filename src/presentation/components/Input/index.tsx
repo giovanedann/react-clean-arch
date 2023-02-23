@@ -6,7 +6,7 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {}
 export default function Input({ ...props }: Props): JSX.Element {
   return (
     <div className={styles.inputWrapper}>
-      <input {...props} />
+      <input {...props} autoComplete="off" />
       <span className={styles.status}>🔴</span>
     </div>
   )
