@@ -1,10 +1,27 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { faker } from '@faker-js/faker'
+
+import { Validation } from 'presentation/protocols/validation'
 import Login from '.'
+
+class ValidationSpy implements Validation {
+  errorMessage: string = ''
+  fieldName: string = ''
+  fieldValue: string = ''
+
+  validate(fieldName: string, fieldValue: string): string {
+    this.fieldName = fieldName
+    this.fieldValue = fieldValue
+    return this.errorMessage
+  }
+}
 
 describe('<Login /> component', () => {
   it('should not render the loader and have the submit button disabled initially', () => {
-    render(<Login />)
+    const validationSpy = new ValidationSpy()
+    render(<Login validation={validationSpy} />)
 
     expect(screen.queryByText(/carregando\.\.\./i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /entrar/i })).toBeDisabled()
@@ -16,5 +33,33 @@ describe('<Login /> component', () => {
     expect(screen.getByPlaceholderText(/digite sua senha/i)).toBeInTheDocument()
 
     expect(screen.getAllByText('🔴')).toHaveLength(2)
+  })
+
+  it('should call validation with the correct email', async () => {
+    const user = userEvent.setup()
+    const email = faker.internet.email()
+
+    const validationSpy = new ValidationSpy()
+
+    render(<Login validation={validationSpy} />)
+
+    await user.type(screen.getByPlaceholderText(/digite seu e-mail/i), email)
+
+    expect(validationSpy.fieldName).toBe('email')
+    expect(validationSpy.fieldValue).toBe(email)
+  })
+
+  it('should call validation with the correct password', async () => {
+    const user = userEvent.setup()
+    const password = faker.internet.password()
+
+    const validationSpy = new ValidationSpy()
+
+    render(<Login validation={validationSpy} />)
+
+    await user.type(screen.getByPlaceholderText(/digite sua senha/i), password)
+
+    expect(validationSpy.fieldName).toBe('password')
+    expect(validationSpy.fieldValue).toBe(password)
   })
 })
