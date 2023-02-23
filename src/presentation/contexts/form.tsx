@@ -6,6 +6,11 @@ type FormContextProps = {
   errorMessage: string
 }
 
+export enum ErrorMessages {
+  email = 'O campo e-mail é obrigatório',
+  password = 'O campo senha é obrigatório'
+}
+
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 const FormContext = createContext({} as FormContextProps)
 
