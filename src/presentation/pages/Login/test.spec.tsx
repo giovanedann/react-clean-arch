@@ -8,5 +8,13 @@ describe('<Login /> component', () => {
 
     expect(screen.queryByText(/carregando\.\.\./i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /entrar/i })).toBeDisabled()
+
+    expect(
+      screen.getByPlaceholderText(/digite seu e-mail/i)
+    ).toBeInTheDocument()
+
+    expect(screen.getByPlaceholderText(/digite sua senha/i)).toBeInTheDocument()
+
+    expect(screen.getAllByText('🔴')).toHaveLength(2)
   })
 })
