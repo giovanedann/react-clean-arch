@@ -1,18 +1,20 @@
-import styles from './styles.scss'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+
 import Header from 'presentation/components/Header'
 import Footer from 'presentation/components/Footer'
 import Input from 'presentation/components/Input'
 import Loader from 'presentation/components/Loader'
 import { useForm } from 'presentation/contexts/form'
 import { Validation } from 'presentation/protocols/validation'
-import { ChangeEvent, useEffect, useState } from 'react'
+
+import styles from './styles.scss'
 
 type Props = {
   validation: Validation
 }
 
 function Login({ validation }: Props): JSX.Element {
-  const { errorMessage, isLoading } = useForm()
+  const { errorMessage, isLoading, setIsLoading } = useForm()
 
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -29,10 +31,16 @@ function Login({ validation }: Props): JSX.Element {
     }))
   }, [email, password])
 
+  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault()
+
+    setIsLoading(true)
+  }
+
   return (
     <div className={styles.login}>
       <Header />
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <h2>Login</h2>
         <Input
           type="email"
@@ -54,7 +62,11 @@ function Login({ validation }: Props): JSX.Element {
           placeholder="Digite sua senha"
           errorMessage={errors.passwordError}
         />
-        <button className={styles.submit} type="submit" disabled>
+        <button
+          className={styles.submit}
+          type="submit"
+          disabled={!!errors.emailError || !!errors.passwordError}
+        >
           Entrar
         </button>
         <span className={styles.link}>Criar conta</span>
