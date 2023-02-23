@@ -2,14 +2,14 @@ import Spinner from 'presentation/components/Spinner'
 import styles from './styles.scss'
 
 type LoaderProps = {
-  message: string
+  message?: string
 }
 
 export default function Loader({ message }: LoaderProps): JSX.Element {
   return (
-    <div className={styles.loaderWrapper}>
+    <div className={styles.loaderWrapper} role="loader">
       <Spinner className={styles.spinner} />
-      <span className={styles.message}>{message}</span>
+      {message && <span className={styles.message}>{message}</span>}
     </div>
   )
 }
