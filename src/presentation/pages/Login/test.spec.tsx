@@ -3,20 +3,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { faker } from '@faker-js/faker'
 
-import { Validation } from 'presentation/protocols/validation'
 import Login from '.'
-
-class ValidationSpy implements Validation {
-  errorMessage: string = ''
-  fieldName: string = ''
-  fieldValue: string = ''
-
-  validate(fieldName: string, fieldValue: string): string {
-    this.fieldName = fieldName
-    this.fieldValue = fieldValue
-    return this.errorMessage
-  }
-}
+import { ValidationSpy } from 'tests/mocks/validation'
 
 describe('<Login /> component', () => {
   it('should not render the loader and have the submit button disabled initially', () => {
