@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { InputHTMLAttributes } from 'react'
-import styles from './styles.scss'
+import styles from './styles.module.scss'
 
 type Props = InputHTMLAttributes<HTMLInputElement> & {
   errorMessage?: string

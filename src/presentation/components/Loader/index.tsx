@@ -1,5 +1,5 @@
 import Spinner from 'presentation/components/Spinner'
-import styles from './styles.scss'
+import styles from './styles.module.scss'
 
 type LoaderProps = {
   message: string

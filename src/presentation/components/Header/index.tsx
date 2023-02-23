@@ -1,6 +1,6 @@
 import Logo from 'presentation/components/Logo'
 import { memo } from 'react'
-import styles from './styles.scss'
+import styles from './styles.module.scss'
 
 function Header(): JSX.Element {
   return (

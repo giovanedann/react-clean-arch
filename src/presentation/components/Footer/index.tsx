@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import styles from './styles.scss'
+import styles from './styles.module.scss'
 
 function Footer(): JSX.Element {
   return <footer className={styles.footer} />
