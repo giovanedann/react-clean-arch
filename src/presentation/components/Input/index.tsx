@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import { ErrorMessages } from 'presentation/contexts/form'
 import { InputHTMLAttributes } from 'react'
 import styles from './styles.scss'
 
-type Props = InputHTMLAttributes<HTMLInputElement> & {}
+type Props = InputHTMLAttributes<HTMLInputElement> & {
+  errorMessage?: string
+}
 
-export default function Input({ ...props }: Props): JSX.Element {
-  const error = ErrorMessages[props.name as keyof typeof ErrorMessages]
-
+export default function Input({ errorMessage, ...props }: Props): JSX.Element {
   function getStatus(): string {
-    return '🔴'
+    return errorMessage !== '' ? '🔴' : '🟢'
   }
 
   function getTitle(): string {
-    return error
+    return errorMessage ?? ''
   }
 
   return (
