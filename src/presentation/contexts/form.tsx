@@ -1,9 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react'
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react'
 
 type FormContextProps = {
   isLoading: boolean
   errorMessage: string
+  setErrorMessage: Dispatch<SetStateAction<string>>
+  setIsLoading: Dispatch<SetStateAction<boolean>>
 }
 
 export enum ErrorMessages {
@@ -19,15 +30,17 @@ type FormProviderProps = {
 }
 
 function FormProvider({ children }: FormProviderProps): JSX.Element {
-  const [isLoading, _setIsLoading] = useState<boolean>(false)
-  const [errorMessage, _setErrorMessage] = useState<string>('')
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const formContextValue = useMemo(
     () => ({
       isLoading,
-      errorMessage
+      errorMessage,
+      setIsLoading,
+      setErrorMessage
     }),
-    [isLoading, errorMessage]
+    [isLoading, errorMessage, setIsLoading, setErrorMessage]
   )
 
   return (

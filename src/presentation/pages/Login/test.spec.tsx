@@ -24,7 +24,7 @@ describe('<Login /> component', () => {
     expect(screen.getAllByText('🔴')).toHaveLength(2)
   })
 
-  it('should show the email error if validation fails', async () => {
+  it('should show the email error if email validation fails', async () => {
     const user = userEvent.setup()
     const email = faker.internet.email()
 
@@ -40,7 +40,7 @@ describe('<Login /> component', () => {
     expect(emailInputStatus.title).toBe(validationStub.errorMessage)
   })
 
-  it('should show the password error if validation fails', async () => {
+  it('should show the password error if password validation fails', async () => {
     const user = userEvent.setup()
     const password = faker.internet.password()
 
@@ -54,5 +54,19 @@ describe('<Login /> component', () => {
     const [, passwordInputStatus] = screen.getAllByText('🔴')
 
     expect(passwordInputStatus.title).toBe(validationStub.errorMessage)
+  })
+
+  it('should display the success status if validation does not return errors', async () => {
+    const user = userEvent.setup()
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+
+    const validationStub = new ValidationStub()
+    render(<Login validation={validationStub} />)
+
+    await user.type(screen.getByPlaceholderText(/digite seu e-mail/i), email)
+    await user.type(screen.getByPlaceholderText(/digite sua senha/i), password)
+
+    expect(screen.getAllByText('🟢')).toHaveLength(2)
   })
 })
