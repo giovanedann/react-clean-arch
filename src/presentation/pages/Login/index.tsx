@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 
 import Header from 'presentation/components/Header'
@@ -6,14 +7,16 @@ import Input from 'presentation/components/Input'
 import Loader from 'presentation/components/Loader'
 import { useForm } from 'presentation/contexts/form'
 import { Validation } from 'presentation/protocols/validation'
+import { Authentication } from 'domain/models'
 
-import styles from './styles.scss'
+import styles from './styles.module.scss'
 
 type Props = {
   validation: Validation
+  authentication: Authentication
 }
 
-function Login({ validation }: Props): JSX.Element {
+function Login({ validation, authentication }: Props): JSX.Element {
   const { errorMessage, isLoading, setIsLoading } = useForm()
 
   const [email, setEmail] = useState<string>('')
@@ -31,10 +34,13 @@ function Login({ validation }: Props): JSX.Element {
     }))
   }, [email, password])
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>): void {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> {
     event.preventDefault()
 
     setIsLoading(true)
+    await authentication.auth({ email, password })
   }
 
   return (
