@@ -8,7 +8,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'main-bundle-[hash].js'
+    filename: 'main-bundle-[fullhash].js'
   },
   module: {
     rules: [
