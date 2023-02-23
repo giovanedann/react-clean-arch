@@ -4,12 +4,13 @@ import userEvent from '@testing-library/user-event'
 import { faker } from '@faker-js/faker'
 
 import Login from '.'
-import { ValidationSpy } from 'tests/mocks/validation'
+import { ValidationStub } from 'tests/mocks/validation'
 
 describe('<Login /> component', () => {
   it('should not render the loader and have the submit button disabled initially', () => {
-    const validationSpy = new ValidationSpy()
-    render(<Login validation={validationSpy} />)
+    const validationStub = new ValidationStub()
+    validationStub.errorMessage = 'Required fields'
+    render(<Login validation={validationStub} />)
 
     expect(screen.queryByText(/carregando\.\.\./i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /entrar/i })).toBeDisabled()
@@ -23,31 +24,35 @@ describe('<Login /> component', () => {
     expect(screen.getAllByText('🔴')).toHaveLength(2)
   })
 
-  it('should call validation with the correct email', async () => {
+  it('should show the email error if validation fails', async () => {
     const user = userEvent.setup()
     const email = faker.internet.email()
 
-    const validationSpy = new ValidationSpy()
+    const validationStub = new ValidationStub()
+    validationStub.errorMessage = 'Invalid email'
 
-    render(<Login validation={validationSpy} />)
+    render(<Login validation={validationStub} />)
 
     await user.type(screen.getByPlaceholderText(/digite seu e-mail/i), email)
 
-    expect(validationSpy.fieldName).toBe('email')
-    expect(validationSpy.fieldValue).toBe(email)
+    const [emailInputStatus] = screen.getAllByText('🔴')
+
+    expect(emailInputStatus.title).toBe(validationStub.errorMessage)
   })
 
-  it('should call validation with the correct password', async () => {
+  it('should show the password error if validation fails', async () => {
     const user = userEvent.setup()
     const password = faker.internet.password()
 
-    const validationSpy = new ValidationSpy()
+    const validationStub = new ValidationStub()
+    validationStub.errorMessage = 'Invalid password'
 
-    render(<Login validation={validationSpy} />)
+    render(<Login validation={validationStub} />)
 
     await user.type(screen.getByPlaceholderText(/digite sua senha/i), password)
 
-    expect(validationSpy.fieldName).toBe('password')
-    expect(validationSpy.fieldValue).toBe(password)
+    const [, passwordInputStatus] = screen.getAllByText('🔴')
+
+    expect(passwordInputStatus.title).toBe(validationStub.errorMessage)
   })
 })
