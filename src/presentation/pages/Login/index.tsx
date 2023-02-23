@@ -16,14 +16,18 @@ function Login({ validation }: Props): JSX.Element {
 
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [errors, setErrors] = useState<Record<string, string>>({
+    emailError: '',
+    passwordError: ''
+  })
 
   useEffect(() => {
-    validation.validate('email', email)
-  }, [email])
-
-  useEffect(() => {
-    validation.validate('password', password)
-  }, [password])
+    setErrors((prev) => ({
+      ...prev,
+      passwordError: validation.validate('password', password),
+      emailError: validation.validate('email', email)
+    }))
+  }, [email, password])
 
   return (
     <div className={styles.login}>
@@ -38,6 +42,7 @@ function Login({ validation }: Props): JSX.Element {
             setEmail(event.target.value)
           }}
           placeholder="Digite seu e-mail"
+          errorMessage={errors.emailError}
         />
         <Input
           type="password"
@@ -47,6 +52,7 @@ function Login({ validation }: Props): JSX.Element {
             setPassword(event.target.value)
           }}
           placeholder="Digite sua senha"
+          errorMessage={errors.passwordError}
         />
         <button className={styles.submit} type="submit" disabled>
           Entrar
