@@ -7,6 +7,7 @@ import Login from '.'
 import { ValidationStub } from 'tests/mocks/validation'
 import { FormProvider } from 'presentation/contexts/form'
 import { AuthenticationSpy } from 'tests/mocks/authentication'
+import { InvalidCredentialsError } from 'domain/errors'
 
 type SutTypes = {
   validationStub: ValidationStub
@@ -158,5 +159,46 @@ describe('<Login /> component', () => {
     await user.click(screen.getByRole('button', { name: /entrar/i }))
 
     expect(authenticationSpy.calls).toBe(1)
+  })
+
+  it('should not call authentication if form fields are invalid', async () => {
+    const user = userEvent.setup()
+
+    const { authenticationSpy } = createSut({ error: 'invalid fields' })
+
+    await user.type(
+      screen.getByPlaceholderText(/digite seu e-mail/i),
+      faker.internet.email()
+    )
+    await user.type(
+      screen.getByPlaceholderText(/digite sua senha/i),
+      faker.internet.password()
+    )
+
+    await user.click(screen.getByRole('button', { name: /entrar/i }))
+
+    expect(authenticationSpy.calls).toBe(0)
+  })
+
+  it('should display an error and hide spinner on form if authentication fails', async () => {
+    const user = userEvent.setup()
+    const error = new InvalidCredentialsError()
+
+    const { authenticationSpy } = createSut({})
+    jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
+
+    await user.type(
+      screen.getByPlaceholderText(/digite seu e-mail/i),
+      faker.internet.email()
+    )
+    await user.type(
+      screen.getByPlaceholderText(/digite sua senha/i),
+      faker.internet.password()
+    )
+
+    await user.click(screen.getByRole('button', { name: /entrar/i }))
+
+    expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
+    expect(await screen.findByText(error.message)).toBeInTheDocument()
   })
 })
