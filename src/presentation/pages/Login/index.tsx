@@ -10,6 +10,7 @@ import { Validation } from 'presentation/protocols/validation'
 import { Authentication } from 'domain/models'
 
 import styles from './styles.module.scss'
+import { Link, useNavigate } from 'react-router-dom'
 
 type Props = {
   validation: Validation
@@ -18,6 +19,7 @@ type Props = {
 
 function Login({ validation, authentication }: Props): JSX.Element {
   const { errorMessage, isLoading, setIsLoading, setErrorMessage } = useForm()
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -51,6 +53,7 @@ function Login({ validation, authentication }: Props): JSX.Element {
       setIsLoading(true)
       const account = await authentication.auth({ email, password })
       localStorage.setItem('accessToken', account.accessToken)
+      navigate('/')
     } catch (error: any) {
       setErrorMessage(error.message)
       setIsLoading(false)
@@ -85,11 +88,13 @@ function Login({ validation, authentication }: Props): JSX.Element {
         <button
           className={styles.submit}
           type="submit"
-          disabled={!!errors.emailError || !!errors.passwordError}
+          disabled={!!errors.emailError || !!errors.passwordError || isLoading}
         >
           Entrar
         </button>
-        <span className={styles.link}>Criar conta</span>
+        <Link to="/sign-up" className={styles.link}>
+          Criar conta
+        </Link>
         {isLoading && <Loader message="Carregando..." />}
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
       </form>
