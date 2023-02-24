@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom'
+import 'jest-localstorage-mock'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { faker } from '@faker-js/faker'
@@ -200,5 +201,27 @@ describe('<Login /> component', () => {
 
     expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
     expect(await screen.findByText(error.message)).toBeInTheDocument()
+  })
+
+  it('should call localStorage with access token if auth succeed', async () => {
+    const user = userEvent.setup()
+
+    const { authenticationSpy } = createSut({})
+
+    await user.type(
+      screen.getByPlaceholderText(/digite seu e-mail/i),
+      faker.internet.email()
+    )
+    await user.type(
+      screen.getByPlaceholderText(/digite sua senha/i),
+      faker.internet.password()
+    )
+
+    await user.click(screen.getByRole('button', { name: /entrar/i }))
+
+    expect(localStorage.setItem).toBeCalledWith(
+      'accessToken',
+      authenticationSpy.account.accessToken
+    )
   })
 })
