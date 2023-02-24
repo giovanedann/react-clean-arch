@@ -10,7 +10,7 @@ jest.mock('react-router-dom', () => ({
   useNavigate: () => jest.fn()
 }))
 
-describe('<Login /> component navigation', () => {
+describe('<Login />', () => {
   afterEach(() => {
     jest.clearAllMocks()
     jest.restoreAllMocks()
