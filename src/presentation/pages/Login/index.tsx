@@ -88,7 +88,7 @@ function Login({ validation, authentication }: Props): JSX.Element {
         <button
           className={styles.submit}
           type="submit"
-          disabled={!!errors.emailError || !!errors.passwordError || isLoading}
+          disabled={!!errors.emailError || !!errors.passwordError}
         >
           Entrar
         </button>
