@@ -3,7 +3,7 @@ import 'jest-localstorage-mock'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { faker } from '@faker-js/faker'
-import { createSut } from './test.spec'
+import createLoginSut from 'tests/mocks/presentation/Login/createLoginSut'
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -18,7 +18,7 @@ describe('<Login /> component navigation', () => {
 
   it('should display the loader during submit request', async () => {
     const user = userEvent.setup()
-    createSut({})
+    createLoginSut({})
 
     await user.type(
       screen.getByPlaceholderText(/digite seu e-mail/i),
@@ -39,7 +39,7 @@ describe('<Login /> component navigation', () => {
     const email = faker.internet.email()
     const password = faker.internet.password()
 
-    const { authenticationSpy } = createSut({})
+    const { authenticationSpy } = createLoginSut({})
 
     await user.type(screen.getByPlaceholderText(/digite seu e-mail/i), email)
     await user.type(screen.getByPlaceholderText(/digite sua senha/i), password)
