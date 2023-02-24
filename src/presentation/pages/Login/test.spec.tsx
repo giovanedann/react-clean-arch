@@ -143,4 +143,20 @@ describe('<Login /> component', () => {
       password
     })
   })
+
+  it('should call authentication only once', async () => {
+    const user = userEvent.setup()
+    const email = faker.internet.email()
+    const password = faker.internet.password()
+
+    const { authenticationSpy } = createSut({})
+
+    await user.type(screen.getByPlaceholderText(/digite seu e-mail/i), email)
+    await user.type(screen.getByPlaceholderText(/digite sua senha/i), password)
+
+    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /entrar/i }))
+
+    expect(authenticationSpy.calls).toBe(1)
+  })
 })
