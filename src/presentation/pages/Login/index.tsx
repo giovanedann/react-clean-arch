@@ -34,17 +34,23 @@ function Login({ validation, authentication }: Props): JSX.Element {
     }))
   }, [email, password])
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> {
     event.preventDefault()
 
-    const shouldPreventRequest = [isLoading, errors.emailError, errors.passwordError]
-      .some((item) => !!item)
+    const shouldPreventRequest = [
+      isLoading,
+      errors.emailError,
+      errors.passwordError
+    ].some((item) => !!item)
 
     if (shouldPreventRequest) return
 
     try {
       setIsLoading(true)
-      await authentication.auth({ email, password })
+      const account = await authentication.auth({ email, password })
+      localStorage.setItem('accessToken', account.accessToken)
     } catch (error: any) {
       setErrorMessage(error.message)
       setIsLoading(false)
