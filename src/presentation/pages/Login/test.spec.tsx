@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-assertions */
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -7,22 +6,7 @@ import { faker } from '@faker-js/faker'
 import Login from '.'
 import { ValidationStub } from 'tests/mocks/validation'
 import { FormProvider } from 'presentation/contexts/form'
-import {
-  Authentication,
-  AuthenticationParams,
-  AccountModel
-} from 'domain/models'
-import { mockAccountModel } from 'domain/tests/mocks'
-
-class AuthenticationSpy implements Authentication {
-  account = mockAccountModel()
-  params: AuthenticationParams = {} as AuthenticationParams
-
-  async auth(params: AuthenticationParams): Promise<AccountModel> {
-    this.params = params
-    return await Promise.resolve(this.account)
-  }
-}
+import { AuthenticationSpy } from 'tests/mocks/authentication'
 
 type SutTypes = {
   validationStub: ValidationStub
