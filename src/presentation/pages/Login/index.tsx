@@ -39,6 +39,8 @@ function Login({ validation, authentication }: Props): JSX.Element {
   ): Promise<void> {
     event.preventDefault()
 
+    if (isLoading) return
+
     setIsLoading(true)
     await authentication.auth({ email, password })
   }
