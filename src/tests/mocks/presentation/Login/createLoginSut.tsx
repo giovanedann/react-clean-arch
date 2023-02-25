@@ -2,8 +2,8 @@ import { render } from '@testing-library/react'
 import { FormProvider } from 'presentation/contexts/form'
 import Login from 'presentation/pages/Login'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { AuthenticationSpy } from 'tests/mocks/authentication'
-import { ValidationStub } from 'tests/mocks/validation'
+import { AuthenticationSpy } from 'tests/mocks/domain/models/authentication'
+import { ValidationStub } from 'tests/mocks/presentation/protocols/validation'
 
 export type SutTypes = {
   validationStub: ValidationStub
