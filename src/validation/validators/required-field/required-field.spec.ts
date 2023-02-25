@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { RequiredFieldError } from 'validation/errors/required-field'
+import { RequiredFieldError } from 'validation/errors'
 import { RequiredFieldValidation } from 'validation/validators/required-field/required-field'
 
 function createSut(): RequiredFieldValidation {

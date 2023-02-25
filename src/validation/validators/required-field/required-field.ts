@@ -1,4 +1,4 @@
-import { RequiredFieldError } from 'validation/errors/required-field'
+import { RequiredFieldError } from 'validation/errors'
 import { FieldValidation } from 'validation/protocols/field-validation'
 
 export class RequiredFieldValidation implements FieldValidation {
