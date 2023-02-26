@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { RequiredFieldError } from 'validation/errors'
-import { RequiredFieldValidation } from 'validation/validators/required-field/required-field'
+import { RequiredFieldValidation } from 'validation/validators'
 
 function createSut(): RequiredFieldValidation {
   return new RequiredFieldValidation(faker.database.column())
