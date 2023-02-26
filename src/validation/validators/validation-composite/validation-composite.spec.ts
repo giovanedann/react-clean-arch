@@ -3,23 +3,24 @@ import { ValidationComposite } from 'validation/validators/validation-composite/
 
 type SutTypes = {
   sut: ValidationComposite
-  fieldValidationSpy1: FieldValidationSpy
-  fieldValidationSpy2: FieldValidationSpy
+  fieldValidationSpies: FieldValidationSpy[]
 }
 
 function createSut(): SutTypes {
-  const fieldValidationSpy1 = new FieldValidationSpy('randomfield')
-  const fieldValidationSpy2 = new FieldValidationSpy('randomfield')
+  const fieldValidationSpies = [
+    new FieldValidationSpy('randomfield'),
+    new FieldValidationSpy('randomfield')
+  ]
 
-  const sut = new ValidationComposite([fieldValidationSpy1, fieldValidationSpy2])
-  return { fieldValidationSpy1, fieldValidationSpy2, sut }
+  const sut = new ValidationComposite(fieldValidationSpies)
+  return { fieldValidationSpies, sut }
 }
 
 describe('ValidationComposite', () => {
   it('should return error if any validation fails', () => {
-    const { sut, fieldValidationSpy1 } = createSut()
+    const { sut, fieldValidationSpies } = createSut()
 
-    fieldValidationSpy1.error = new Error('Validation failed')
+    fieldValidationSpies[0].error = new Error('Validation failed')
 
     const error = sut.validate('randomfield', 'randomvalue')
     expect(error).toBe('Validation failed')
@@ -33,10 +34,10 @@ describe('ValidationComposite', () => {
   })
 
   it('should return the first error even if more than a validator fails', () => {
-    const { sut, fieldValidationSpy1, fieldValidationSpy2 } = createSut()
+    const { sut, fieldValidationSpies } = createSut()
 
-    fieldValidationSpy1.error = new Error('First failed')
-    fieldValidationSpy2.error = new Error('Second failed')
+    fieldValidationSpies[0].error = new Error('First failed')
+    fieldValidationSpies[1].error = new Error('Second failed')
 
     const error = sut.validate('randomfield', 'randomvalue')
     expect(error).toBe('First failed')
