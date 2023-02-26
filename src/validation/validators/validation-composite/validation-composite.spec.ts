@@ -31,4 +31,14 @@ describe('ValidationComposite', () => {
     const error = sut.validate('randomfield', 'randomvalue')
     expect(error).toBe('')
   })
+
+  it('should return the first error even if more than a validator fails', () => {
+    const { sut, fieldValidationSpy1, fieldValidationSpy2 } = createSut()
+
+    fieldValidationSpy1.error = new Error('First failed')
+    fieldValidationSpy2.error = new Error('Second failed')
+
+    const error = sut.validate('randomfield', 'randomvalue')
+    expect(error).toBe('First failed')
+  })
 })
