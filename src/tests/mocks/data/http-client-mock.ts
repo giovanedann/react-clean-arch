@@ -1,7 +1,7 @@
 import {
-  HttpPostClient,
-  HttpPostParams,
-  HttpResponse,
+  type HttpPostClient,
+  type HttpPostParams,
+  type HttpResponse,
   HttpStatusCode
 } from 'data/protocols/http'
 

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
   useCallback,
   useContext,
   useMemo,
