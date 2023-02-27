@@ -119,6 +119,25 @@ describe('<Login /> component', () => {
     expect(await screen.findByText(error.message)).toBeInTheDocument()
   })
 
+  it('should remove the form error on the second submit attempt if first one fails', async () => {
+    const user = userEvent.setup()
+    const error = new InvalidCredentialsError()
+
+    const { authenticationSpy } = createLoginSut({})
+    jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
+
+    await populateValidInputs(user)
+
+    await user.click(screen.getByRole('button', { name: /entrar/i }))
+
+    expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
+    expect(await screen.findByText(error.message)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /entrar/i }))
+
+    expect(screen.queryByText(error.message)).not.toBeInTheDocument()
+  })
+
   it('should call localStorage with access token if auth succeed', async () => {
     const user = userEvent.setup()
 
