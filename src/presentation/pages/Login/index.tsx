@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { type ChangeEvent, type FormEvent, useEffect, useState } from 'react'
 
 import Header from 'presentation/components/Header'
 import Footer from 'presentation/components/Footer'
 import Input from 'presentation/components/Input'
 import Loader from 'presentation/components/Loader'
 import { useForm } from 'presentation/contexts/form'
-import { Validation } from 'presentation/protocols/validation'
-import { Authentication } from 'domain/models'
+import { type Validation } from 'presentation/protocols/validation'
+import { type Authentication } from 'domain/models'
 
 import styles from './styles.module.scss'
 import { Link, useNavigate } from 'react-router-dom'

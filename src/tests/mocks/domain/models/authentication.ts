@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
 import {
-  AccountModel,
-  Authentication,
-  AuthenticationParams
+  type AccountModel,
+  type Authentication,
+  type AuthenticationParams
 } from 'domain/models'
 import { mockAccountModel } from 'domain/tests/mocks'
 

@@ -3,8 +3,8 @@ import { faker } from '@faker-js/faker'
 import { mockAccountModel, mockAuthentication } from 'domain/tests/mocks'
 import { HttpStatusCode } from 'data/protocols/http'
 import { InvalidCredentialsError, UnexpectedError } from 'domain/errors'
-import { AuthenticationParams } from 'domain/usecases'
-import { AccountModel } from 'domain/models'
+import { type AuthenticationParams } from 'domain/usecases'
+import { type AccountModel } from 'domain/models'
 import { HttpPostClientSpy } from 'tests/mocks/data'
 
 type SutTypes = {

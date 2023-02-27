@@ -1,5 +1,5 @@
 import { HttpClient } from './http-client'
-import axios from 'axios'
+import type axios from 'axios'
 import { mockPostRequest } from 'tests/mocks/data'
 import {
   mockAxios,
