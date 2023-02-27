@@ -5,7 +5,7 @@ import { HttpStatusCode } from 'data/protocols/http'
 import { InvalidCredentialsError, UnexpectedError } from 'domain/errors'
 import { type AuthenticationParams } from 'domain/usecases'
 import { type AccountModel } from 'domain/models'
-import { HttpPostClientSpy } from 'tests/mocks/data'
+import { HttpPostClientSpy } from 'tests/mocks/data/protocols/http/http-client'
 
 type SutTypes = {
   sut: RemoteAuthentication
