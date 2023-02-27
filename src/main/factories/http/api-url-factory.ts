@@ -1,3 +1,4 @@
 export default function apiUrlFactory(path: string): string {
-  return `http://localhost:5050/api${path}`
+  const apiUrl = process.env.API_URL as string
+  return `${apiUrl}${path}`
 }

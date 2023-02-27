@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const { EnvironmentPlugin } = require('webpack')
 
 module.exports = {
   mode: 'development',
@@ -59,6 +60,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.relative(__dirname, 'public/index.html')
     }),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new EnvironmentPlugin({
+      API_URL: 'http://localhost:5050/api'
+    })
   ]
 }
