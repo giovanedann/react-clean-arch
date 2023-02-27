@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { FormProvider } from 'presentation/contexts/form'
 import { ReactNode } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'

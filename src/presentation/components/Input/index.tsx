@@ -6,13 +6,16 @@ type Props = InputHTMLAttributes<HTMLInputElement> & {
   errorMessage?: string
 }
 
-export default function Input({ errorMessage, ...props }: Props): JSX.Element {
+export default function Input({
+  errorMessage = '',
+  ...props
+}: Props): JSX.Element {
   function getStatus(): string {
     return errorMessage !== '' ? '🔴' : '🟢'
   }
 
   function getTitle(): string {
-    return errorMessage ?? ''
+    return errorMessage
   }
 
   return (
