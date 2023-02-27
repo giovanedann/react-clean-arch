@@ -10,7 +10,8 @@
     "test:watch": "yarn test --watch",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage --no-cache",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "check": "yarn upgrade-interactive --latest"
   },
   "keywords": [],
   "author": "",
