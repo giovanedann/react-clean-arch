@@ -1,5 +1,4 @@
 import '@testing-library/jest-dom'
-import 'jest-localstorage-mock'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { faker } from '@faker-js/faker'
@@ -138,17 +137,16 @@ describe('<Login /> component', () => {
     expect(screen.queryByText(error.message)).not.toBeInTheDocument()
   })
 
-  it('should call localStorage with access token if auth succeed', async () => {
+  it('should call SaveAccessToken if auth succeed', async () => {
     const user = userEvent.setup()
 
-    const { authenticationSpy } = createLoginSut({})
+    const { authenticationSpy, saveAccessTokenMock } = createLoginSut({})
 
     await populateValidInputs(user)
 
     await user.click(screen.getByRole('button', { name: /entrar/i }))
 
-    expect(localStorage.setItem).toBeCalledWith(
-      'accessToken',
+    expect(saveAccessTokenMock.accessToken).toBe(
       authenticationSpy.account.accessToken
     )
   })
