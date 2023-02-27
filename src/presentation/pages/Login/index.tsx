@@ -51,6 +51,7 @@ function Login({ validation, authentication }: Props): JSX.Element {
 
     try {
       setIsLoading(true)
+      setErrorMessage('')
       const account = await authentication.auth({ email, password })
       localStorage.setItem('accessToken', account.accessToken)
       navigate('/')
