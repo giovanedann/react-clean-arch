@@ -17,10 +17,23 @@ function createSut(): SutTypes {
 }
 
 describe('LocalSaveAccessToken', () => {
+  afterEach(() => {
+    jest.clearAllMocks()
+    jest.resetAllMocks()
+  })
+
   it('should call SetStorage with correct values', async () => {
     const { sut, accessToken, setStorage } = createSut()
     await sut.save(accessToken)
     expect(setStorage.key).toBe('accessToken')
     expect(setStorage.value).toBe(accessToken)
+  })
+
+  it('should throw if SetStorage throws', async () => {
+    const { sut, accessToken, setStorage } = createSut()
+    jest.spyOn(setStorage, 'set').mockRejectedValueOnce(new Error())
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    expect(sut.save(accessToken)).rejects.toThrow(new Error())
   })
 })
