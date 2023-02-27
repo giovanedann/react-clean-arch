@@ -11,13 +11,19 @@ import { type Authentication } from 'domain/models'
 
 import styles from './styles.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
+import { type SaveAccessToken } from 'domain/usecases'
 
 type Props = {
   validation: Validation
   authentication: Authentication
+  saveAccessToken: SaveAccessToken
 }
 
-function Login({ validation, authentication }: Props): JSX.Element {
+function Login({
+  validation,
+  authentication,
+  saveAccessToken
+}: Props): JSX.Element {
   const { errorMessage, isLoading, setIsLoading, setErrorMessage } = useForm()
   const navigate = useNavigate()
 
@@ -53,7 +59,7 @@ function Login({ validation, authentication }: Props): JSX.Element {
       setIsLoading(true)
       setErrorMessage('')
       const account = await authentication.auth({ email, password })
-      localStorage.setItem('accessToken', account.accessToken)
+      await saveAccessToken.save(account.accessToken)
       navigate('/')
     } catch (error: any) {
       setErrorMessage(error.message)
