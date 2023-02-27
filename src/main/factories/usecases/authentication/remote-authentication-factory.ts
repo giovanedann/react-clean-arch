@@ -4,5 +4,5 @@ import apiUrlFactory from 'main/factories/http/api-url-factory'
 import httpClientFactory from 'main/factories/http/http-client-factory'
 
 export default function remoteAuthenticationFactory(): Authentication {
-  return new RemoteAuthentication(apiUrlFactory(), httpClientFactory())
+  return new RemoteAuthentication(apiUrlFactory('/login'), httpClientFactory())
 }
