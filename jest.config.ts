@@ -9,6 +9,7 @@ const config: Config = {
     '!<rootDir>/node_modules/',
     '!<rootDir>/dist/**',
     '!<rootDir>/src/**/index.ts',
+    '!<rootDir>/src/main/**',
     '!**/*.d.ts'
   ],
   moduleNameMapper: {
