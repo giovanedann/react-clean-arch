@@ -18,7 +18,6 @@ export class RemoteAddAccount implements AddAccount {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
         if (!httpResponse.body) {
-          console.log(httpResponse.body)
           throw new UnexpectedError()
         }
         return httpResponse.body

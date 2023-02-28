@@ -82,6 +82,12 @@ describe('RemoteAddAccount', () => {
     await expect(sut.add(body)).rejects.toThrow(new UnexpectedError())
   })
 
+  it('should throw UnexpectedError if HttpPostClient does not return body', async () => {
+    const { sut, body } = createSut()
+
+    await expect(sut.add(body)).rejects.toThrow(new UnexpectedError())
+  })
+
   it('should return an AccountModel if HttpPostClient returns 200', async () => {
     const { sut, httpPostClientSpy, body } = createSut()
     const result = mockAccountModel()
