@@ -60,4 +60,12 @@ describe('RemoteAddAccount', () => {
 
     await expect(sut.add(body)).rejects.toThrow(new UnexpectedError())
   })
+
+  it('should throw UnexpectedError if HttpPostClient returns 500', async () => {
+    const { sut, httpPostClientSpy, body } = createSut()
+
+    httpPostClientSpy.response = { statusCode: HttpStatusCode.serverError }
+
+    await expect(sut.add(body)).rejects.toThrow(new UnexpectedError())
+  })
 })
