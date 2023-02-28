@@ -1,4 +1,5 @@
-import { type HttpPostClient } from 'data/protocols/http'
+import { HttpStatusCode, type HttpPostClient } from 'data/protocols/http'
+import { EmailAlreadyInUseError } from 'domain/errors'
 import { type AccountModel } from 'domain/models'
 import { type AddAccountParams, type AddAccount } from 'domain/usecases'
 
@@ -9,8 +10,14 @@ export class RemoteAddAccount implements AddAccount {
   ) {}
 
   async add(params: AddAccountParams): Promise<AccountModel> {
-    await this.httpPostClient.post({ url: this.url, body: params })
+    const httpResponse = await this.httpPostClient.post({ url: this.url, body: params })
 
-    return { accessToken: 'aaa' }
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.forbidden:
+        throw new EmailAlreadyInUseError()
+
+      default:
+        return { accessToken: 'aaa' }
+    }
   }
 }
