@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+import { faker } from '@faker-js/faker'
 import {
   type AccountModel,
   type Authentication,
   type AuthenticationParams
 } from 'domain/models'
-import { mockAccountModel } from 'domain/tests/mocks'
 
 export class AuthenticationSpy implements Authentication {
   account = mockAccountModel()
@@ -17,3 +17,12 @@ export class AuthenticationSpy implements Authentication {
     return await Promise.resolve(this.account)
   }
 }
+
+export const mockAuthentication = (): AuthenticationParams => ({
+  email: faker.internet.email(),
+  password: faker.internet.password()
+})
+
+export const mockAccountModel = (): AccountModel => ({
+  accessToken: faker.datatype.uuid()
+})
