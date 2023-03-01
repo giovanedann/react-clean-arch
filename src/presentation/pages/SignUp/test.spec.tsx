@@ -100,4 +100,13 @@ describe('<SignUp /> component', () => {
 
     expect(screen.getAllByText('🟢')).toHaveLength(4)
   })
+
+  it('should enable submit button if form data is valid', async () => {
+    const user = userEvent.setup()
+    createSignUpSut({})
+
+    await populateValidInputs(user)
+
+    expect(screen.getByRole('button', { name: /entrar/i })).toBeEnabled()
+  })
 })
