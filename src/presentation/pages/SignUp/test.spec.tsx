@@ -4,6 +4,7 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import createSignUpSut from 'tests/mocks/presentation/SignUp/createSignUpSut'
+import populateValidInputs from 'tests/utils/presentation/SignUp/populateValidInputs'
 
 describe('<SignUp /> component', () => {
   afterEach(() => {
@@ -89,5 +90,14 @@ describe('<SignUp /> component', () => {
     expect(passwordConfirmationInputStatus.title).toBe(
       validationStub.errorMessage
     )
+  })
+
+  it('should display the success status if validation does not return errors', async () => {
+    const user = userEvent.setup()
+    createSignUpSut({})
+
+    await populateValidInputs(user)
+
+    expect(screen.getAllByText('🟢')).toHaveLength(4)
   })
 })
