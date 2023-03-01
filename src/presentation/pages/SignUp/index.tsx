@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { type ChangeEvent, useState, useReducer } from 'react'
+import { type ChangeEvent, useReducer } from 'react'
 
 import Header from 'presentation/components/Header'
 import Footer from 'presentation/components/Footer'
@@ -8,52 +8,16 @@ import Loader from 'presentation/components/Loader'
 import styles from './styles.module.scss'
 import { Link } from 'react-router-dom'
 import { useForm } from 'presentation/contexts/form'
-
-type InputActionType = 'NAME' | 'EMAIL' | 'PASSWORD' | 'PASSWORD_CONFIRMATION'
-
-type InputAction = {
-  type: InputActionType
-  payload: string
-}
-
-type SignUpState = {
-  name: string
-  email: string
-  password: string
-  passwordConfirmation: string
-}
-
-const INITIAL_STATE: SignUpState = {
-  email: '',
-  name: '',
-  password: '',
-  passwordConfirmation: ''
-}
-
-function reducer(
-  state: SignUpState = INITIAL_STATE,
-  action: InputAction
-): SignUpState {
-  switch (action.type) {
-    case 'NAME':
-      return { ...state, name: action.payload }
-    case 'PASSWORD':
-      return { ...state, password: action.payload }
-    case 'PASSWORD_CONFIRMATION':
-      return { ...state, passwordConfirmation: action.payload }
-    case 'EMAIL':
-      return { ...state, email: action.payload }
-    default:
-      return state
-  }
-}
+import {
+  dataReducer,
+  errorReducer,
+  INITIAL_DATA_STATE,
+  INITIAL_ERRORS_STATE
+} from './reducers'
 
 function SignUp(): JSX.Element {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE)
-  const [errors] = useState<Record<string, string>>({
-    emailError: '',
-    passwordError: ''
-  })
+  const [data, dispatchData] = useReducer(dataReducer, INITIAL_DATA_STATE)
+  const [errors] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
 
   const { isLoading, errorMessage } = useForm()
 
@@ -65,19 +29,19 @@ function SignUp(): JSX.Element {
         <Input
           type="text"
           name="name"
-          value={state.name}
+          value={data.name}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'NAME', payload: event.target.value })
+            dispatchData({ type: 'NAME', payload: event.target.value })
           }}
-          placeholder="Digite seu e-mail"
+          placeholder="Digite seu nome"
           errorMessage={errors.emailError}
         />
         <Input
           type="email"
           name="email"
-          value={state.email}
+          value={data.email}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'EMAIL', payload: event.target.value })
+            dispatchData({ type: 'EMAIL', payload: event.target.value })
           }}
           placeholder="Digite seu e-mail"
           errorMessage={errors.emailError}
@@ -85,9 +49,9 @@ function SignUp(): JSX.Element {
         <Input
           type="password"
           name="password"
-          value={state.password}
+          value={data.password}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({ type: 'PASSWORD', payload: event.target.value })
+            dispatchData({ type: 'PASSWORD', payload: event.target.value })
           }}
           placeholder="Digite sua senha"
           errorMessage={errors.passwordError}
@@ -95,9 +59,9 @@ function SignUp(): JSX.Element {
         <Input
           type="password"
           name="passwordConfirmation"
-          value={state.passwordConfirmation}
+          value={data.passwordConfirmation}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            dispatch({
+            dispatchData({
               type: 'PASSWORD_CONFIRMATION',
               payload: event.target.value
             })
