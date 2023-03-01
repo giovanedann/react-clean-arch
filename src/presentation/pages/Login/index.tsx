@@ -24,7 +24,13 @@ function Login({
   authentication,
   saveAccessToken
 }: Props): JSX.Element {
-  const { errorMessage, isLoading, setIsLoading, setErrorMessage } = useForm()
+  const {
+    errorMessage,
+    isLoading,
+    setIsLoading,
+    setErrorMessage,
+    resetFormStatus
+  } = useForm()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState<string>('')
@@ -33,6 +39,10 @@ function Login({
     emailError: '',
     passwordError: ''
   })
+
+  useEffect(() => {
+    resetFormStatus()
+  }, [])
 
   useEffect(() => {
     setErrors((prev) => ({
