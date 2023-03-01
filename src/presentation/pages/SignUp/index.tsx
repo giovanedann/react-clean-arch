@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { type ChangeEvent, useReducer } from 'react'
+import { type ChangeEvent, useReducer, useEffect } from 'react'
 
 import Header from 'presentation/components/Header'
 import Footer from 'presentation/components/Footer'
@@ -17,9 +17,13 @@ import {
 
 function SignUp(): JSX.Element {
   const [data, dispatchData] = useReducer(dataReducer, INITIAL_DATA_STATE)
-  const [errors] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
+  const [errors, dispatchError] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
 
   const { isLoading, errorMessage } = useForm()
+
+  useEffect(() => {
+    dispatchError({ type: 'EMAIL', payload: 'Email is required' })
+  }, [])
 
   return (
     <div className={styles.login}>
@@ -72,7 +76,7 @@ function SignUp(): JSX.Element {
         <button
           className={styles.submit}
           type="submit"
-          disabled={!!errors.emailError || !!errors.passwordError}
+          disabled={Object.values(errors).some((item) => item !== '')}
         >
           Entrar
         </button>
