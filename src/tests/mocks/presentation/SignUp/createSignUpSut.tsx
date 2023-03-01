@@ -32,7 +32,7 @@ export default function createSignUpSut({ error = '' }: SutParams): SutTypes {
           path="sign-up"
           element={
             <FormProvider>
-              <SignUp />
+              <SignUp validation={validationStub} />
             </FormProvider>
           }
         />
