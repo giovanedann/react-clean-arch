@@ -15,6 +15,7 @@ type FormContextProps = {
   errorMessage: string
   setErrorMessage: Dispatch<SetStateAction<string>>
   setIsLoading: Dispatch<SetStateAction<boolean>>
+  resetFormStatus: () => void
 }
 
 export enum ErrorMessages {
@@ -33,14 +34,20 @@ function FormProvider({ children }: FormProviderProps): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
 
+  const resetFormStatus = useCallback(() => {
+    setIsLoading(false)
+    setErrorMessage('')
+  }, [])
+
   const formContextValue = useMemo(
     () => ({
       isLoading,
       errorMessage,
       setIsLoading,
-      setErrorMessage
+      setErrorMessage,
+      resetFormStatus
     }),
-    [isLoading, errorMessage, setIsLoading, setErrorMessage]
+    [isLoading, errorMessage, setIsLoading, setErrorMessage, resetFormStatus]
   )
 
   return (
