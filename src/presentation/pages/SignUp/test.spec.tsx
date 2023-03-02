@@ -108,6 +108,19 @@ describe('<SignUp /> component', () => {
     expect(screen.getAllByText('🟢')).toHaveLength(4)
   })
 
+  it('should change inputs status', async () => {
+    const user = userEvent.setup()
+
+    const { validationStub } = createSignUpSut({ error: 'invalid' })
+    jest.spyOn(validationStub, 'validate').mockImplementation(() => '')
+
+    expect(screen.getAllByText('🔴')).toHaveLength(4)
+
+    await populateValidInputs(user)
+
+    expect(screen.getAllByText('🟢')).toHaveLength(4)
+  })
+
   it('should enable submit button if form data is valid', async () => {
     const user = userEvent.setup()
     createSignUpSut({})
