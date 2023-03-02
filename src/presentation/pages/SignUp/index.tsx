@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { type ChangeEvent, useReducer, useEffect } from 'react'
+import { type ChangeEvent, useReducer, useEffect, type FormEvent } from 'react'
 
 import Header from 'presentation/components/Header'
 import Footer from 'presentation/components/Footer'
@@ -27,7 +27,7 @@ function SignUp({ validation }: Props): JSX.Element {
   const [data, dispatchData] = useReducer(dataReducer, INITIAL_DATA_STATE)
   const [errors, dispatchError] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
 
-  const { isLoading, errorMessage } = useForm()
+  const { isLoading, errorMessage, setIsLoading } = useForm()
 
   // Use effect to add and remove errors based on input value
   useEffect(() => {
@@ -78,10 +78,17 @@ function SignUp({ validation }: Props): JSX.Element {
     }
   }, [errors, dispatchError, validation])
 
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ): Promise<void> {
+    event.preventDefault()
+    setIsLoading(true)
+  }
+
   return (
     <div className={styles.login}>
       <Header />
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <h2>Login</h2>
         <Input
           type="text"
@@ -131,10 +138,10 @@ function SignUp({ validation }: Props): JSX.Element {
           type="submit"
           disabled={Object.values(errors).some((item) => item !== '')}
         >
-          Entrar
+          Sign up
         </button>
         <Link to="/login" className={styles.link}>
-          Voltar para o login
+          Back to login
         </Link>
         {isLoading && <Loader message="Carregando..." />}
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
