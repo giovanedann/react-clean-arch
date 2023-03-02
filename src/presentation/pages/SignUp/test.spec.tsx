@@ -167,6 +167,19 @@ describe('<SignUp /> component', () => {
     expect(await screen.findByText(error.message)).toBeInTheDocument()
   })
 
+  it('should hide spinner and display a form error message if SaveAccessToken fails', async () => {
+    const user = userEvent.setup()
+    const error = new Error('SaveAccessToken failed')
+
+    const { saveAccessTokenMock } = createSignUpSut({})
+    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+
+    await user.click(screen.getByRole('button', { name: /sign up/i }))
+
+    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
+    expect(await screen.findByText(error.message)).toBeInTheDocument()
+  })
+
   it('should call SaveAccessToken with correct accessToken on success', async () => {
     const user = userEvent.setup()
     const { saveAccessTokenMock, addAccountSpy } = createSignUpSut({})
