@@ -15,15 +15,15 @@ import {
   INITIAL_ERRORS_STATE
 } from './reducers'
 import { type Validation } from 'presentation/protocols/validation'
-import { type SaveAccessToken, type Authentication } from 'domain/usecases'
+import { type SaveAccessToken, type AddAccount } from 'domain/usecases'
 
 type Props = {
   validation: Validation
-  authentication?: Authentication
+  addAccount: AddAccount
   saveAccessToken?: SaveAccessToken
 }
 
-function SignUp({ validation }: Props): JSX.Element {
+function SignUp({ validation, addAccount }: Props): JSX.Element {
   const [data, dispatchData] = useReducer(dataReducer, INITIAL_DATA_STATE)
   const [errors, dispatchError] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
 
@@ -83,6 +83,7 @@ function SignUp({ validation }: Props): JSX.Element {
   ): Promise<void> {
     event.preventDefault()
     setIsLoading(true)
+    await addAccount.add(data)
   }
 
   return (
