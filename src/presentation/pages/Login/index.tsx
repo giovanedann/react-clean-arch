@@ -89,7 +89,7 @@ function Login({
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             setEmail(event.target.value)
           }}
-          placeholder="Digite seu e-mail"
+          placeholder="Enter your e-mail"
           errorMessage={errors.emailError}
         />
         <Input
@@ -99,7 +99,7 @@ function Login({
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             setPassword(event.target.value)
           }}
-          placeholder="Digite sua senha"
+          placeholder="Enter your password"
           errorMessage={errors.passwordError}
         />
         <button
@@ -107,10 +107,10 @@ function Login({
           type="submit"
           disabled={!!errors.emailError || !!errors.passwordError}
         >
-          Entrar
+          Sign in
         </button>
         <Link to="/sign-up" className={styles.link}>
-          Criar conta
+          Sign up
         </Link>
         {isLoading && <Loader message="Carregando..." />}
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
