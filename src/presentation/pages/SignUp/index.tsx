@@ -12,13 +12,14 @@ import {
   dataReducer,
   errorReducer,
   INITIAL_DATA_STATE,
-  INITIAL_ERRORS_STATE
+  INITIAL_ERRORS_STATE,
+  type SignUpData
 } from './reducers'
 import { type Validation } from 'presentation/protocols/validation'
 import { type SaveAccessToken, type AddAccount } from 'domain/usecases'
 
 type Props = {
-  validation: Validation
+  validation: Validation<SignUpData>
   addAccount: AddAccount
   saveAccessToken: SaveAccessToken
 }
@@ -37,12 +38,12 @@ function SignUp({
 
   // Use effect to add and remove errors based on input value
   useEffect(() => {
-    const emailError = validation.validate('email', data.email)
-    const nameError = validation.validate('name', data.name)
-    const passwordError = validation.validate('password', data.password)
+    const emailError = validation.validate('email', data)
+    const nameError = validation.validate('name', data)
+    const passwordError = validation.validate('password', data)
     const passwordConfirmationError = validation.validate(
       'passwordConfirmation',
-      data.passwordConfirmation
+      data
     )
 
     if (!emailError && errors.emailError) {
