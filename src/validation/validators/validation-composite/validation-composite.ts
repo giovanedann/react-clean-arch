@@ -10,7 +10,7 @@ export class ValidationComposite<T> implements Validation<T> {
     return new ValidationComposite(validators)
   }
 
-  validate(fieldName: string, fieldValue: T): string {
+  validate(fieldName: keyof T, fieldValue: T): string {
     const validators = this.validators.filter(
       (validator) => validator.field === fieldName
     )
