@@ -89,21 +89,22 @@ function SignUp({
     event: FormEvent<HTMLFormElement>
   ): Promise<void> {
     event.preventDefault()
+
     const shouldPreventRequest = [isLoading, ...Object.values(errors)].some(
       (item) => !!item
     )
 
-    if (shouldPreventRequest) return
+    if (!shouldPreventRequest) {
+      try {
+        setIsLoading(true)
+        const response = await addAccount.add(data)
+        await saveAccessToken.save(response.accessToken)
 
-    try {
-      setIsLoading(true)
-      const response = await addAccount.add(data)
-      await saveAccessToken.save(response.accessToken)
-
-      navigate('/')
-    } catch (error: any) {
-      setErrorMessage(error.message)
-      setIsLoading(false)
+        navigate('/')
+      } catch (error: any) {
+        setErrorMessage(error.message)
+        setIsLoading(false)
+      }
     }
   }
 
