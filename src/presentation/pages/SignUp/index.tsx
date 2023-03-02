@@ -83,7 +83,7 @@ function SignUp({
         payload: 'Passwords not matching'
       })
     }
-  }, [errors, dispatchError, validation])
+  }, [errors, dispatchError, validation, data])
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>
