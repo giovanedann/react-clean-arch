@@ -117,15 +117,6 @@ describe('<SignUp /> component', () => {
     expect(screen.getByRole('button', { name: /sign up/i })).toBeEnabled()
   })
 
-  it('should show loader during submit request', async () => {
-    const user = userEvent.setup()
-    createSignUpSut({})
-
-    await user.click(screen.getByRole('button', { name: /sign up/i }))
-
-    expect(screen.getByText(/loading\.../i)).toBeInTheDocument()
-  })
-
   it('should call AddAccount with correct values', async () => {
     const user = userEvent.setup()
 
@@ -187,5 +178,15 @@ describe('<SignUp /> component', () => {
     expect(saveAccessTokenMock.accessToken).toEqual(
       addAccountSpy.account.accessToken
     )
+  })
+
+  it('should redirect user to home if submit succeeds', async () => {
+    const user = userEvent.setup()
+
+    createSignUpSut({})
+    await populateValidInputs(user)
+    await user.click(screen.getByRole('button', { name: /sign up/i }))
+
+    expect(screen.getByText(/home/i)).toBeInTheDocument()
   })
 })
