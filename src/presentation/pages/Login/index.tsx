@@ -112,7 +112,7 @@ function Login({
         <Link to="/sign-up" className={styles.link}>
           Sign up
         </Link>
-        {isLoading && <Loader message="Carregando..." />}
+        {isLoading && <Loader message="Loading..." />}
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
       </form>
       <Footer />
