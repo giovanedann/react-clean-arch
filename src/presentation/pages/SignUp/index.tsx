@@ -97,7 +97,7 @@ function SignUp({ validation }: Props): JSX.Element {
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatchData({ type: 'NAME', payload: event.target.value })
           }}
-          placeholder="Digite seu nome"
+          placeholder="Enter your name"
           errorMessage={errors.nameError}
         />
         <Input
@@ -107,7 +107,7 @@ function SignUp({ validation }: Props): JSX.Element {
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatchData({ type: 'EMAIL', payload: event.target.value })
           }}
-          placeholder="Digite seu e-mail"
+          placeholder="Enter your e-mail"
           errorMessage={errors.emailError}
         />
         <Input
@@ -117,7 +117,7 @@ function SignUp({ validation }: Props): JSX.Element {
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
             dispatchData({ type: 'PASSWORD', payload: event.target.value })
           }}
-          placeholder="Digite sua senha"
+          placeholder="Enter your password"
           errorMessage={errors.passwordError}
         />
         <Input
@@ -130,7 +130,7 @@ function SignUp({ validation }: Props): JSX.Element {
               payload: event.target.value
             })
           }}
-          placeholder="Repita sua senha"
+          placeholder="Confirm your password"
           errorMessage={errors.passwordConfirmationError}
         />
         <button
@@ -143,7 +143,7 @@ function SignUp({ validation }: Props): JSX.Element {
         <Link to="/login" className={styles.link}>
           Back to login
         </Link>
-        {isLoading && <Loader message="Carregando..." />}
+        {isLoading && <Loader message="Loading..." />}
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
       </form>
       <Footer />
