@@ -6,7 +6,7 @@ import Footer from 'presentation/components/Footer'
 import Input from 'presentation/components/Input'
 import Loader from 'presentation/components/Loader'
 import styles from './styles.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'presentation/contexts/form'
 import {
   dataReducer,
@@ -30,6 +30,8 @@ function SignUp({
 }: Props): JSX.Element {
   const [data, dispatchData] = useReducer(dataReducer, INITIAL_DATA_STATE)
   const [errors, dispatchError] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
+
+  const navigate = useNavigate()
 
   const { isLoading, errorMessage, setIsLoading, setErrorMessage } = useForm()
 
@@ -96,6 +98,8 @@ function SignUp({
       setIsLoading(true)
       const response = await addAccount.add(data)
       await saveAccessToken.save(response.accessToken)
+
+      navigate('/')
     } catch (error: any) {
       setErrorMessage(error.message)
       setIsLoading(false)
