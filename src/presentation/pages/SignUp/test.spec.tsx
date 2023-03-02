@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker'
 import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { EmailAlreadyInUseError } from 'domain/errors'
 
 import createSignUpSut from 'tests/mocks/presentation/SignUp/createSignUpSut'
 import populateValidInputs from 'tests/utils/presentation/SignUp/populateValidInputs'
@@ -158,5 +159,20 @@ describe('<SignUp /> component', () => {
     await user.dblClick(screen.getByRole('button', { name: /sign up/i }))
 
     expect(addAccountSpy.calls).toEqual(0)
+  })
+
+  it('should hide spinner and display a form error message if AddAccount fails', async () => {
+    const user = userEvent.setup()
+    const error = new EmailAlreadyInUseError()
+
+    const { addAccountSpy } = createSignUpSut({})
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error)
+
+    await populateValidInputs(user)
+
+    await user.click(screen.getByRole('button', { name: /sign up/i }))
+
+    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
+    expect(await screen.findByText(error.message)).toBeInTheDocument()
   })
 })
