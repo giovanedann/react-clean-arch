@@ -149,4 +149,14 @@ describe('<SignUp /> component', () => {
 
     expect(addAccountSpy.calls).toEqual(1)
   })
+
+  it('should not call AddAccount on validation errors', async () => {
+    const user = userEvent.setup()
+
+    const { addAccountSpy } = createSignUpSut({ error: 'Invalid fields' })
+
+    await user.dblClick(screen.getByRole('button', { name: /sign up/i }))
+
+    expect(addAccountSpy.calls).toEqual(0)
+  })
 })
