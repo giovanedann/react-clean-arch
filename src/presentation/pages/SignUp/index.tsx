@@ -20,10 +20,14 @@ import { type SaveAccessToken, type AddAccount } from 'domain/usecases'
 type Props = {
   validation: Validation
   addAccount: AddAccount
-  saveAccessToken?: SaveAccessToken
+  saveAccessToken: SaveAccessToken
 }
 
-function SignUp({ validation, addAccount }: Props): JSX.Element {
+function SignUp({
+  validation,
+  addAccount,
+  saveAccessToken
+}: Props): JSX.Element {
   const [data, dispatchData] = useReducer(dataReducer, INITIAL_DATA_STATE)
   const [errors, dispatchError] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
 
@@ -90,7 +94,8 @@ function SignUp({ validation, addAccount }: Props): JSX.Element {
 
     try {
       setIsLoading(true)
-      await addAccount.add(data)
+      const response = await addAccount.add(data)
+      await saveAccessToken.save(response.accessToken)
     } catch (error: any) {
       setErrorMessage(error.message)
       setIsLoading(false)
