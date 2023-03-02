@@ -16,7 +16,7 @@ describe('<SignUp /> component', () => {
     createSignUpSut({ error: 'Required fields' })
 
     expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /entrar/i })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /sign up/i })).toBeDisabled()
 
     expect(
       screen.getByPlaceholderText(/digite seu e-mail/i)
@@ -109,6 +109,15 @@ describe('<SignUp /> component', () => {
 
     await populateValidInputs(user)
 
-    expect(screen.getByRole('button', { name: /entrar/i })).toBeEnabled()
+    expect(screen.getByRole('button', { name: /sign up/i })).toBeEnabled()
+  })
+
+  it('should show loader during submit request', async () => {
+    const user = userEvent.setup()
+    createSignUpSut({})
+
+    await user.click(screen.getByRole('button', { name: /sign up/i }))
+
+    expect(screen.getByText(/carregando\.../i)).toBeInTheDocument()
   })
 })
