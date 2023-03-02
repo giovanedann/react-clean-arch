@@ -21,15 +21,15 @@ describe('<Login />', () => {
     createLoginSut({})
 
     await user.type(
-      screen.getByPlaceholderText(/digite seu e-mail/i),
+      screen.getByPlaceholderText(/enter your e-mail/i),
       faker.internet.email()
     )
     await user.type(
-      screen.getByPlaceholderText(/digite sua senha/i),
+      screen.getByPlaceholderText(/enter your password/i),
       faker.internet.password()
     )
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     expect(await screen.findByText(/carregando\.../i)).toBeInTheDocument()
   })
@@ -41,11 +41,14 @@ describe('<Login />', () => {
 
     const { authenticationSpy } = createLoginSut({})
 
-    await user.type(screen.getByPlaceholderText(/digite seu e-mail/i), email)
-    await user.type(screen.getByPlaceholderText(/digite sua senha/i), password)
+    await user.type(screen.getByPlaceholderText(/enter your e-mail/i), email)
+    await user.type(
+      screen.getByPlaceholderText(/enter your password/i),
+      password
+    )
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     expect(authenticationSpy.calls).toBe(1)
   })
