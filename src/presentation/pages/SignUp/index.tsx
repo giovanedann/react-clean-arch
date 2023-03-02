@@ -81,6 +81,12 @@ function SignUp({ validation, addAccount }: Props): JSX.Element {
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>
   ): Promise<void> {
+    const shouldPreventRequest = [isLoading, ...Object.values(errors)].some(
+      (item) => !!item
+    )
+
+    if (shouldPreventRequest) return
+
     event.preventDefault()
     setIsLoading(true)
     await addAccount.add(data)
