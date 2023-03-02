@@ -2,13 +2,13 @@ import { render } from '@testing-library/react'
 import { FormProvider } from 'presentation/contexts/form'
 import SignUp from 'presentation/pages/SignUp'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { AuthenticationSpy } from 'tests/mocks/domain/models/authentication'
+import { AddAccountSpy } from 'tests/mocks/domain/models/add-account'
 import { SaveAccessTokenMock } from 'tests/mocks/infra/cache/save-access-token'
 import { ValidationStub } from 'tests/mocks/presentation/protocols/validation'
 
 export type SutTypes = {
   validationStub: ValidationStub
-  authenticationSpy: AuthenticationSpy
+  addAccountSpy: AddAccountSpy
   saveAccessTokenMock: SaveAccessTokenMock
 }
 
@@ -18,7 +18,7 @@ export type SutParams = {
 
 export default function createSignUpSut({ error = '' }: SutParams): SutTypes {
   const validationStub = new ValidationStub()
-  const authenticationSpy = new AuthenticationSpy()
+  const addAccountSpy = new AddAccountSpy()
   const saveAccessTokenMock = new SaveAccessTokenMock()
 
   validationStub.errorMessage = error
@@ -32,7 +32,7 @@ export default function createSignUpSut({ error = '' }: SutParams): SutTypes {
           path="sign-up"
           element={
             <FormProvider>
-              <SignUp validation={validationStub} />
+              <SignUp validation={validationStub} addAccount={addAccountSpy} />
             </FormProvider>
           }
         />
@@ -40,5 +40,9 @@ export default function createSignUpSut({ error = '' }: SutParams): SutTypes {
     </MemoryRouter>
   )
 
-  return { validationStub, authenticationSpy, saveAccessTokenMock }
+  return {
+    validationStub,
+    saveAccessTokenMock,
+    addAccountSpy
+  }
 }

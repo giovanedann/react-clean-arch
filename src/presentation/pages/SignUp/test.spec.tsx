@@ -124,4 +124,18 @@ describe('<SignUp /> component', () => {
 
     expect(screen.getByText(/loading\.../i)).toBeInTheDocument()
   })
+
+  it('should call AddAccount with correct values', async () => {
+    const user = userEvent.setup()
+
+    const { addAccountSpy } = createSignUpSut({})
+
+    const data = await populateValidInputs(user)
+    await user.click(screen.getByRole('button', { name: /sign up/i }))
+
+    expect(addAccountSpy.params).toStrictEqual({
+      ...data,
+      passwordConfirmation: data.password
+    })
+  })
 })
