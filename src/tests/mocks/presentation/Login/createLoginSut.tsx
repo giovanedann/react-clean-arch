@@ -32,7 +32,7 @@ export default function createLoginSut({ error = '' }: SutParams): SutTypes {
           element={
             <FormProvider>
               <Login
-                validation={validationStub}
+                validation={validationStub as any}
                 authentication={authenticationSpy}
                 saveAccessToken={saveAccessTokenMock}
               />

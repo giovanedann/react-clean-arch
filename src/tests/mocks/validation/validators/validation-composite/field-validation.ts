@@ -1,11 +1,11 @@
 import { type FieldValidation } from 'validation/protocols/field-validation'
 
-export class FieldValidationSpy implements FieldValidation {
+export class FieldValidationSpy<T> implements FieldValidation<T> {
   error: Error | null = null
 
-  constructor(readonly field: string) {}
+  constructor(readonly field: keyof T) {}
 
-  validate(value: string): Error | null {
+  validate(object: T): Error | null {
     return this.error
   }
 }
