@@ -175,4 +175,17 @@ describe('<SignUp /> component', () => {
     expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
     expect(await screen.findByText(error.message)).toBeInTheDocument()
   })
+
+  it('should call SaveAccessToken with correct accessToken on success', async () => {
+    const user = userEvent.setup()
+    const { saveAccessTokenMock, addAccountSpy } = createSignUpSut({})
+
+    await populateValidInputs(user)
+
+    await user.click(screen.getByRole('button', { name: /sign up/i }))
+
+    expect(saveAccessTokenMock.accessToken).toEqual(
+      addAccountSpy.account.accessToken
+    )
+  })
 })

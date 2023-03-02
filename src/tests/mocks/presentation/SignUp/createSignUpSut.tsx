@@ -32,7 +32,11 @@ export default function createSignUpSut({ error = '' }: SutParams): SutTypes {
           path="sign-up"
           element={
             <FormProvider>
-              <SignUp validation={validationStub} addAccount={addAccountSpy} />
+              <SignUp
+                validation={validationStub}
+                addAccount={addAccountSpy}
+                saveAccessToken={saveAccessTokenMock}
+              />
             </FormProvider>
           }
         />
