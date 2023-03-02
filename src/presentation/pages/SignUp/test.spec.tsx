@@ -138,4 +138,15 @@ describe('<SignUp /> component', () => {
       passwordConfirmation: data.password
     })
   })
+
+  it('should call AddAccount only once if multiple submits', async () => {
+    const user = userEvent.setup()
+
+    const { addAccountSpy } = createSignUpSut({})
+
+    await populateValidInputs(user)
+    await user.dblClick(screen.getByRole('button', { name: /sign up/i }))
+
+    expect(addAccountSpy.calls).toEqual(1)
+  })
 })
