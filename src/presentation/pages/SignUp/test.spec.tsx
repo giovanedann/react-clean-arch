@@ -39,7 +39,7 @@ describe('<SignUp /> component', () => {
       faker.name.firstName()
     )
 
-    const [nameInputStatus] = screen.getAllByText('🔴')
+    const nameInputStatus = screen.getAllByText('🔴').at(0) as HTMLElement
 
     expect(nameInputStatus.title).toBe(validationStub.errorMessage)
   })
@@ -53,7 +53,7 @@ describe('<SignUp /> component', () => {
       faker.internet.email()
     )
 
-    const [, emailInputStatus] = screen.getAllByText('🔴')
+    const emailInputStatus = screen.getAllByText('🔴').at(1) as HTMLElement
 
     expect(emailInputStatus.title).toBe(validationStub.errorMessage)
   })
@@ -69,7 +69,7 @@ describe('<SignUp /> component', () => {
       faker.internet.password()
     )
 
-    const [, , passwordInputStatus] = screen.getAllByText('🔴')
+    const passwordInputStatus = screen.getAllByText('🔴').at(2) as HTMLElement
 
     expect(passwordInputStatus.title).toBe(validationStub.errorMessage)
   })
@@ -85,7 +85,9 @@ describe('<SignUp /> component', () => {
       faker.internet.password()
     )
 
-    const [, , , passwordConfirmationInputStatus] = screen.getAllByText('🔴')
+    const passwordConfirmationInputStatus = screen
+      .getAllByText('🔴')
+      .at(-1) as HTMLElement
 
     expect(passwordConfirmationInputStatus.title).toBe(
       validationStub.errorMessage
