@@ -27,7 +27,7 @@ function SignUp({ validation, addAccount }: Props): JSX.Element {
   const [data, dispatchData] = useReducer(dataReducer, INITIAL_DATA_STATE)
   const [errors, dispatchError] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
 
-  const { isLoading, errorMessage, setIsLoading } = useForm()
+  const { isLoading, errorMessage, setIsLoading, setErrorMessage } = useForm()
 
   // Use effect to add and remove errors based on input value
   useEffect(() => {
@@ -81,15 +81,20 @@ function SignUp({ validation, addAccount }: Props): JSX.Element {
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>
   ): Promise<void> {
+    event.preventDefault()
     const shouldPreventRequest = [isLoading, ...Object.values(errors)].some(
       (item) => !!item
     )
 
     if (shouldPreventRequest) return
 
-    event.preventDefault()
-    setIsLoading(true)
-    await addAccount.add(data)
+    try {
+      setIsLoading(true)
+      await addAccount.add(data)
+    } catch (error: any) {
+      setErrorMessage(error.message)
+      setIsLoading(false)
+    }
   }
 
   return (
