@@ -19,13 +19,17 @@ describe('<SignUp /> component', () => {
     expect(screen.getByRole('button', { name: /sign up/i })).toBeDisabled()
 
     expect(
-      screen.getByPlaceholderText(/digite seu e-mail/i)
+      screen.getByPlaceholderText(/enter your e-mail/i)
     ).toBeInTheDocument()
 
-    expect(screen.getByPlaceholderText(/digite seu nome/i)).toBeInTheDocument()
+    expect(screen.getByPlaceholderText(/enter your name/i)).toBeInTheDocument()
 
-    expect(screen.getByPlaceholderText(/digite sua senha/i)).toBeInTheDocument()
-    expect(screen.getByPlaceholderText(/repita sua senha/i)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(/enter your password/i)
+    ).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(/confirm your password/i)
+    ).toBeInTheDocument()
 
     expect(screen.getAllByText('🔴')).toHaveLength(4)
   })
@@ -35,7 +39,7 @@ describe('<SignUp /> component', () => {
     const { validationStub } = createSignUpSut({ error: 'Name is required' })
 
     await user.type(
-      screen.getByPlaceholderText(/digite seu nome/i),
+      screen.getByPlaceholderText(/enter your name/i),
       faker.name.firstName()
     )
 
@@ -49,7 +53,7 @@ describe('<SignUp /> component', () => {
     const { validationStub } = createSignUpSut({ error: 'Email is required' })
 
     await user.type(
-      screen.getByPlaceholderText(/digite seu e-mail/i),
+      screen.getByPlaceholderText(/enter your e-mail/i),
       faker.internet.email()
     )
 
@@ -65,7 +69,7 @@ describe('<SignUp /> component', () => {
     })
 
     await user.type(
-      screen.getByPlaceholderText(/digite sua senha/i),
+      screen.getByPlaceholderText(/enter your password/i),
       faker.internet.password()
     )
 
@@ -81,7 +85,7 @@ describe('<SignUp /> component', () => {
     })
 
     await user.type(
-      screen.getByPlaceholderText(/repita sua senha/i),
+      screen.getByPlaceholderText(/confirm your password/i),
       faker.internet.password()
     )
 
@@ -118,6 +122,6 @@ describe('<SignUp /> component', () => {
 
     await user.click(screen.getByRole('button', { name: /sign up/i }))
 
-    expect(screen.getByText(/carregando\.../i)).toBeInTheDocument()
+    expect(screen.getByText(/loading\.../i)).toBeInTheDocument()
   })
 })

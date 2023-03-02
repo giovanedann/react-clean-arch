@@ -15,10 +15,13 @@ export default async function populateValidInputs(
   const email = faker.internet.email()
   const password = faker.internet.password()
 
-  await user.type(screen.getByPlaceholderText(/digite seu nome/i), name)
-  await user.type(screen.getByPlaceholderText(/digite seu e-mail/i), email)
-  await user.type(screen.getByPlaceholderText(/digite sua senha/i), password)
-  await user.type(screen.getByPlaceholderText(/repita sua senha/i), password)
+  await user.type(screen.getByPlaceholderText(/enter your name/i), name)
+  await user.type(screen.getByPlaceholderText(/enter your e-mail/i), email)
+  await user.type(screen.getByPlaceholderText(/enter your password/i), password)
+  await user.type(
+    screen.getByPlaceholderText(/confirm your password/i),
+    password
+  )
 
   return { email, password, name }
 }
