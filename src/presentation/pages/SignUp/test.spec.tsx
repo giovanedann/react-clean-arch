@@ -189,4 +189,13 @@ describe('<SignUp /> component', () => {
 
     expect(screen.getByText(/home/i)).toBeInTheDocument()
   })
+
+  it('should redirect user to Login if link is clicked', async () => {
+    const user = userEvent.setup()
+
+    createSignUpSut({})
+    await user.click(screen.getByRole('link', { name: /back to login/i }))
+
+    expect(screen.getByText(/login/i)).toBeInTheDocument()
+  })
 })
