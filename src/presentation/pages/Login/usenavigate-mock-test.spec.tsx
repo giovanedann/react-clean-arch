@@ -31,7 +31,7 @@ describe('<Login />', () => {
 
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(await screen.findByText(/carregando\.../i)).toBeInTheDocument()
+    expect(await screen.findByText(/loading\.../i)).toBeInTheDocument()
   })
 
   it('should call authentication only once', async () => {

@@ -16,7 +16,7 @@ describe('<Login /> component', () => {
   it('should not render the loader and have the submit button disabled initially', () => {
     createLoginSut({ error: 'Required fields' })
 
-    expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign in/i })).toBeDisabled()
 
     expect(
@@ -116,7 +116,7 @@ describe('<Login /> component', () => {
 
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
     expect(await screen.findByText(error.message)).toBeInTheDocument()
   })
 
@@ -131,7 +131,7 @@ describe('<Login /> component', () => {
 
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
     expect(await screen.findByText(error.message)).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /sign in/i }))
