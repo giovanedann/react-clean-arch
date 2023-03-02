@@ -3,8 +3,8 @@ import { FieldValidationSpy } from 'tests/mocks/validation/validators/validation
 import { ValidationComposite } from 'validation/validators'
 
 type SutTypes = {
-  sut: ValidationComposite
-  fieldValidationSpies: FieldValidationSpy[]
+  sut: ValidationComposite<any>
+  fieldValidationSpies: Array<FieldValidationSpy<any>>
 }
 
 function createSut(field: string): SutTypes {

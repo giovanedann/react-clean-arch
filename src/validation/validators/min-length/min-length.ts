@@ -1,11 +1,19 @@
 import { InvalidLengthError } from 'validation/errors'
 import { type FieldValidation } from 'validation/protocols/field-validation'
 
-export class MinLengthValidation implements FieldValidation {
-  constructor(readonly field: string, private readonly minValidLength: number) {}
+export class MinLengthValidation<T> implements FieldValidation<T> {
+  constructor(
+    readonly field: keyof T,
+    private readonly minValidLength: number
+  ) {}
 
-  validate(value: string): Error | null {
-    const isLengthValid = value.length >= this.minValidLength
-    return isLengthValid ? null : new InvalidLengthError(this.field, this.minValidLength)
+  validate(object: T): Error | null {
+    const isLengthValid =
+      !object[this.field] ||
+      (object[this.field] as string).length >= this.minValidLength
+
+    return isLengthValid
+      ? null
+      : new InvalidLengthError(this.field as string, this.minValidLength)
   }
 }

@@ -1,9 +1,9 @@
 import { type Validation } from 'presentation/protocols/validation'
 
-export class ValidationStub implements Validation {
+export class ValidationStub<T> implements Validation<T> {
   errorMessage: string = ''
 
-  validate(fieldName: string, fieldValue: string): string {
+  validate(fieldName: keyof T, object: T): string {
     return this.errorMessage
   }
 }

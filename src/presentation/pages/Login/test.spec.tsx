@@ -16,14 +16,16 @@ describe('<Login /> component', () => {
   it('should not render the loader and have the submit button disabled initially', () => {
     createLoginSut({ error: 'Required fields' })
 
-    expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /entrar/i })).toBeDisabled()
+    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeDisabled()
 
     expect(
-      screen.getByPlaceholderText(/digite seu e-mail/i)
+      screen.getByPlaceholderText(/enter your e-mail/i)
     ).toBeInTheDocument()
 
-    expect(screen.getByPlaceholderText(/digite sua senha/i)).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(/enter your password/i)
+    ).toBeInTheDocument()
 
     expect(screen.getAllByText('🔴')).toHaveLength(2)
   })
@@ -33,7 +35,7 @@ describe('<Login /> component', () => {
     const { validationStub } = createLoginSut({ error: 'Invalid email' })
 
     await user.type(
-      screen.getByPlaceholderText(/digite seu e-mail/i),
+      screen.getByPlaceholderText(/enter your e-mail/i),
       faker.internet.email()
     )
 
@@ -47,7 +49,7 @@ describe('<Login /> component', () => {
     const { validationStub } = createLoginSut({ error: 'Invalid password' })
 
     await user.type(
-      screen.getByPlaceholderText(/digite sua senha/i),
+      screen.getByPlaceholderText(/enter your password/i),
       faker.internet.password()
     )
 
@@ -71,7 +73,7 @@ describe('<Login /> component', () => {
 
     await populateValidInputs(user)
 
-    expect(screen.getByRole('button', { name: /entrar/i })).toBeEnabled()
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeEnabled()
   })
 
   it('should call authentication with correct values', async () => {
@@ -81,7 +83,7 @@ describe('<Login /> component', () => {
 
     const { email, password } = await populateValidInputs(user)
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     expect(authenticationSpy.params).toStrictEqual({
       email,
@@ -96,9 +98,9 @@ describe('<Login /> component', () => {
 
     await populateValidInputs(user)
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(screen.getByRole('button', { name: /entrar/i })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /sign in/i })).toBeDisabled()
 
     expect(authenticationSpy.calls).toBe(0)
   })
@@ -112,9 +114,9 @@ describe('<Login /> component', () => {
 
     await populateValidInputs(user)
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
     expect(await screen.findByText(error.message)).toBeInTheDocument()
   })
 
@@ -127,12 +129,12 @@ describe('<Login /> component', () => {
 
     await populateValidInputs(user)
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(screen.queryByText(/carregando\.../i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
     expect(await screen.findByText(error.message)).toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     expect(screen.queryByText(error.message)).not.toBeInTheDocument()
   })
@@ -144,7 +146,7 @@ describe('<Login /> component', () => {
 
     await populateValidInputs(user)
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     expect(saveAccessTokenMock.accessToken).toBe(
       authenticationSpy.account.accessToken
@@ -160,7 +162,7 @@ describe('<Login /> component', () => {
       .mockRejectedValueOnce(new Error('Error on SaveAccessToken'))
 
     await populateValidInputs(user)
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     expect(
       await screen.findByText(/error on saveaccesstoken/i)
@@ -173,7 +175,7 @@ describe('<Login /> component', () => {
 
     await populateValidInputs(user)
 
-    await user.click(screen.getByRole('button', { name: /entrar/i }))
+    await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     expect(await screen.findByText(/home/i)).toBeInTheDocument()
   })
@@ -182,10 +184,10 @@ describe('<Login /> component', () => {
     const user = userEvent.setup()
     createLoginSut({})
 
-    await user.click(screen.getByRole('link', { name: /criar conta/i }))
+    await user.click(screen.getByRole('link', { name: /sign up/i }))
 
     expect(
-      screen.queryByRole('link', { name: /criar conta/i })
+      screen.queryByRole('link', { name: /sign up/i })
     ).not.toBeInTheDocument()
 
     expect(await screen.findByText(/sign up/i)).toBeInTheDocument()

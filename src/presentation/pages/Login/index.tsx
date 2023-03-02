@@ -13,8 +13,13 @@ import styles from './styles.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { type SaveAccessToken } from 'domain/usecases'
 
+type LoginData = {
+  email: string
+  password: string
+}
+
 type Props = {
-  validation: Validation
+  validation: Validation<LoginData>
   authentication: Authentication
   saveAccessToken: SaveAccessToken
 }
@@ -24,23 +29,35 @@ function Login({
   authentication,
   saveAccessToken
 }: Props): JSX.Element {
-  const { errorMessage, isLoading, setIsLoading, setErrorMessage } = useForm()
+  const {
+    errorMessage,
+    isLoading,
+    setIsLoading,
+    setErrorMessage,
+    resetFormStatus
+  } = useForm()
   const navigate = useNavigate()
 
-  const [email, setEmail] = useState<string>('')
-  const [password, setPassword] = useState<string>('')
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: '',
+    password: ''
+  })
   const [errors, setErrors] = useState<Record<string, string>>({
     emailError: '',
     passwordError: ''
   })
 
   useEffect(() => {
+    resetFormStatus()
+  }, [])
+
+  useEffect(() => {
     setErrors((prev) => ({
       ...prev,
-      passwordError: validation.validate('password', password),
-      emailError: validation.validate('email', email)
+      passwordError: validation.validate('password', loginData),
+      emailError: validation.validate('email', loginData)
     }))
-  }, [email, password])
+  }, [loginData])
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>
@@ -58,7 +75,7 @@ function Login({
     try {
       setIsLoading(true)
       setErrorMessage('')
-      const account = await authentication.auth({ email, password })
+      const account = await authentication.auth(loginData)
       await saveAccessToken.save(account.accessToken)
       navigate('/')
     } catch (error: any) {
@@ -75,21 +92,21 @@ function Login({
         <Input
           type="email"
           name="email"
-          value={email}
+          value={loginData.email}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setEmail(event.target.value)
+            setLoginData((prev) => ({ ...prev, email: event.target.value }))
           }}
-          placeholder="Digite seu e-mail"
+          placeholder="Enter your e-mail"
           errorMessage={errors.emailError}
         />
         <Input
           type="password"
           name="password"
-          value={password}
+          value={loginData.password}
           onChange={(event: ChangeEvent<HTMLInputElement>) => {
-            setPassword(event.target.value)
+            setLoginData((prev) => ({ ...prev, password: event.target.value }))
           }}
-          placeholder="Digite sua senha"
+          placeholder="Enter your password"
           errorMessage={errors.passwordError}
         />
         <button
@@ -97,12 +114,12 @@ function Login({
           type="submit"
           disabled={!!errors.emailError || !!errors.passwordError}
         >
-          Entrar
+          Sign in
         </button>
         <Link to="/sign-up" className={styles.link}>
-          Criar conta
+          Sign up
         </Link>
-        {isLoading && <Loader message="Carregando..." />}
+        {isLoading && <Loader message="Loading..." />}
         {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
       </form>
       <Footer />

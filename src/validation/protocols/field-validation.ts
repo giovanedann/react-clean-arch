@@ -1,4 +1,4 @@
-export interface FieldValidation {
-  field: string
-  validate: (value: string) => Error | null
+export interface FieldValidation<T> {
+  field: keyof T
+  validate: (object: T) => Error | null
 }
