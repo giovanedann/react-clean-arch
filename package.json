@@ -10,6 +10,8 @@
     "lint": "eslint 'src/**'",
     "test": "jest --passWithNoTests",
     "test:watch": "yarn test --watch",
+    "test:e2e": "yarn playwright test",
+    "test:e2e-report": "yarn playwright show-report",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage --no-cache",
     "prepare": "husky install",
@@ -20,6 +22,7 @@
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@playwright/test": "^1.31.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@types/axios": "^0.14.0",
     "@types/jest": "^29.2.5",
