@@ -16,9 +16,7 @@ test.describe('Login Page', () => {
     await expect(page.getByTitle(/required field/i)).toHaveCount(2)
   })
 
-  test('should change the status on valid email start with correct initial state', async ({
-    page
-  }) => {
+  test('should change the status on valid form data', async ({ page }) => {
     await expect(page.getByTitle(/required field/i)).toHaveCount(2)
 
     await page.getByLabel(/enter your e-mail/i).focus()
