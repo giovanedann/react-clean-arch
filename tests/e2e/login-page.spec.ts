@@ -1,14 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { test, expect } from '@playwright/test'
-
-async function delay(ms: number): Promise<void> {
-  const waiter = new Promise((resolve) => {
-    setTimeout(function () {
-      resolve('true')
-    }, ms)
-  })
-  await waiter
-}
+import delay from '../utils/delay'
 
 test.describe('Login Page', () => {
   test.beforeEach(async ({ page }) => {
