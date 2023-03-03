@@ -19,43 +19,39 @@ describe('<Login /> component', () => {
     expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign in/i })).toBeDisabled()
 
-    expect(
-      screen.getByPlaceholderText(/enter your e-mail/i)
-    ).toBeInTheDocument()
+    expect(screen.getByLabelText(/enter your e-mail/i)).toBeInTheDocument()
 
-    expect(
-      screen.getByPlaceholderText(/enter your password/i)
-    ).toBeInTheDocument()
+    expect(screen.getByLabelText(/enter your password/i)).toBeInTheDocument()
 
-    expect(screen.getAllByText('🔴')).toHaveLength(2)
+    expect(screen.getAllByTitle(/required fields/i)).toHaveLength(2)
   })
 
   it('should show the email error if email validation fails', async () => {
     const user = userEvent.setup()
-    const { validationStub } = createLoginSut({ error: 'Invalid email' })
+    createLoginSut({ error: 'Invalid email' })
 
     await user.type(
-      screen.getByPlaceholderText(/enter your e-mail/i),
+      screen.getByLabelText(/enter your e-mail/i),
       faker.internet.email()
     )
 
-    const [emailInputStatus] = screen.getAllByText('🔴')
+    const emailInputStatus = screen.getAllByTitle(/invalid email/i).at(0)
 
-    expect(emailInputStatus.title).toBe(validationStub.errorMessage)
+    expect(emailInputStatus).toBeInTheDocument()
   })
 
   it('should show the password error if password validation fails', async () => {
     const user = userEvent.setup()
-    const { validationStub } = createLoginSut({ error: 'Invalid password' })
+    createLoginSut({ error: 'Invalid password' })
 
     await user.type(
-      screen.getByPlaceholderText(/enter your password/i),
+      screen.getByLabelText(/enter your password/i),
       faker.internet.password()
     )
 
-    const [, passwordInputStatus] = screen.getAllByText('🔴')
+    const passwordInputStatus = screen.getAllByTitle(/invalid password/i).at(1)
 
-    expect(passwordInputStatus.title).toBe(validationStub.errorMessage)
+    expect(passwordInputStatus).toBeInTheDocument()
   })
 
   it('should display the success status if validation does not return errors', async () => {
@@ -64,7 +60,11 @@ describe('<Login /> component', () => {
 
     await populateValidInputs(user)
 
-    expect(screen.getAllByText('🟢')).toHaveLength(2)
+    const labels = screen.getAllByRole('label')
+
+    labels.forEach((label) => {
+      expect(label.title).toBeFalsy()
+    })
   })
 
   it('should enable submit button if form data is valid', async () => {
