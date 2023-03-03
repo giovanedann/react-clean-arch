@@ -133,4 +133,12 @@ test.describe('Login Page', () => {
       page.getByText(/an unexpected error has occurred/i)
     ).toBeVisible()
   })
+
+  test('should go to the sign up page if sign up is clicked', async ({
+    page
+  }) => {
+    await page.getByRole('link', { name: /sign up/i }).click()
+
+    await expect(page).toHaveURL('http://localhost:3000/sign-up')
+  })
 })
