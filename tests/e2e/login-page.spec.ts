@@ -76,4 +76,21 @@ test.describe('Login Page', () => {
     await page.getByRole('button', { name: /sign in/i }).click()
     await expect(page.getByText(/loading\.../i)).toBeInViewport()
   })
+
+  test('should display invalid credentials error on 401', async ({ page }) => {
+    await page.route('http://localhost:5050/api/login', async (route) => {
+      await route.fulfill({ status: 401 })
+    })
+
+    await page
+      .getByPlaceholder(/enter your e-mail/i)
+      .fill(faker.internet.email())
+
+    await page
+      .getByPlaceholder(/enter your password/i)
+      .fill(faker.internet.password(6))
+
+    await page.getByRole('button', { name: /sign in/i }).click()
+    await expect(page.getByText(/invalid credentials/i)).toBeVisible()
+  })
 })
