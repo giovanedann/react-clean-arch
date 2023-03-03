@@ -14,7 +14,11 @@ export default defineConfig({
   reporter: 'html',
   use: {
     actionTimeout: 0,
-    trace: 'on'
+    trace: 'on',
+    video: 'on',
+    launchOptions: {
+      slowMo: 400
+    }
   },
   projects: [
     {
