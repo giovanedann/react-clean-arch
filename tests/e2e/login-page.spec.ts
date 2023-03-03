@@ -141,4 +141,31 @@ test.describe('Login Page', () => {
 
     await expect(page).toHaveURL('http://localhost:3000/sign-up')
   })
+
+  test('should save the access token on localStorage after submit succeeds', async ({
+    page
+  }) => {
+    const accessToken = faker.datatype.uuid()
+
+    await page.route('http://localhost:5050/api/login', async (route) => {
+      const json = {
+        accessToken
+      }
+      await route.fulfill({ status: 200, json })
+    })
+
+    await page
+      .getByPlaceholder(/enter your e-mail/i)
+      .fill(faker.internet.email())
+
+    await page
+      .getByPlaceholder(/enter your password/i)
+      .fill(faker.internet.password(6))
+
+    await page.getByRole('button', { name: /sign in/i }).click()
+
+    expect(await page.evaluate(() => window.localStorage)).toStrictEqual({
+      accessToken
+    })
+  })
 })
