@@ -34,7 +34,18 @@ function SignUp({
 
   const navigate = useNavigate()
 
-  const { isLoading, errorMessage, setIsLoading, setErrorMessage } = useForm()
+  const {
+    isLoading,
+    errorMessage,
+    setIsLoading,
+    setErrorMessage,
+    resetFormStatus
+  } = useForm()
+
+  // Use effect to ensure the form status is reset on Sign Up load
+  useEffect(() => {
+    resetFormStatus()
+  }, [])
 
   // Use effect to add and remove errors based on input value
   useEffect(() => {
