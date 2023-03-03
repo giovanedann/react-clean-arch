@@ -21,11 +21,11 @@ describe('<Login />', () => {
     createLoginSut({})
 
     await user.type(
-      screen.getByPlaceholderText(/enter your e-mail/i),
+      screen.getByLabelText(/enter your e-mail/i),
       faker.internet.email()
     )
     await user.type(
-      screen.getByPlaceholderText(/enter your password/i),
+      screen.getByLabelText(/enter your password/i),
       faker.internet.password()
     )
 
@@ -41,11 +41,8 @@ describe('<Login />', () => {
 
     const { authenticationSpy } = createLoginSut({})
 
-    await user.type(screen.getByPlaceholderText(/enter your e-mail/i), email)
-    await user.type(
-      screen.getByPlaceholderText(/enter your password/i),
-      password
-    )
+    await user.type(screen.getByLabelText(/enter your e-mail/i), email)
+    await user.type(screen.getByLabelText(/enter your password/i), password)
 
     await user.click(screen.getByRole('button', { name: /sign in/i }))
     await user.click(screen.getByRole('button', { name: /sign in/i }))

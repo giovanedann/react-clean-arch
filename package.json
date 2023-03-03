@@ -12,6 +12,7 @@
     "test:watch": "yarn test --watch",
     "test:e2e": "yarn playwright test",
     "test:e2e-report": "yarn playwright show-report",
+    "test:e2e-ci": "yarn playwright test --reporter=dot",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage --no-cache",
     "prepare": "husky install",

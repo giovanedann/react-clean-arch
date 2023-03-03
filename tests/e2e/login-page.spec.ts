@@ -8,41 +8,54 @@ test.describe('Login Page', () => {
   })
 
   test('should start with correct initial state', async ({ page }) => {
-    await expect(page.getByPlaceholder(/enter your e-mail/i)).toHaveValue('')
-    await expect(page.getByPlaceholder(/enter your password/i)).toHaveValue('')
+    await expect(page.getByLabel(/enter your e-mail/i)).toHaveValue('')
+    await expect(page.getByLabel(/enter your password/i)).toHaveValue('')
 
     await expect(page.getByRole('button', { name: /sign in/i })).toBeDisabled()
 
-    await expect(page.getByText(/🔴/i)).toHaveCount(2)
+    await expect(page.getByTitle(/required field/i)).toHaveCount(2)
   })
 
   test('should change the status on valid email start with correct initial state', async ({
     page
   }) => {
-    await expect(page.getByText(/🔴/i)).toHaveCount(2)
+    await expect(page.getByTitle(/required field/i)).toHaveCount(2)
 
-    await page
-      .getByPlaceholder(/enter your e-mail/i)
-      .fill(faker.internet.email())
+    await page.getByLabel(/enter your e-mail/i).focus()
+    await page.getByLabel(/enter your e-mail/i).fill(faker.internet.email())
 
+    await page.getByLabel(/enter your password/i).focus()
     await page
-      .getByPlaceholder(/enter your password/i)
+      .getByLabel(/enter your password/i)
       .fill(faker.internet.password(6))
 
-    await expect(page.getByText(/🟢/i)).toHaveCount(2)
+    await expect(page.getByTitle(/required field/i)).toHaveCount(0)
+
     await expect(page.getByRole('button', { name: /sign in/i })).toBeEnabled()
   })
 
   test('should disable the submit button on invalid form values', async ({
     page
   }) => {
-    await expect(page.getByText(/🔴/i)).toHaveCount(2)
+    await expect(page.getByTitle(/required field/i)).toHaveCount(2)
 
-    await page.getByPlaceholder(/enter your e-mail/i).fill(faker.random.word())
+    await page.getByLabel(/enter your e-mail/i).focus()
+    await page.getByLabel(/enter your e-mail/i).fill(faker.random.word())
 
+    await expect(
+      page.getByTitle(/value provided to email is invalid/i)
+    ).toBeVisible()
+
+    await page.getByLabel(/enter your password/i).focus()
     await page
-      .getByPlaceholder(/enter your password/i)
+      .getByLabel(/enter your password/i)
       .fill(faker.random.alphaNumeric(4))
+
+    await expect(
+      page.getByTitle(
+        /value provided to password should have at least 5 characters/i
+      )
+    ).toBeVisible()
 
     await expect(page.getByRole('button', { name: /sign in/i })).toBeDisabled()
   })
@@ -57,12 +70,12 @@ test.describe('Login Page', () => {
       await route.fulfill({ json })
     })
 
-    await page
-      .getByPlaceholder(/enter your e-mail/i)
-      .fill(faker.internet.email())
+    await page.getByLabel(/enter your e-mail/i).focus()
+    await page.getByLabel(/enter your e-mail/i).fill(faker.internet.email())
 
+    await page.getByLabel(/enter your password/i).focus()
     await page
-      .getByPlaceholder(/enter your password/i)
+      .getByLabel(/enter your password/i)
       .fill(faker.internet.password(6))
 
     await page.getByRole('button', { name: /sign in/i }).click()
@@ -74,12 +87,12 @@ test.describe('Login Page', () => {
       await route.fulfill({ status: 401 })
     })
 
-    await page
-      .getByPlaceholder(/enter your e-mail/i)
-      .fill(faker.internet.email())
+    await page.getByLabel(/enter your e-mail/i).focus()
+    await page.getByLabel(/enter your e-mail/i).fill(faker.internet.email())
 
+    await page.getByLabel(/enter your password/i).focus()
     await page
-      .getByPlaceholder(/enter your password/i)
+      .getByLabel(/enter your password/i)
       .fill(faker.internet.password(6))
 
     await page.getByRole('button', { name: /sign in/i }).click()
@@ -91,12 +104,12 @@ test.describe('Login Page', () => {
       await route.fulfill({ status: 403 })
     })
 
-    await page
-      .getByPlaceholder(/enter your e-mail/i)
-      .fill(faker.internet.email())
+    await page.getByLabel(/enter your e-mail/i).focus()
+    await page.getByLabel(/enter your e-mail/i).fill(faker.internet.email())
 
+    await page.getByLabel(/enter your password/i).focus()
     await page
-      .getByPlaceholder(/enter your password/i)
+      .getByLabel(/enter your password/i)
       .fill(faker.internet.password(6))
 
     await page.getByRole('button', { name: /sign in/i }).click()
@@ -112,12 +125,12 @@ test.describe('Login Page', () => {
       await route.fulfill({ status: 500 })
     })
 
-    await page
-      .getByPlaceholder(/enter your e-mail/i)
-      .fill(faker.internet.email())
+    await page.getByLabel(/enter your e-mail/i).focus()
+    await page.getByLabel(/enter your e-mail/i).fill(faker.internet.email())
 
+    await page.getByLabel(/enter your password/i).focus()
     await page
-      .getByPlaceholder(/enter your password/i)
+      .getByLabel(/enter your password/i)
       .fill(faker.internet.password(6))
 
     await page.getByRole('button', { name: /sign in/i }).click()
@@ -146,12 +159,12 @@ test.describe('Login Page', () => {
       await route.fulfill({ status: 200, json })
     })
 
-    await page
-      .getByPlaceholder(/enter your e-mail/i)
-      .fill(faker.internet.email())
+    await page.getByLabel(/enter your e-mail/i).focus()
+    await page.getByLabel(/enter your e-mail/i).fill(faker.internet.email())
 
+    await page.getByLabel(/enter your password/i).focus()
     await page
-      .getByPlaceholder(/enter your password/i)
+      .getByLabel(/enter your password/i)
       .fill(faker.internet.password(6))
 
     await page.getByRole('button', { name: /sign in/i }).click()
