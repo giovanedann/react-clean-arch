@@ -8,27 +8,32 @@ describe('<Input /> component', () => {
   it('should not display a title on the circle if the input value is valid', async () => {
     const user = userEvent.setup()
     const placeholder = faker.random.word()
-    render(<Input placeholder={placeholder} />)
+    render(<Input placeholder={placeholder} name={faker.random.word()} />)
 
-    await user.type(screen.getByPlaceholderText(placeholder), 'test')
+    const input = screen.getByLabelText(placeholder)
 
-    expect(screen.getByText(/🟢/i)).toBeInTheDocument()
-    expect(screen.getByText(/🟢/i).title).toBeFalsy()
-    expect(screen.getByText(/🟢/i).title).toBe('')
+    await user.type(input, 'test')
+
+    const label = input.nextElementSibling as HTMLLabelElement
+
+    expect(label.title).toBeFalsy()
+    expect(label.title).toBe('')
   })
 
   it('should not display a title on the circle if the input value is valid', async () => {
     const user = userEvent.setup()
     const placeholder = faker.random.word()
     const errorMessage = faker.random.words()
-    render(<Input placeholder={placeholder} errorMessage={errorMessage} />)
-
-    await user.type(
-      screen.getByPlaceholderText(placeholder),
-      faker.random.words()
+    render(
+      <Input
+        placeholder={placeholder}
+        errorMessage={errorMessage}
+        name={faker.random.word()}
+      />
     )
 
-    expect(screen.getByText(/🔴/i)).toBeInTheDocument()
-    expect(screen.getByText(/🔴/i).title).toBe(errorMessage)
+    await user.type(screen.getByLabelText(placeholder), faker.random.words())
+
+    expect(screen.getByTitle(errorMessage)).toBeInTheDocument()
   })
 })
