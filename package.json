@@ -10,7 +10,7 @@
     "lint": "eslint 'src/**'",
     "test": "jest --passWithNoTests",
     "test:watch": "yarn test --watch",
-    "test:e2e": "yarn playwright test",
+    "test:e2e": "yarn playwright test --reporter=line",
     "test:e2e-report": "yarn playwright show-report",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage --no-cache",
