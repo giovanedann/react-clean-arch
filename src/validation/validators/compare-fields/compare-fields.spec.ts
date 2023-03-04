@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker'
-import { InvalidFieldError } from 'validation/errors'
+import { PasswordsNotMatchError } from 'validation/errors/password-unmatched'
 import { CompareFieldsValidation } from './compare-fields'
 
 function createSut(
@@ -19,7 +19,7 @@ describe('CompareFieldsValidation', () => {
       [field2]: faker.random.alphaNumeric(7)
     })
 
-    expect(error).toBeInstanceOf(InvalidFieldError)
+    expect(error).toBeInstanceOf(PasswordsNotMatchError)
   })
 
   it('should return null if fields are equal', () => {

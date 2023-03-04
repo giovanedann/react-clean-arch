@@ -32,7 +32,7 @@ test.describe('Login Page', () => {
     await expect(page.getByRole('button', { name: /sign in/i })).toBeEnabled()
   })
 
-  test('should disable the submit button on invalid form values', async ({
+  test('should keep the submit button disabled on invalid form values', async ({
     page
   }) => {
     await expect(page.getByTitle(/required field/i)).toHaveCount(2)
@@ -77,7 +77,7 @@ test.describe('Login Page', () => {
       .fill(faker.internet.password(6))
 
     await page.getByRole('button', { name: /sign in/i }).click()
-    await expect(page.getByText(/loading\.../i)).toBeInViewport()
+    await expect(page.getByText(/loading\.../i)).toBeVisible()
   })
 
   test('should display invalid credentials error on 401', async ({ page }) => {

@@ -57,44 +57,17 @@ function SignUp({
       data
     )
 
-    if (!emailError && errors.emailError) {
-      dispatchError({ type: 'EMAIL', payload: '' })
-    }
+    dispatchError({ type: 'EMAIL', payload: emailError })
 
-    if (!nameError && errors.nameError) {
-      dispatchError({ type: 'NAME', payload: '' })
-    }
+    dispatchError({ type: 'NAME', payload: nameError })
 
-    if (!passwordError && errors.passwordError) {
-      dispatchError({ type: 'PASSWORD', payload: '' })
-    }
+    dispatchError({ type: 'PASSWORD', payload: passwordError })
 
-    if (!passwordConfirmationError && errors.passwordConfirmationError) {
-      dispatchError({
-        type: 'PASSWORD_CONFIRMATION',
-        payload: ''
-      })
-    }
-
-    if (emailError && !errors.emailError) {
-      dispatchError({ type: 'EMAIL', payload: 'Email is required' })
-    }
-
-    if (nameError && !errors.nameError) {
-      dispatchError({ type: 'NAME', payload: 'Name is required' })
-    }
-
-    if (passwordError && !errors.passwordError) {
-      dispatchError({ type: 'PASSWORD', payload: 'Password is required' })
-    }
-
-    if (passwordConfirmationError && !errors.passwordConfirmationError) {
-      dispatchError({
-        type: 'PASSWORD_CONFIRMATION',
-        payload: 'Passwords not matching'
-      })
-    }
-  }, [errors, dispatchError, validation, data])
+    dispatchError({
+      type: 'PASSWORD_CONFIRMATION',
+      payload: passwordConfirmationError
+    })
+  }, [data])
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>

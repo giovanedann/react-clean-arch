@@ -14,7 +14,7 @@ describe('<SignUp /> component', () => {
   })
 
   it('should not render the loader and have the submit button disabled initially', () => {
-    createSignUpSut({ error: 'Required fields' })
+    createSignUpSut({ error: 'Required field' })
 
     expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign up/i })).toBeDisabled()
@@ -26,72 +26,69 @@ describe('<SignUp /> component', () => {
     expect(screen.getByLabelText(/enter your password/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/confirm your password/i)).toBeInTheDocument()
 
-    expect(screen.getByTitle(/name is required/i)).toBeInTheDocument()
-    expect(screen.getByTitle(/password is required/i)).toBeInTheDocument()
-    expect(screen.getByTitle(/email is required/i)).toBeInTheDocument()
-    expect(screen.getByTitle(/passwords not matching/i)).toBeInTheDocument()
+    expect(screen.getAllByTitle(/required field/i)).toHaveLength(4)
   })
 
   it('should show the name error if name validation fails', async () => {
     const user = userEvent.setup()
-    createSignUpSut({ error: 'Name is required' })
+    const error = faker.random.words()
+    createSignUpSut({ error })
 
     await user.type(
       screen.getByLabelText(/enter your name/i),
       faker.name.firstName()
     )
 
-    const passwordInputStatus = screen.getByTitle(/name is required/i)
+    const nameInputLabel = screen.getByText(/enter your name/i)
 
-    expect(passwordInputStatus).toBeInTheDocument()
+    expect(nameInputLabel.title).toEqual(error)
   })
 
   it('should show the email error if email validation fails', async () => {
     const user = userEvent.setup()
-    createSignUpSut({ error: 'Email is required' })
+    const error = faker.random.words()
+    createSignUpSut({ error })
 
     await user.type(
       screen.getByLabelText(/enter your e-mail/i),
       faker.internet.email()
     )
 
-    const emailInputStatus = screen.getByTitle(/email is required/i)
+    const emailInputLabel = screen.getByText(/enter your e-mail/i)
 
-    expect(emailInputStatus).toBeInTheDocument()
+    expect(emailInputLabel.title).toEqual(error)
   })
 
   it('should show the password error if password validation fails', async () => {
     const user = userEvent.setup()
-    createSignUpSut({
-      error: 'Password is required'
-    })
+    const error = faker.random.words()
+    createSignUpSut({ error })
 
     await user.type(
       screen.getByLabelText(/enter your password/i),
       faker.internet.password()
     )
 
-    const passwordInputStatus = screen.getByTitle(/password is required/i)
+    const passwordInputLabel = screen.getByText(/enter your password/i)
 
-    expect(passwordInputStatus).toBeInTheDocument()
+    expect(passwordInputLabel.title).toEqual(error)
   })
 
-  it('should show the passowordConfirmation error if passwordConfirmation validation fails', async () => {
+  it('should show the passwordConfirmation error if passwordConfirmation validation fails', async () => {
     const user = userEvent.setup()
-    createSignUpSut({
-      error: 'Passwords not matching'
-    })
+    const error = faker.random.words()
+    createSignUpSut({ error })
 
     await user.type(
       screen.getByLabelText(/confirm your password/i),
       faker.internet.password()
     )
 
-    const passwordConfirmationInputStatus = screen.getByTitle(
-      /passwords not matching/i
+    const passwordConfirmationInputLabel = screen.getByText(
+      /confirm your password/i
     )
 
-    expect(passwordConfirmationInputStatus).toBeInTheDocument()
+    expect(passwordConfirmationInputLabel.title).toEqual(error)
   })
 
   it('should display the success status if validation does not return errors', async () => {
@@ -109,12 +106,11 @@ describe('<SignUp /> component', () => {
     const { validationStub } = createSignUpSut({ error: 'invalid' })
     jest.spyOn(validationStub, 'validate').mockImplementation(() => '')
 
-    expect(screen.getByTitle(/name is required/i)).toBeInTheDocument()
-    expect(screen.getByTitle(/password is required/i)).toBeInTheDocument()
-    expect(screen.getByTitle(/email is required/i)).toBeInTheDocument()
-    expect(screen.getByTitle(/passwords not matching/i)).toBeInTheDocument()
+    expect(screen.getAllByTitle(/invalid/i)).toHaveLength(4)
 
     await populateValidInputs(user)
+
+    expect(screen.queryAllByTitle(/invalid/i)).toHaveLength(0)
 
     const labels = screen.getAllByRole('label')
 
