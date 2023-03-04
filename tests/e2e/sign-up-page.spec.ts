@@ -154,4 +154,36 @@ test.describe('SignUp Page', () => {
 
     await expect(page).toHaveURL('http://localhost:3000/login')
   })
+
+  test('should save the access token on localStorage after submit succeeds', async ({
+    page
+  }) => {
+    const accessToken = faker.datatype.uuid()
+
+    await page.route('http://localhost:5050/api/signup', async (route) => {
+      const json = {
+        accessToken
+      }
+      await route.fulfill({ status: 200, json })
+    })
+
+    const password = faker.internet.password(6)
+    await page.getByLabel(/enter your name/i).focus()
+    await page.getByLabel(/enter your name/i).fill(faker.name.firstName())
+
+    await page.getByLabel(/enter your e-mail/i).focus()
+    await page.getByLabel(/enter your e-mail/i).fill(faker.internet.email())
+
+    await page.getByLabel(/enter your password/i).focus()
+    await page.getByLabel(/enter your password/i).fill(password)
+
+    await page.getByLabel(/confirm your password/i).focus()
+    await page.getByLabel(/confirm your password/i).fill(password)
+
+    await page.getByRole('button', { name: /sign up/i }).click()
+
+    expect(await page.evaluate(() => window.localStorage)).toStrictEqual({
+      accessToken
+    })
+  })
 })
