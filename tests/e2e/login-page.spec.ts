@@ -77,7 +77,7 @@ test.describe('Login Page', () => {
       .fill(faker.internet.password(6))
 
     await page.getByRole('button', { name: /sign in/i }).click()
-    await expect(page.getByText(/loading\.../i)).toBeInViewport()
+    await expect(page.getByText(/loading\.../i)).toBeVisible()
   })
 
   test('should display invalid credentials error on 401', async ({ page }) => {
