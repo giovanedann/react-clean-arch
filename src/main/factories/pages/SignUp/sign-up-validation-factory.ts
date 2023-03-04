@@ -15,7 +15,6 @@ export default function signUpValidationFactory(): ValidationComposite<SignUpDat
     ...ValidationBuilder.field('passwordConfirmation')
       .required()
       .compareWithField('password')
-      .minLength(5)
       .build()
   ])
 }
