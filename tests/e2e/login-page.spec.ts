@@ -32,7 +32,7 @@ test.describe('Login Page', () => {
     await expect(page.getByRole('button', { name: /sign in/i })).toBeEnabled()
   })
 
-  test('should disable the submit button on invalid form values', async ({
+  test('should keep the submit button disabled on invalid form values', async ({
     page
   }) => {
     await expect(page.getByTitle(/required field/i)).toHaveCount(2)
