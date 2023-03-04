@@ -33,10 +33,10 @@ export const INITIAL_DATA_STATE: SignUpData = {
 }
 
 export const INITIAL_ERRORS_STATE: SignUpErrors = {
-  nameError: '',
-  emailError: '',
-  passwordError: '',
-  passwordConfirmationError: ''
+  nameError: 'Required field',
+  emailError: 'Required field',
+  passwordError: 'Required field',
+  passwordConfirmationError: 'Required field'
 }
 
 export function dataReducer(
