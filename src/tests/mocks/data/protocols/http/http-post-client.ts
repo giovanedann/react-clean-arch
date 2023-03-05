@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { type HttpPostParams } from 'data/protocols/http'
 
-export function mockPostRequest (): HttpPostParams<any> {
+export function mockPostRequest(): HttpPostParams {
   const randomObject = JSON.parse(faker.datatype.json())
 
   return {

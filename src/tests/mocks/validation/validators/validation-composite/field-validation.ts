@@ -1,6 +1,6 @@
 import { type FieldValidation } from 'validation/protocols/field-validation'
 
-export class FieldValidationSpy<T> implements FieldValidation<T> {
+export class FieldValidationSpy<T = any> implements FieldValidation<T> {
   error: Error | null = null
 
   constructor(readonly field: keyof T) {}

@@ -3,7 +3,7 @@ import { InvalidLengthError } from 'validation/errors'
 import { MinLengthValidation } from './min-length'
 
 type SutTypes = {
-  sut: MinLengthValidation<any>
+  sut: MinLengthValidation
   minValidLength: number
   field: string
 }

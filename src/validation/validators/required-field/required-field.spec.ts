@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { RequiredFieldError } from 'validation/errors'
 import { RequiredFieldValidation } from 'validation/validators'
 
-function createSut(field: string): RequiredFieldValidation<any> {
+function createSut(field: string): RequiredFieldValidation {
   return new RequiredFieldValidation(field)
 }
 

@@ -5,7 +5,7 @@ import { CompareFieldsValidation } from './compare-fields'
 function createSut(
   field: string,
   compareWith: string
-): CompareFieldsValidation<any> {
+): CompareFieldsValidation {
   return new CompareFieldsValidation(field, compareWith)
 }
 
