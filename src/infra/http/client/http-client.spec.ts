@@ -23,6 +23,16 @@ function createSut(): SutTypes {
 
 describe('HttpClient', () => {
   describe('[POST]', () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+      jest.restoreAllMocks()
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+      jest.restoreAllMocks()
+    })
+
     it('should call axios.post with correct URL, verb, and body', async () => {
       const { sut, mockedAxios } = createSut()
       const request = mockPostRequest()
@@ -31,14 +41,17 @@ describe('HttpClient', () => {
       expect(mockedAxios.post).toHaveBeenCalledWith(request.url, request.body)
     })
 
-    it('should return the correct statusCode and body on axios.post', () => {
+    it('should return the correct statusCode and body on axios.post', async () => {
       const { sut, mockedAxios } = createSut()
       const request = mockPostRequest()
-      const response = sut.post(request)
+      const response = await sut.post(request)
 
-      const [resolvedValue] = mockedAxios.post.mock.results
+      const { status, data } = await mockedAxios.post.mock.results[0].value
 
-      expect(response).toStrictEqual(resolvedValue.value)
+      expect(response).toStrictEqual({
+        statusCode: status,
+        body: data
+      })
     })
 
     it('should return the correct statusCode and body on failure on axios.post', () => {
@@ -57,6 +70,16 @@ describe('HttpClient', () => {
   })
 
   describe('[GET]', () => {
+    beforeEach(() => {
+      jest.clearAllMocks()
+      jest.restoreAllMocks()
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+      jest.restoreAllMocks()
+    })
+
     it('should call axios.get with correct URL', async () => {
       const { sut, mockedAxios } = createSut()
       const request = mockGetRequest()
