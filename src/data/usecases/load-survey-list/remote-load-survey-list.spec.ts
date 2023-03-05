@@ -84,4 +84,18 @@ describe('RemoteLoadSurveyList', () => {
 
     await expect(sut.loadAll()).rejects.toThrow(new UnexpectedError())
   })
+
+  it('should return an empty array on 204', async () => {
+    const { httpGetClientSpy, sut } = createSut()
+
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.noContent,
+      body: undefined
+    }
+
+    const list = await sut.loadAll()
+
+    expect(list).toBeInstanceOf(Array)
+    expect(list).toHaveLength(0)
+  })
 })
