@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-optional-chain */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { useRef, type InputHTMLAttributes } from 'react'
 import styles from './styles.module.scss'
@@ -32,7 +33,7 @@ export default function Input({
         role="label"
         htmlFor={props.name}
         onClick={() => {
-          inputRef?.current?.focus()
+          inputRef.current && inputRef.current.focus()
         }}
         title={errorMessage}
       >

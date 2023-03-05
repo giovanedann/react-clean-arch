@@ -1,3 +1,4 @@
+import React from 'react'
 import { faker } from '@faker-js/faker'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
@@ -35,5 +36,17 @@ describe('<Input /> component', () => {
     await user.type(screen.getByLabelText(placeholder), faker.random.words())
 
     expect(screen.getByTitle(errorMessage)).toBeInTheDocument()
+  })
+
+  it('should focus input on label click', async () => {
+    const user = userEvent.setup()
+    const placeholder = faker.random.word()
+    render(<Input placeholder={placeholder} name={faker.random.word()} />)
+
+    const input = screen.getByLabelText(placeholder)
+
+    await user.click(screen.getByText(placeholder))
+
+    expect(input).toHaveFocus()
   })
 })
