@@ -18,6 +18,8 @@ export class RemoteLoadSurveyList implements LoadSurveyList {
           throw new UnexpectedError()
         }
         return response.body
+      case HttpStatusCode.noContent:
+        return []
       default:
         throw new UnexpectedError()
     }
