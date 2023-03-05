@@ -1,7 +1,7 @@
 import { InvalidFieldError } from 'validation/errors'
 import { type FieldValidation } from 'validation/protocols/field-validation'
 
-export class EmailValidation<T> implements FieldValidation<T> {
+export class EmailValidation<T = any> implements FieldValidation<T> {
   constructor(readonly field: keyof T) {}
 
   validate(object: T): InvalidFieldError | null {

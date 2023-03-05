@@ -1,7 +1,7 @@
 import { InvalidLengthError } from 'validation/errors'
 import { type FieldValidation } from 'validation/protocols/field-validation'
 
-export class MinLengthValidation<T> implements FieldValidation<T> {
+export class MinLengthValidation<T = any> implements FieldValidation<T> {
   constructor(
     readonly field: keyof T,
     private readonly minValidLength: number

@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { InvalidFieldError } from 'validation/errors'
 import { EmailValidation } from 'validation/validators'
 
-function createSut(field: string): EmailValidation<any> {
+function createSut(field: string): EmailValidation {
   return new EmailValidation(field)
 }
 

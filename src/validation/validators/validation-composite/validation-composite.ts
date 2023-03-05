@@ -1,12 +1,10 @@
 import { type Validation } from 'presentation/protocols/validation'
 import { type FieldValidation } from 'validation/protocols/field-validation'
 
-export class ValidationComposite<T> implements Validation<T> {
+export class ValidationComposite<T = any> implements Validation<T> {
   private constructor(private readonly validators: Array<FieldValidation<T>>) {}
 
-  static build(
-    validators: Array<FieldValidation<any>>
-  ): ValidationComposite<any> {
+  static build(validators: FieldValidation[]): ValidationComposite {
     return new ValidationComposite(validators)
   }
 

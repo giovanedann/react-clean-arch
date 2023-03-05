@@ -6,13 +6,13 @@ import {
 } from 'validation/validators'
 import { CompareFieldsValidation } from '../compare-fields/compare-fields'
 
-export class ValidationBuilder<T> {
+export class ValidationBuilder<T = any> {
   constructor(
     private readonly fieldName: keyof T,
     private readonly validations: Array<FieldValidation<T>>
   ) {}
 
-  static field(fieldName: string): ValidationBuilder<any> {
+  static field(fieldName: string): ValidationBuilder {
     return new ValidationBuilder(fieldName, [])
   }
 

@@ -8,7 +8,7 @@ export enum HttpStatusCode {
   forbidden = 403
 }
 
-export type HttpResponse<T> = {
+export type HttpResponse<T = any> = {
   statusCode: HttpStatusCode
   body?: T
 }

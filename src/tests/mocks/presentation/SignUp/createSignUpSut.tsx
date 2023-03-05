@@ -7,7 +7,7 @@ import { SaveAccessTokenMock } from 'tests/mocks/infra/cache/save-access-token'
 import { ValidationStub } from 'tests/mocks/presentation/protocols/validation'
 
 export type SutTypes = {
-  validationStub: ValidationStub<any>
+  validationStub: ValidationStub
   addAccountSpy: AddAccountSpy
   saveAccessTokenMock: SaveAccessTokenMock
 }
