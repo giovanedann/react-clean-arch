@@ -100,5 +100,18 @@ describe('HttpClient', () => {
         body: data
       })
     })
+
+    it('should return the correct statusCode and body on failure on axios.get', () => {
+      const { sut, mockedAxios } = createSut()
+      mockedAxios.get.mockRejectedValueOnce({
+        response: mockHttpResponse()
+      })
+
+      const request = mockPostRequest()
+      const promise = sut.get(request)
+      const errorBody = mockedAxios.get.mock.results[0].value
+
+      expect(promise).toStrictEqual(errorBody)
+    })
   })
 })
