@@ -73,4 +73,15 @@ describe('RemoteLoadSurveyList', () => {
     const surveyList = await sut.loadAll()
     expect(surveyList).toStrictEqual(httpGetClientSpy.response.body)
   })
+
+  it('should throw unexpected error if response have no body on 200', async () => {
+    const { httpGetClientSpy, sut } = createSut()
+
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: undefined
+    }
+
+    await expect(sut.loadAll()).rejects.toThrow(new UnexpectedError())
+  })
 })
