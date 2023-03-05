@@ -19,6 +19,12 @@ export class HttpGetClientSpy<T> implements HttpGetClient<T> {
   }
 }
 
+export function mockGetRequest(): HttpGetParams {
+  return {
+    url: faker.internet.url()
+  }
+}
+
 export function mockLoadSurveyList(): SurveyModel[] {
   const surveyList: SurveyModel[] = []
 
