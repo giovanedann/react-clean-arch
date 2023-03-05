@@ -8,6 +8,13 @@ import {
 import axios, { type AxiosResponse } from 'axios'
 
 export class HttpClient implements HttpPostClient, HttpGetClient<any> {
+  private adapt(axiosResponse: AxiosResponse): HttpResponse {
+    return {
+      statusCode: axiosResponse.status,
+      body: axiosResponse.data
+    }
+  }
+
   async post(params: HttpPostParams): Promise<HttpResponse> {
     let axiosResponse: AxiosResponse
 
@@ -17,10 +24,7 @@ export class HttpClient implements HttpPostClient, HttpGetClient<any> {
       axiosResponse = error.response
     }
 
-    return {
-      statusCode: axiosResponse.status,
-      body: axiosResponse.data
-    }
+    return this.adapt(axiosResponse)
   }
 
   async get({ url }: HttpGetParams): Promise<HttpResponse> {
@@ -32,9 +36,6 @@ export class HttpClient implements HttpPostClient, HttpGetClient<any> {
       axiosResponse = error.response
     }
 
-    return {
-      statusCode: axiosResponse.status,
-      body: axiosResponse.data
-    }
+    return this.adapt(axiosResponse)
   }
 }
