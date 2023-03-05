@@ -21,35 +21,37 @@ function createSut(): SutTypes {
 }
 
 describe('HttpClient', () => {
-  it('should call axios with correct URL, verb, and body', async () => {
-    const { sut, mockedAxios } = createSut()
-    const request = mockPostRequest()
-    await sut.post(request)
+  describe('[POST]', () => {
+    it('should call axios.post with correct URL, verb, and body', async () => {
+      const { sut, mockedAxios } = createSut()
+      const request = mockPostRequest()
+      await sut.post(request)
 
-    expect(mockedAxios.post).toHaveBeenCalledWith(request.url, request.body)
-  })
-
-  it('should return the correct statusCode and body', () => {
-    const { sut, mockedAxios } = createSut()
-    const request = mockPostRequest()
-    const response = sut.post(request)
-
-    const [resolvedValue] = mockedAxios.post.mock.results
-
-    expect(response).toStrictEqual(resolvedValue.value)
-  })
-
-  it('should return the correct statusCode and body on failure', () => {
-    const { sut, mockedAxios } = createSut()
-    mockedAxios.post.mockRejectedValueOnce({
-      response: mockHttpResponse()
+      expect(mockedAxios.post).toHaveBeenCalledWith(request.url, request.body)
     })
 
-    const request = mockPostRequest()
-    const response = sut.post(request)
+    it('should return the correct statusCode and body on axios.post', () => {
+      const { sut, mockedAxios } = createSut()
+      const request = mockPostRequest()
+      const response = sut.post(request)
 
-    const [resolvedValue] = mockedAxios.post.mock.results
+      const [resolvedValue] = mockedAxios.post.mock.results
 
-    expect(response).toStrictEqual(resolvedValue.value)
+      expect(response).toStrictEqual(resolvedValue.value)
+    })
+
+    it('should return the correct statusCode and body on failure on axios.post', () => {
+      const { sut, mockedAxios } = createSut()
+      mockedAxios.post.mockRejectedValueOnce({
+        response: mockHttpResponse()
+      })
+
+      const request = mockPostRequest()
+      const response = sut.post(request)
+
+      const [resolvedValue] = mockedAxios.post.mock.results
+
+      expect(response).toStrictEqual(resolvedValue.value)
+    })
   })
 })
