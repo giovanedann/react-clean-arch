@@ -15,7 +15,7 @@ export default function SurveyList(): JSX.Element {
             <SurveyCard
               key={crypto.randomUUID()}
               question={faker.random.words(20)}
-              date={new Date()}
+              date={new Date(Math.floor(Math.random() * Date.now()))}
               didAnswer={Math.random() > 0.5}
             />
           ))}
