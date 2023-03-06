@@ -7,6 +7,10 @@
   background: $primary;
   border-top: 2.5rem solid $primaryDark;
 
+  @media (max-width: 600px) {
+    border-top: none;
+  }
+
   .headerContent {
     display: flex;
     flex-direction: row;
@@ -41,6 +45,34 @@
           text-decoration: underline;
         }
       }
+
+      @media (max-width: 600px) {
+        flex-direction: row;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+
+        span {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .headerWrapper {
+    border-top: none;
+  }
+
+  .logoutWrapper {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      margin-bottom: 0;
     }
   }
 }

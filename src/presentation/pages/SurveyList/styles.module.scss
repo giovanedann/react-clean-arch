@@ -30,8 +30,16 @@
       display: grid;
       column-gap: 2rem;
       grid-template-columns: 1fr 1fr;
+    }
+  }
+}
 
-      
+@media (max-width: 600px) {
+  .surveyListWrapper {
+    .contentWrapper {
+      ul {
+        grid-template-columns: 1fr;
+      }
     }
   }
 }
