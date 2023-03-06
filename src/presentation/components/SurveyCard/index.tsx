@@ -1,18 +1,17 @@
+import { type SurveyModel } from 'domain/models'
 import { memo, useMemo } from 'react'
 import { IoMdThumbsUp } from 'react-icons/io'
 import styles from './styles.module.scss'
 
-type Props = {
-  isAnswered: boolean
-}
+type Props = Pick<SurveyModel, 'date' | 'didAnswer' | 'question'>
 
-function SurveyCard({ isAnswered }: Props): JSX.Element {
+function SurveyCard({ didAnswer, question }: Props): JSX.Element {
   const classNames: string = useMemo(() => {
-    if (!isAnswered) {
+    if (!didAnswer) {
       return `${styles.icon} ${styles.notAnswered}`
     }
     return `${styles.icon}`
-  }, [isAnswered])
+  }, [didAnswer])
 
   return (
     <li className={styles.listItem}>
@@ -23,7 +22,7 @@ function SurveyCard({ isAnswered }: Props): JSX.Element {
           <span className={styles.month}>Jan</span>
           <span className={styles.year}>2022</span>
         </time>
-        <p>What is your favorite web framework?</p>
+        <p>{question}</p>
       </div>
       <footer>See results</footer>
     </li>

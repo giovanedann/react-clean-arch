@@ -2,6 +2,7 @@ import Footer from 'presentation/components/Footer'
 import AuthHeader from 'presentation/components/AuthHeader'
 import styles from './styles.module.scss'
 import SurveyCard from 'presentation/components/SurveyCard'
+import { faker } from '@faker-js/faker'
 
 export default function SurveyList(): JSX.Element {
   return (
@@ -13,7 +14,9 @@ export default function SurveyList(): JSX.Element {
           {new Array(5).fill(true).map(() => (
             <SurveyCard
               key={crypto.randomUUID()}
-              isAnswered={Math.random() > 0.5}
+              question={faker.random.words(20)}
+              date={new Date()}
+              didAnswer={Math.random() > 0.5}
             />
           ))}
         </ul>
