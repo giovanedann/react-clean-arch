@@ -26,7 +26,7 @@ describe('RemoteAuthentication', () => {
 
     httpPostClientSpy.response = {
       statusCode: 200,
-      body: { accessToken: faker.datatype.uuid() }
+      body: { accessToken: faker.datatype.uuid(), name: faker.name.firstName() }
     }
 
     await sut.auth(mockAuthentication())
@@ -39,7 +39,7 @@ describe('RemoteAuthentication', () => {
 
     httpPostClientSpy.response = {
       statusCode: 200,
-      body: { accessToken: faker.datatype.uuid() }
+      body: { accessToken: faker.datatype.uuid(), name: faker.name.firstName() }
     }
 
     const loginCredentials = mockAuthentication()
