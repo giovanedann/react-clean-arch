@@ -142,23 +142,23 @@ describe('<Login /> component', () => {
   it('should call SaveAccessToken if auth succeed', async () => {
     const user = userEvent.setup()
 
-    const { authenticationSpy, saveAccessTokenMock } = createLoginSut({})
+    const { authenticationSpy, saveCurrentAccountMock } = createLoginSut({})
 
     await populateValidInputs(user)
 
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
-    expect(saveAccessTokenMock.accessToken).toBe(
-      authenticationSpy.account.accessToken
+    expect(saveCurrentAccountMock.currentAccount).toStrictEqual(
+      authenticationSpy.account
     )
   })
 
   it('should show an error if SaveAccessToken save method fails', async () => {
     const user = userEvent.setup()
-    const { saveAccessTokenMock } = createLoginSut({})
+    const { saveCurrentAccountMock } = createLoginSut({})
 
     jest
-      .spyOn(saveAccessTokenMock, 'save')
+      .spyOn(saveCurrentAccountMock, 'save')
       .mockRejectedValueOnce(new Error('Error on SaveAccessToken'))
 
     await populateValidInputs(user)

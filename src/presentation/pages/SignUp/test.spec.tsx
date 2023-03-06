@@ -182,8 +182,8 @@ describe('<SignUp /> component', () => {
     const user = userEvent.setup()
     const error = new Error('SaveAccessToken failed')
 
-    const { saveAccessTokenMock } = createSignUpSut({})
-    jest.spyOn(saveAccessTokenMock, 'save').mockRejectedValueOnce(error)
+    const { saveCurrentAccountMock } = createSignUpSut({})
+    jest.spyOn(saveCurrentAccountMock, 'save').mockRejectedValueOnce(error)
 
     await user.click(screen.getByRole('button', { name: /sign up/i }))
 
@@ -193,14 +193,14 @@ describe('<SignUp /> component', () => {
 
   it('should call SaveAccessToken with correct accessToken on success', async () => {
     const user = userEvent.setup()
-    const { saveAccessTokenMock, addAccountSpy } = createSignUpSut({})
+    const { saveCurrentAccountMock, addAccountSpy } = createSignUpSut({})
 
     await populateValidInputs(user)
 
     await user.click(screen.getByRole('button', { name: /sign up/i }))
 
-    expect(saveAccessTokenMock.accessToken).toEqual(
-      addAccountSpy.account.accessToken
+    expect(saveCurrentAccountMock.currentAccount).toStrictEqual(
+      addAccountSpy.account
     )
   })
 
