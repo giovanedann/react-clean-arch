@@ -22,11 +22,11 @@
   overflow: hidden;
   background-repeat: no-repeat;
   background-image:
-    linear-gradient(to right, $disabled, $disabled),
-    linear-gradient(to right, $disabled, $disabled),
-    linear-gradient(to right, $disabled, $disabled),
-    linear-gradient(to right, $disabled, $disabled),
-    linear-gradient(to right, $disabled, $disabled);
+    linear-gradient(to right, #ccc, #ccc),
+    linear-gradient(to right, #ccc, #ccc),
+    linear-gradient(to right, #ccc, #ccc),
+    linear-gradient(to right, #ccc, #ccc),
+    linear-gradient(to right, #ccc, #ccc);
   background-position:
     1.5rem 3.4375rem,
     left 0 bottom 0,
