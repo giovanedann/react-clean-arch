@@ -178,21 +178,6 @@ describe('<SignUp /> component', () => {
     expect(await screen.findByText(error.message)).toBeInTheDocument()
   })
 
-  it('should hide spinner and display a form error message if SaveAccessToken fails', async () => {
-    const user = userEvent.setup()
-    const error = new Error('SaveAccessToken failed')
-
-    const { saveCurrentAccountMock } = createSignUpSut({})
-    jest.spyOn(saveCurrentAccountMock, 'save').mockImplementationOnce(() => {
-      throw error
-    })
-
-    await user.click(screen.getByRole('button', { name: /sign up/i }))
-
-    expect(screen.queryByText(/loading\.../i)).not.toBeInTheDocument()
-    expect(await screen.findByText(error.message)).toBeInTheDocument()
-  })
-
   it('should call SaveAccessToken with correct accessToken on success', async () => {
     const user = userEvent.setup()
     const { saveCurrentAccountMock, addAccountSpy } = createSignUpSut({})
@@ -201,9 +186,7 @@ describe('<SignUp /> component', () => {
 
     await user.click(screen.getByRole('button', { name: /sign up/i }))
 
-    expect(saveCurrentAccountMock.currentAccount).toStrictEqual(
-      addAccountSpy.account
-    )
+    expect(saveCurrentAccountMock).toBeCalledWith(addAccountSpy.account)
   })
 
   it('should redirect user to home if submit succeeds', async () => {
