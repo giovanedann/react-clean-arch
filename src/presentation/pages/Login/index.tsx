@@ -76,7 +76,7 @@ function Login({
       setIsLoading(true)
       setErrorMessage('')
       const account = await authentication.auth(loginData)
-      await saveCurrentAccount.save(account)
+      saveCurrentAccount.save(account)
       navigate('/')
     } catch (error: any) {
       setErrorMessage(error.message)

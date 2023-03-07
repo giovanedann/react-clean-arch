@@ -82,7 +82,7 @@ function SignUp({
       try {
         setIsLoading(true)
         const response = await addAccount.add(data)
-        await saveCurrentAccount.save(response)
+        saveCurrentAccount.save(response)
 
         navigate('/')
       } catch (error: any) {

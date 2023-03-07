@@ -183,7 +183,9 @@ describe('<SignUp /> component', () => {
     const error = new Error('SaveAccessToken failed')
 
     const { saveCurrentAccountMock } = createSignUpSut({})
-    jest.spyOn(saveCurrentAccountMock, 'save').mockRejectedValueOnce(error)
+    jest.spyOn(saveCurrentAccountMock, 'save').mockImplementationOnce(() => {
+      throw error
+    })
 
     await user.click(screen.getByRole('button', { name: /sign up/i }))
 

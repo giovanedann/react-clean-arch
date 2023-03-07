@@ -6,6 +6,6 @@ export class LocalSaveCurrentAccount implements SaveCurrentAccount {
   constructor(private readonly setStorage: SetStorage) {}
 
   async save(account: AccountModel): Promise<void> {
-    await this.setStorage.set('currentAccount', JSON.stringify(account))
+    this.setStorage.set('currentAccount', JSON.stringify(account))
   }
 }

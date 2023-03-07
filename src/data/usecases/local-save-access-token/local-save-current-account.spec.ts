@@ -35,7 +35,9 @@ describe('LocalSaveCurrentAccount', () => {
 
   it('should throw if SetStorage throws', async () => {
     const { sut, account, setStorage } = createSut()
-    jest.spyOn(setStorage, 'set').mockRejectedValueOnce(new Error())
+    jest.spyOn(setStorage, 'set').mockImplementationOnce(() => {
+      throw new Error()
+    })
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     expect(sut.save(account)).rejects.toThrow(new Error())
