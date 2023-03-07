@@ -1,27 +1,20 @@
 /* istanbul ignore file */
 
+import loginPageFactory from 'main/factories/pages/Login/login-factory'
+import signUpPageFactory from 'main/factories/pages/SignUp/sign-up-factory'
 import { FormProvider } from 'presentation/contexts/form'
 import SurveyList from 'presentation/pages/SurveyList'
-import { type ReactNode } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import 'styles/global.scss'
 
-type RouterProps = {
-  loginFactory: () => ReactNode
-  signUpFactory: () => ReactNode
-}
-
-export default function Router({
-  loginFactory,
-  signUpFactory
-}: RouterProps): JSX.Element {
+export default function Router(): JSX.Element {
   return (
     <BrowserRouter>
       <FormProvider>
         <Routes>
           <Route path="/" element={<SurveyList />} />
-          <Route path="/login" element={loginFactory()} />
-          <Route path="/sign-up" element={signUpFactory()} />
+          <Route path="/login" element={loginPageFactory()} />
+          <Route path="/sign-up" element={signUpPageFactory()} />
         </Routes>
       </FormProvider>
     </BrowserRouter>
