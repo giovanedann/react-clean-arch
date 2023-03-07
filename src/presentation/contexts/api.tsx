@@ -1,18 +1,9 @@
-import { UnexpectedError } from 'domain/errors'
 import { type AccountModel } from 'domain/models'
-import localStorageAdapterFactory from 'main/factories/cache/local-storage-adapter-factory'
+import setCurrentAccountAdapter from 'main/adapters/current-account-adapter'
 import { createContext, type ReactNode, useContext, useCallback } from 'react'
 
 type ApiContextProps = {
   saveCurrentAccount: (account: AccountModel) => void
-}
-
-function setCurrentAccountAdapter(account: AccountModel): void {
-  if (!account.accessToken) {
-    throw new UnexpectedError()
-  }
-
-  localStorageAdapterFactory().set('currentAccount', account)
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
