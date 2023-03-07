@@ -21,6 +21,9 @@ describe('LocalStorageAdapter', () => {
   it('should call localStorage with the correct values', async () => {
     const { sut, key, value } = createSut()
     sut.set(key, value)
-    expect(localStorage.setItem).toHaveBeenCalledWith(key, value)
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      key,
+      JSON.stringify(value)
+    )
   })
 })
