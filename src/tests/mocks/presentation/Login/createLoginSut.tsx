@@ -26,7 +26,10 @@ export default function createLoginSut({ error = '' }: SutParams): SutTypes {
   render(
     <MemoryRouter initialEntries={['/login']}>
       <ApiContext.Provider
-        value={{ saveCurrentAccount: saveCurrentAccountMock }}
+        value={{
+          saveCurrentAccount: saveCurrentAccountMock,
+          getCurrentAccount: jest.fn()
+        }}
       >
         <Routes>
           <Route path="/" element={<h1>Home</h1>} />
