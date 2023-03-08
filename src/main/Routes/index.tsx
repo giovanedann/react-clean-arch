@@ -7,6 +7,7 @@ import { FormProvider } from 'presentation/contexts/form'
 import SurveyList from 'presentation/pages/SurveyList'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import 'styles/global.scss'
+import PrivateRoute from './PrivateRoute'
 
 export default function Router(): JSX.Element {
   return (
@@ -14,7 +15,9 @@ export default function Router(): JSX.Element {
       <BrowserRouter>
         <FormProvider>
           <Routes>
-            <Route path="/" element={<SurveyList />} />
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="/" element={<SurveyList />} />
+            </Route>
             <Route path="/login" element={loginPageFactory()} />
             <Route path="/sign-up" element={signUpPageFactory()} />
           </Routes>
