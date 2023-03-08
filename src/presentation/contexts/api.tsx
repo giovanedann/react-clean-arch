@@ -1,11 +1,13 @@
 import { type AccountModel } from 'domain/models'
-import { setCurrentAccountAdapter } from 'main/adapters/current-account-adapter'
+import {
+  setCurrentAccountAdapter,
+  getCurrentAccountAdapter
+} from 'main/adapters/current-account-adapter'
 import { createContext, type ReactNode, useContext, useCallback } from 'react'
-import { mockAccountModel } from 'tests/mocks/domain/models/authentication'
 
 type ApiContextProps = {
   saveCurrentAccount: (account: AccountModel) => void
-  getCurrentAccount?: () => AccountModel
+  getCurrentAccount: () => AccountModel
 }
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -20,7 +22,7 @@ function ApiProvider({ children }: ApiProviderProps): JSX.Element {
     setCurrentAccountAdapter(account)
   }, [])
 
-  const getCurrentAccount = useCallback(() => mockAccountModel(), [])
+  const getCurrentAccount = useCallback(() => getCurrentAccountAdapter(), [])
 
   return (
     <ApiContext.Provider value={{ saveCurrentAccount, getCurrentAccount }}>
