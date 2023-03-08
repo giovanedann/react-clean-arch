@@ -38,4 +38,15 @@ describe('GetCurrentAccountAdapter', () => {
     expect(spy).toHaveBeenCalledWith('currentAccount')
     expect(account).toStrictEqual(localStorageAccount)
   })
+
+  it('should return null if the currentAccount key does not exist on localStorage', () => {
+    const spy = jest
+      .spyOn(LocalStorageAdapter.prototype, 'get')
+      .mockReturnValueOnce(null)
+
+    const localStorageAccount = getCurrentAccountAdapter()
+
+    expect(spy).toHaveBeenCalledWith('currentAccount')
+    expect(localStorageAccount).toBeNull()
+  })
 })
