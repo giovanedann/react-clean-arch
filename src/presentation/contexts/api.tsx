@@ -1,5 +1,5 @@
 import { type AccountModel } from 'domain/models'
-import setCurrentAccountAdapter from 'main/adapters/current-account-adapter'
+import { setCurrentAccountAdapter } from 'main/adapters/current-account-adapter'
 import { createContext, type ReactNode, useContext, useCallback } from 'react'
 import { mockAccountModel } from 'tests/mocks/domain/models/authentication'
 
