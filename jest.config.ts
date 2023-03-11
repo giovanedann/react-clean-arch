@@ -10,7 +10,6 @@ const config: Config = {
     '!<rootDir>/dist/**',
     '!<rootDir>/src/**/index.ts',
     '!<rootDir>/src/main/**',
-    '!<rootDir>/src/presentation/components/Routes/*',
     '!**/*.d.ts'
   ],
   moduleNameMapper: {

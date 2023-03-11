@@ -11,7 +11,7 @@ import { type Authentication } from 'domain/models'
 
 import styles from './styles.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
-import { type SaveAccessToken } from 'domain/usecases'
+import { useApi } from 'presentation/contexts/api'
 
 type LoginData = {
   email: string
@@ -21,14 +21,9 @@ type LoginData = {
 type Props = {
   validation: Validation<LoginData>
   authentication: Authentication
-  saveAccessToken: SaveAccessToken
 }
 
-function Login({
-  validation,
-  authentication,
-  saveAccessToken
-}: Props): JSX.Element {
+function Login({ validation, authentication }: Props): JSX.Element {
   const {
     errorMessage,
     isLoading,
@@ -37,6 +32,7 @@ function Login({
     resetFormStatus
   } = useForm()
   const navigate = useNavigate()
+  const { saveCurrentAccount } = useApi()
 
   const [loginData, setLoginData] = useState<LoginData>({
     email: '',
@@ -76,7 +72,7 @@ function Login({
       setIsLoading(true)
       setErrorMessage('')
       const account = await authentication.auth(loginData)
-      await saveAccessToken.save(account.accessToken)
+      saveCurrentAccount(account)
       navigate('/')
     } catch (error: any) {
       setErrorMessage(error.message)

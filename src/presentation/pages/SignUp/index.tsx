@@ -16,22 +16,18 @@ import {
   type SignUpData
 } from './reducers'
 import { type Validation } from 'presentation/protocols/validation'
-import { type SaveAccessToken, type AddAccount } from 'domain/usecases'
+import { type AddAccount } from 'domain/usecases'
+import { useApi } from 'presentation/contexts/api'
 
 type Props = {
   validation: Validation<SignUpData>
   addAccount: AddAccount
-  saveAccessToken: SaveAccessToken
 }
 
-function SignUp({
-  validation,
-  addAccount,
-  saveAccessToken
-}: Props): JSX.Element {
+function SignUp({ validation, addAccount }: Props): JSX.Element {
   const [data, dispatchData] = useReducer(dataReducer, INITIAL_DATA_STATE)
   const [errors, dispatchError] = useReducer(errorReducer, INITIAL_ERRORS_STATE)
-
+  const { saveCurrentAccount } = useApi()
   const navigate = useNavigate()
 
   const {
@@ -82,7 +78,7 @@ function SignUp({
       try {
         setIsLoading(true)
         const response = await addAccount.add(data)
-        await saveAccessToken.save(response.accessToken)
+        saveCurrentAccount(response)
 
         navigate('/')
       } catch (error: any) {
