@@ -8,4 +8,10 @@ describe('<SurveyList /> component', () => {
 
     expect(screen.getByTitle(/survey list skeleton/i)).toBeInTheDocument()
   })
+
+  it('should call loadSurveyList on mount', () => {
+    const { loadSurveyListSpy } = createSurveyListSut()
+
+    expect(loadSurveyListSpy.calls).toEqual(1)
+  })
 })
