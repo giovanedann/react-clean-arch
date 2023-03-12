@@ -9,7 +9,9 @@ type SurveyListProps = {
   loadSurveyList: LoadSurveyList
 }
 
-export default function SurveyList({ loadSurveyList }: SurveyListProps): JSX.Element {
+export default function SurveyList({
+  loadSurveyList
+}: SurveyListProps): JSX.Element {
   useEffect(() => {
     loadSurveyList.loadAll()
   }, [])
@@ -20,9 +22,8 @@ export default function SurveyList({ loadSurveyList }: SurveyListProps): JSX.Ele
 
       <div className={styles.contentWrapper}>
         <h2>Surveys</h2>
-        <ul>
-          <SurveyListSkeleton />
-        </ul>
+        <SurveyListSkeleton />
+        <ul></ul>
       </div>
 
       <Footer />
