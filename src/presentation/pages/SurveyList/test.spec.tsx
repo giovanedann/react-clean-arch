@@ -1,5 +1,8 @@
 import { screen } from '@testing-library/react'
-import createSurveyListSut from 'tests/mocks/presentation/SurveyList/createSurveyListSut'
+import { UnexpectedError } from 'domain/errors'
+import createSurveyListSut, {
+  LoadSurveyListSpy
+} from 'tests/mocks/presentation/SurveyList/createSurveyListSut'
 
 describe('<SurveyList /> component', () => {
   it('should present the survey list skeleton on mount', () => {
@@ -22,5 +25,18 @@ describe('<SurveyList /> component', () => {
     }
 
     expect(screen.queryByTitle(/survey list skeleton/i)).not.toBeInTheDocument()
+  })
+
+  it('should display an error message if loadSurveyList.loadAll fails', async () => {
+    const loadSurveyListSpy = new LoadSurveyListSpy()
+    const error = new UnexpectedError()
+
+    jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(error)
+
+    createSurveyListSut(loadSurveyListSpy)
+
+    expect(await screen.findByText(error.message)).toBeInTheDocument()
+
+    expect(screen.queryAllByRole('listitem')).toHaveLength(0)
   })
 })

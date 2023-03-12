@@ -18,9 +18,9 @@ export class LoadSurveyListSpy implements LoadSurveyList {
   }
 }
 
-export default function createSurveyListSut(): SutTypes {
-  const loadSurveyListSpy = new LoadSurveyListSpy()
-
+export default function createSurveyListSut(
+  loadSurveyListSpy = new LoadSurveyListSpy()
+): SutTypes {
   render(<SurveyList loadSurveyList={loadSurveyListSpy} />)
 
   return { loadSurveyListSpy }
