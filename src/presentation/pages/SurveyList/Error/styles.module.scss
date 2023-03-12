@@ -1,0 +1,24 @@
+@import "../../../../styles//colors.scss";
+
+.wrapper {
+  width: 100%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $error;
+    margin-bottom: 1.5rem;
+  }
+
+  button {
+    transition: all 0.3s ease-in-out;
+    width: 12rem;
+    height: fit-content;
+    font-weight: bold;
+  }
+}
