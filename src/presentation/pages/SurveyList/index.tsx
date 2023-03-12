@@ -15,10 +15,15 @@ export default function SurveyList({
   loadSurveyList
 }: SurveyListProps): JSX.Element {
   const [surveys, setSurveys] = useState<SurveyModel[]>([])
+  const [error, setError] = useState<string>('')
 
   async function loadSurveys(): Promise<void> {
-    const surveys = await loadSurveyList.loadAll()
-    setSurveys(surveys)
+    try {
+      const surveys = await loadSurveyList.loadAll()
+      setSurveys(surveys)
+    } catch (error: any) {
+      setError(error.message)
+    }
   }
 
   useEffect(() => {
@@ -31,9 +36,9 @@ export default function SurveyList({
 
       <div className={styles.contentWrapper}>
         <h2>Surveys</h2>
-        {surveys.length === 0 && <SurveyListSkeleton />}
+        {!error && surveys.length === 0 && <SurveyListSkeleton />}
 
-        {surveys.length > 0 && (
+        {!error && surveys.length > 0 && (
           <ul>
             {surveys.map((survey) => (
               <SurveyCard
@@ -44,6 +49,13 @@ export default function SurveyList({
               />
             ))}
           </ul>
+        )}
+
+        {error && (
+          <div>
+            <h2>{error}</h2>
+            <button>Reload</button>
+          </div>
         )}
       </div>
 
