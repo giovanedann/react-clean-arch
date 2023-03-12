@@ -5,7 +5,8 @@ import SurveyListSkeleton from './Skeleton'
 import { type LoadSurveyList } from 'domain/usecases'
 import { useEffect, useState } from 'react'
 import { type SurveyModel } from 'domain/models'
-import SurveyCard from 'presentation/components/SurveyCard'
+import Error from './Error'
+import List from './List'
 
 type SurveyListProps = {
   loadSurveyList: LoadSurveyList
@@ -38,25 +39,9 @@ export default function SurveyList({
         <h2>Surveys</h2>
         {!error && surveys.length === 0 && <SurveyListSkeleton />}
 
-        {!error && surveys.length > 0 && (
-          <ul>
-            {surveys.map((survey) => (
-              <SurveyCard
-                key={survey.id}
-                question={survey.question}
-                didAnswer={survey.didAnswer}
-                date={survey.date}
-              />
-            ))}
-          </ul>
-        )}
+        {!error && surveys.length > 0 && <List surveys={surveys} />}
 
-        {error && (
-          <div>
-            <h2>{error}</h2>
-            <button>Reload</button>
-          </div>
-        )}
+        {error && <Error message={error} />}
       </div>
 
       <Footer />
