@@ -8,9 +8,19 @@ describe('<SurveyList /> component', () => {
     expect(screen.getByTitle(/survey list skeleton/i)).toBeInTheDocument()
   })
 
-  it('should call loadSurveyList on mount', () => {
+  it('should call loadSurveyList.loadAll on mount', () => {
     const { loadSurveyListSpy } = createSurveyListSut()
 
     expect(loadSurveyListSpy.calls).toEqual(1)
+  })
+
+  it('should render the survey items on loadSurveyList.loadAll success', async () => {
+    const { loadSurveyListSpy } = createSurveyListSut()
+
+    for (const survey of loadSurveyListSpy.surveys) {
+      expect(await screen.findByText(survey.question)).toBeInTheDocument()
+    }
+
+    expect(screen.queryByTitle(/survey list skeleton/i)).not.toBeInTheDocument()
   })
 })
