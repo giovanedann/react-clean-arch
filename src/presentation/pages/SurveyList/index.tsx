@@ -3,7 +3,9 @@ import AuthHeader from 'presentation/components/AuthHeader'
 import styles from './styles.module.scss'
 import SurveyListSkeleton from './Skeleton'
 import { type LoadSurveyList } from 'domain/usecases'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { type SurveyModel } from 'domain/models'
+import SurveyCard from 'presentation/components/SurveyCard'
 
 type SurveyListProps = {
   loadSurveyList: LoadSurveyList
@@ -12,8 +14,15 @@ type SurveyListProps = {
 export default function SurveyList({
   loadSurveyList
 }: SurveyListProps): JSX.Element {
+  const [surveys, setSurveys] = useState<SurveyModel[]>([])
+
+  async function loadSurveys(): Promise<void> {
+    const surveys = await loadSurveyList.loadAll()
+    setSurveys(surveys)
+  }
+
   useEffect(() => {
-    loadSurveyList.loadAll()
+    loadSurveys()
   }, [])
 
   return (
@@ -22,8 +31,20 @@ export default function SurveyList({
 
       <div className={styles.contentWrapper}>
         <h2>Surveys</h2>
-        <SurveyListSkeleton />
-        <ul></ul>
+        {surveys.length === 0 && <SurveyListSkeleton />}
+
+        {surveys.length > 0 && (
+          <ul>
+            {surveys.map((survey) => (
+              <SurveyCard
+                key={survey.id}
+                question={survey.question}
+                didAnswer={survey.didAnswer}
+                date={survey.date}
+              />
+            ))}
+          </ul>
+        )}
       </div>
 
       <Footer />
