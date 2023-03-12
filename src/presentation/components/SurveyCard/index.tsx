@@ -6,7 +6,7 @@ import styles from './styles.module.scss'
 type Props = Pick<SurveyModel, 'date' | 'didAnswer' | 'question'>
 
 function SurveyCard({ didAnswer, question, date }: Props): JSX.Element {
-  const classNames: string = useMemo(() => {
+  const iconClassNames: string = useMemo(() => {
     if (!didAnswer) {
       return `${styles.icon} ${styles.notAnswered}`
     }
@@ -16,7 +16,11 @@ function SurveyCard({ didAnswer, question, date }: Props): JSX.Element {
   return (
     <li className={styles.listItem}>
       <div className={styles.surveyContent}>
-        <IoMdThumbsUp className={classNames} size={25} title="Status icon" />
+        <IoMdThumbsUp
+          className={iconClassNames}
+          size={25}
+          title="Status icon"
+        />
         <time>
           <span className={styles.day}>{date.getDay()}</span>
           <span className={styles.month}>
