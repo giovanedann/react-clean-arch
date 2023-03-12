@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react'
 import createSurveyListSut from 'tests/mocks/presentation/SurveyList/createSurveyListSut'
 
