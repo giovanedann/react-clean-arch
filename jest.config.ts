@@ -16,6 +16,7 @@ const config: Config = {
     '\\.scss$': 'identity-obj-proxy'
   },
   moduleDirectories: ['node_modules', '<rootDir>/src', '<rootDir>/.jest'],
+  setupFilesAfterEnv: ['<rootDir>/.jest/setup.ts'],
   coverageDirectory: 'coverage',
   testEnvironment: 'jsdom',
   transform: {

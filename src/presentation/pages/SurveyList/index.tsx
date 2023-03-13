@@ -1,25 +1,47 @@
 import Footer from 'presentation/components/Footer'
 import AuthHeader from 'presentation/components/AuthHeader'
 import styles from './styles.module.scss'
-import SurveyCard from 'presentation/components/SurveyCard'
-import { faker } from '@faker-js/faker'
+import SurveyListSkeleton from './Skeleton'
+import { type LoadSurveyList } from 'domain/usecases'
+import { useEffect, useState } from 'react'
+import { type SurveyModel } from 'domain/models'
+import Error from './Error'
+import List from './List'
 
-export default function SurveyList(): JSX.Element {
+type SurveyListProps = {
+  loadSurveyList: LoadSurveyList
+}
+
+export default function SurveyList({
+  loadSurveyList
+}: SurveyListProps): JSX.Element {
+  const [surveys, setSurveys] = useState<SurveyModel[]>([])
+  const [error, setError] = useState<string>('')
+
+  async function loadSurveys(): Promise<void> {
+    try {
+      const surveys = await loadSurveyList.loadAll()
+      setSurveys(surveys)
+    } catch (error: any) {
+      setError(error.message)
+    }
+  }
+
+  useEffect(() => {
+    loadSurveys()
+  }, [])
+
   return (
     <div className={styles.surveyListWrapper}>
       <AuthHeader />
+
       <div className={styles.contentWrapper}>
         <h2>Surveys</h2>
-        <ul>
-          {new Array(5).fill(true).map(() => (
-            <SurveyCard
-              key={crypto.randomUUID()}
-              question={faker.random.words(20)}
-              date={new Date(Math.floor(Math.random() * Date.now()))}
-              didAnswer={Math.random() > 0.5}
-            />
-          ))}
-        </ul>
+        {!error && surveys.length === 0 && <SurveyListSkeleton />}
+
+        {!error && surveys.length > 0 && <List surveys={surveys} />}
+
+        {error && <Error message={error} />}
       </div>
 
       <Footer />

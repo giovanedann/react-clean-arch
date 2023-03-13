@@ -7,6 +7,7 @@ import { FormProvider } from 'presentation/contexts/form'
 import SurveyList from 'presentation/pages/SurveyList'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import 'styles/global.scss'
+import { LoadSurveyListSpy } from 'tests/mocks/presentation/SurveyList/createSurveyListSut'
 import PrivateRoute from './PrivateRoute'
 
 export default function Router(): JSX.Element {
@@ -16,7 +17,12 @@ export default function Router(): JSX.Element {
         <FormProvider>
           <Routes>
             <Route path="/" element={<PrivateRoute />}>
-              <Route path="/" element={<SurveyList />} />
+              <Route
+                path="/"
+                element={
+                  <SurveyList loadSurveyList={new LoadSurveyListSpy()} />
+                }
+              />
             </Route>
             <Route path="/login" element={loginPageFactory()} />
             <Route path="/sign-up" element={signUpPageFactory()} />

@@ -13,6 +13,7 @@
     "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/space-before-function-paren": "off",
+    "@typescript-eslint/no-floating-promises": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react/jsx-uses-react": "error",

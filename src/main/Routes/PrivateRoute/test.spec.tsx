@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom'
 import { screen } from '@testing-library/react'
 import { type AccountModel } from 'domain/models'
 import createPrivateRouteSut from 'tests/mocks/presentation/PrivateRoute/createPrivateRouteSut'

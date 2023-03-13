@@ -25,17 +25,21 @@ export function mockGetRequest(): HttpGetParams {
   }
 }
 
+export function mockLoadSurveyItem(): SurveyModel {
+  return {
+    id: faker.datatype.uuid(),
+    date: faker.date.soon(),
+    didAnswer: faker.datatype.boolean(),
+    question: faker.random.words(6),
+    answers: [{ answer: faker.random.word(), image: faker.image.imageUrl() }]
+  }
+}
+
 export function mockLoadSurveyList(): SurveyModel[] {
   const surveyList: SurveyModel[] = []
 
   for (let i = 0; i <= 10; i++) {
-    surveyList.push({
-      id: faker.datatype.uuid(),
-      date: faker.date.soon(),
-      didAnswer: faker.datatype.boolean(),
-      question: faker.random.words(6),
-      answers: [{ answer: faker.random.word(), image: faker.image.imageUrl() }]
-    })
+    surveyList.push(mockLoadSurveyItem())
   }
 
   return surveyList

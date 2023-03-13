@@ -2,10 +2,18 @@ import SurveyCardSkeleton from 'presentation/components/SurveyCard/Skeleton'
 
 export default function SurveyListSkeleton(): JSX.Element {
   return (
-    <>
-      {new Array(4).fill(true).map(() => (
-        <SurveyCardSkeleton key={crypto.randomUUID()} />
+    <ul
+      title="survey list skeleton"
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        width: '100%',
+        columnGap: '2rem'
+      }}
+    >
+      {new Array(6).fill(true).map((item, index) => (
+        <SurveyCardSkeleton key={index} />
       ))}
-    </>
+    </ul>
   )
 }
