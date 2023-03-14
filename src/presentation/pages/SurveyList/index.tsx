@@ -41,7 +41,7 @@ export default function SurveyList({
 
         {!error && surveys.length > 0 && <List surveys={surveys} />}
 
-        {error && <Error message={error} />}
+        {error && <Error message={error} onReloadButtonClick={loadSurveys} />}
       </div>
 
       <Footer />

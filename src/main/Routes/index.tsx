@@ -2,12 +2,11 @@
 
 import loginPageFactory from 'main/factories/pages/Login/login-factory'
 import signUpPageFactory from 'main/factories/pages/SignUp/sign-up-factory'
+import surveyListPageFactory from 'main/factories/pages/SurveyList/survey-list-factory'
 import { ApiProvider } from 'presentation/contexts/api'
 import { FormProvider } from 'presentation/contexts/form'
-import SurveyList from 'presentation/pages/SurveyList'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import 'styles/global.scss'
-import { LoadSurveyListSpy } from 'tests/mocks/presentation/SurveyList/createSurveyListSut'
 import PrivateRoute from './PrivateRoute'
 
 export default function Router(): JSX.Element {
@@ -17,12 +16,7 @@ export default function Router(): JSX.Element {
         <FormProvider>
           <Routes>
             <Route path="/" element={<PrivateRoute />}>
-              <Route
-                path="/"
-                element={
-                  <SurveyList loadSurveyList={new LoadSurveyListSpy()} />
-                }
-              />
+              <Route path="/" element={surveyListPageFactory()} />
             </Route>
             <Route path="/login" element={loginPageFactory()} />
             <Route path="/sign-up" element={signUpPageFactory()} />

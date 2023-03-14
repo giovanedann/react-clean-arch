@@ -5,7 +5,7 @@ type ListProps = {
   surveys: SurveyModel[]
 }
 
-export default function List({ surveys = [] }: ListProps): JSX.Element {
+export default function List({ surveys }: ListProps): JSX.Element {
   return (
     <ul>
       {surveys.map((survey) => (

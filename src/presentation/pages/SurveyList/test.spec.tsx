@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { UnexpectedError } from 'domain/errors'
 import createSurveyListSut, {
   LoadSurveyListSpy
@@ -38,5 +39,19 @@ describe('<SurveyList /> component', () => {
     expect(await screen.findByText(error.message)).toBeInTheDocument()
 
     expect(screen.queryAllByRole('listitem')).toHaveLength(0)
+  })
+
+  it('should call loadSurveyList.loadAll on reload button click', async () => {
+    const user = userEvent.setup()
+    const loadSurveyListSpy = new LoadSurveyListSpy()
+    const error = new UnexpectedError()
+
+    jest.spyOn(loadSurveyListSpy, 'loadAll').mockRejectedValueOnce(error)
+
+    createSurveyListSut(loadSurveyListSpy)
+
+    await user.click(await screen.findByRole('button', { name: /reload/i }))
+
+    expect(loadSurveyListSpy.calls).toBe(1)
   })
 })
