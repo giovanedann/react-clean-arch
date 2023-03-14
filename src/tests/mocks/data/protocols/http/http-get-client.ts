@@ -24,7 +24,7 @@ export class HttpGetClientSpy<T> implements HttpGetClient<T> {
 export function mockGetRequest(): HttpGetParams {
   return {
     url: faker.internet.url(),
-    headers: JSON.stringify(faker.datatype.json())
+    headers: JSON.parse(faker.datatype.json())
   }
 }
 

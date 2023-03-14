@@ -3,6 +3,7 @@ import {
   HttpGetClientSpy,
   mockGetRequest
 } from 'tests/mocks/data/protocols/http/http-get-client'
+import { mockAccountModel } from 'tests/mocks/domain/models/authentication'
 import { AuthHttpGetClientDecorator } from './auth-http-get-client-decorator'
 
 type SutTypes = {
@@ -29,13 +30,41 @@ describe('AuthHttpGetClientDecorator', () => {
   })
 
   it('should not add auth headers to the request if getStorage is invalid', async () => {
-    const { sut, httpGetClientSpy } = createSut()
+    const { sut, httpGetClientSpy, getStorageSpy } = createSut()
 
     const httpRequestParams = mockGetRequest()
-
+    getStorageSpy.value = null
     await sut.get(httpRequestParams)
 
     expect(httpGetClientSpy.url).toBe(httpRequestParams.url)
     expect(httpGetClientSpy.headers).toStrictEqual(httpRequestParams.headers)
+  })
+
+  it('should add auth headers to the request if getStorage return accessToken', async () => {
+    const { sut, httpGetClientSpy, getStorageSpy } = createSut()
+
+    getStorageSpy.value = mockAccountModel()
+    const httpRequestParams = mockGetRequest()
+    delete httpRequestParams.headers
+    await sut.get(httpRequestParams)
+
+    expect(httpGetClientSpy.url).toBe(httpRequestParams.url)
+    expect(httpGetClientSpy.headers).toStrictEqual({
+      'x-access-token': getStorageSpy.value.accessToken
+    })
+  })
+
+  it('should append auth headers to the request headers if getStorage return accessToken', async () => {
+    const { sut, httpGetClientSpy, getStorageSpy } = createSut()
+
+    const httpRequestParams = mockGetRequest()
+    getStorageSpy.value = mockAccountModel()
+    await sut.get(httpRequestParams)
+
+    expect(httpGetClientSpy.url).toBe(httpRequestParams.url)
+    expect(httpGetClientSpy.headers).toStrictEqual({
+      ...httpRequestParams.headers,
+      'x-access-token': getStorageSpy.value.accessToken
+    })
   })
 })
