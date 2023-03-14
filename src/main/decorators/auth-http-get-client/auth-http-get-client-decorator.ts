@@ -6,10 +6,14 @@ import {
 } from 'data/protocols/http'
 
 export class AuthHttpGetClientDecorator implements HttpGetClient<any> {
-  constructor(private readonly getStorage: GetStorage) {}
+  constructor(
+    private readonly getStorage: GetStorage,
+    private readonly httpGetClient: HttpGetClient<any>
+  ) {}
 
   async get(params: HttpGetParams): Promise<HttpResponse> {
     this.getStorage.get('currentAccount')
+    await this.httpGetClient.get(params)
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return {} as HttpResponse
   }
