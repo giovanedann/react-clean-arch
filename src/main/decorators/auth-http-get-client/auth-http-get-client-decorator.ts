@@ -11,9 +11,25 @@ export class AuthHttpGetClientDecorator implements HttpGetClient<any> {
     private readonly httpGetClient: HttpGetClient<any>
   ) {}
 
-  async get(params: HttpGetParams): Promise<HttpResponse> {
-    this.getStorage.get('currentAccount')
-    await this.httpGetClient.get(params)
+  async get({ url, headers }: HttpGetParams): Promise<HttpResponse> {
+    const account = this.getStorage.get('currentAccount')
+
+    let requestHeaders = { ...headers }
+
+    if (headers && account?.accessToken) {
+      requestHeaders = {
+        ...requestHeaders,
+        'x-access-token': account.accessToken
+      }
+    }
+
+    if (!headers && account?.accessToken) {
+      requestHeaders = {
+        'x-access-token': account.accessToken
+      }
+    }
+
+    await this.httpGetClient.get({ url, headers: requestHeaders })
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return {} as HttpResponse
   }
