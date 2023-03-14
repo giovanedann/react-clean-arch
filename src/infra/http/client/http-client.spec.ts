@@ -80,12 +80,14 @@ describe('HttpClient', () => {
       jest.restoreAllMocks()
     })
 
-    it('should call axios.get with correct URL', async () => {
+    it('should call axios.get with correct values', async () => {
       const { sut, mockedAxios } = createSut()
       const request = mockGetRequest()
       await sut.get(request)
 
-      expect(mockedAxios.get).toHaveBeenCalledWith(request.url)
+      expect(mockedAxios.get).toHaveBeenCalledWith(request.url, {
+        headers: request.headers
+      })
     })
 
     it('should return the correct statusCode and body on axios.get', async () => {
