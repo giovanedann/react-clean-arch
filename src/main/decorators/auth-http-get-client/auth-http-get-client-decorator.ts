@@ -5,7 +5,7 @@ import {
   type HttpGetClient
 } from 'data/protocols/http'
 
-export class AuthorizeHttpGetClientDecorator implements HttpGetClient<any> {
+export class AuthHttpGetClientDecorator implements HttpGetClient<any> {
   constructor(private readonly getStorage: GetStorage) {}
 
   async get(params: HttpGetParams): Promise<HttpResponse> {
