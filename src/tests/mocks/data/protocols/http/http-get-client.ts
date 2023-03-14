@@ -9,12 +9,14 @@ import { type SurveyModel } from 'domain/models'
 
 export class HttpGetClientSpy<T> implements HttpGetClient<T> {
   url: string = ''
+  headers: any = null
   response: HttpResponse<T> = {
     statusCode: HttpStatusCode.ok
   }
 
-  async get({ url }: HttpGetParams): Promise<HttpResponse<T>> {
+  async get({ url, headers = null }: HttpGetParams): Promise<HttpResponse<T>> {
     this.url = url
+    this.headers = headers
     return this.response
   }
 }
