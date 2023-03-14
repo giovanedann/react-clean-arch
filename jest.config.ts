@@ -8,6 +8,7 @@ const config: Config = {
     '<rootDir>/src/**/*.{ts,tsx}',
     '!<rootDir>/node_modules/',
     '!<rootDir>/dist/**',
+    '!<rootDir>/src/tests/**',
     '!<rootDir>/src/**/index.ts',
     '!<rootDir>/src/main/**',
     '!**/*.d.ts'
