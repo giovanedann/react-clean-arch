@@ -1,8 +1,8 @@
-import { type SurveyModel } from 'domain/models'
+import { type LoadSurveyList } from 'domain/usecases'
 import SurveyCard from 'presentation/components/SurveyCard'
 
 type ListProps = {
-  surveys: SurveyModel[]
+  surveys: LoadSurveyList.Model[]
 }
 
 export default function List({ surveys }: ListProps): JSX.Element {

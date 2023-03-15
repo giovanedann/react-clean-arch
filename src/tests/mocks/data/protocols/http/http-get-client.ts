@@ -5,7 +5,7 @@ import {
   type HttpResponse,
   HttpStatusCode
 } from 'data/protocols/http'
-import { type SurveyModel } from 'domain/models'
+import { type LoadSurveyList } from 'domain/usecases'
 
 export class HttpGetClientSpy<T> implements HttpGetClient<T> {
   url: string = ''
@@ -28,7 +28,7 @@ export function mockGetRequest(): HttpGetParams {
   }
 }
 
-export function mockLoadSurveyItem(): SurveyModel {
+export function mockLoadSurveyItem(): LoadSurveyList.Model {
   return {
     id: faker.datatype.uuid(),
     date: faker.date.soon(),
@@ -38,8 +38,8 @@ export function mockLoadSurveyItem(): SurveyModel {
   }
 }
 
-export function mockLoadSurveyList(): SurveyModel[] {
-  const surveyList: SurveyModel[] = []
+export function mockLoadSurveyList(): LoadSurveyList.Model[] {
+  const surveyList: LoadSurveyList.Model[] = []
 
   for (let i = 0; i <= 10; i++) {
     surveyList.push(mockLoadSurveyItem())

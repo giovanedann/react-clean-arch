@@ -1,7 +1,7 @@
 import { UnexpectedError } from 'domain/errors'
 import { type AccountModel } from 'domain/models'
 import { LocalStorageAdapter } from 'infra/cache/local-storage-adapter/local-storage-adapter'
-import { mockAccountModel } from 'tests/mocks/domain/models/authentication'
+import { mockAccountModel } from 'tests/mocks/domain/models/account'
 import {
   setCurrentAccountAdapter,
   getCurrentAccountAdapter

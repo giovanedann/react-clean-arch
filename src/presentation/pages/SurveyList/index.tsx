@@ -4,7 +4,6 @@ import styles from './styles.module.scss'
 import SurveyListSkeleton from './Skeleton'
 import { type LoadSurveyList } from 'domain/usecases'
 import { useEffect, useState } from 'react'
-import { type SurveyModel } from 'domain/models'
 import Error from './Error'
 import List from './List'
 
@@ -15,7 +14,7 @@ type SurveyListProps = {
 export default function SurveyList({
   loadSurveyList
 }: SurveyListProps): JSX.Element {
-  const [surveys, setSurveys] = useState<SurveyModel[]>([])
+  const [surveys, setSurveys] = useState<LoadSurveyList.Model[]>([])
   const [error, setError] = useState<string>('')
 
   async function loadSurveys(): Promise<void> {
