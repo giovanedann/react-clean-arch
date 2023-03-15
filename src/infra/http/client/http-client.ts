@@ -27,11 +27,11 @@ export class HttpClient implements HttpPostClient, HttpGetClient<any> {
     return this.adapt(axiosResponse)
   }
 
-  async get({ url }: HttpGetParams): Promise<HttpResponse> {
+  async get({ url, headers }: HttpGetParams): Promise<HttpResponse> {
     let axiosResponse: AxiosResponse
 
     try {
-      axiosResponse = await axios.get(url)
+      axiosResponse = await axios.get(url, { headers })
     } catch (error: any) {
       axiosResponse = error.response
     }
