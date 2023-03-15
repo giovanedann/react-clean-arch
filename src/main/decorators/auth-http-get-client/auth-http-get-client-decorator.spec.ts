@@ -67,4 +67,12 @@ describe('AuthHttpGetClientDecorator', () => {
       'x-access-token': getStorageSpy.value.accessToken
     })
   })
+
+  it('should return the same result of HttpGetClient', async () => {
+    const { sut, httpGetClientSpy } = createSut()
+
+    const response = await sut.get(mockGetRequest())
+
+    expect(response).toStrictEqual(httpGetClientSpy.response)
+  })
 })
