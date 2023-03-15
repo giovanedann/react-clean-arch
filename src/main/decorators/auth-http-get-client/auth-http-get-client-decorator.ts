@@ -29,8 +29,11 @@ export class AuthHttpGetClientDecorator implements HttpGetClient<any> {
       }
     }
 
-    await this.httpGetClient.get({ url, headers: requestHeaders })
-    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-    return {} as HttpResponse
+    const response = await this.httpGetClient.get({
+      url,
+      headers: requestHeaders
+    })
+
+    return response
   }
 }
