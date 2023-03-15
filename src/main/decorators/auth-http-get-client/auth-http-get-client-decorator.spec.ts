@@ -3,7 +3,7 @@ import {
   HttpGetClientSpy,
   mockGetRequest
 } from 'tests/mocks/data/protocols/http/http-get-client'
-import { mockAccountModel } from 'tests/mocks/domain/models/authentication'
+import { mockAccountModel } from 'tests/mocks/domain/models/account'
 import { AuthHttpGetClientDecorator } from './auth-http-get-client-decorator'
 
 type SutTypes = {

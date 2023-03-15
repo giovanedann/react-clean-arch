@@ -1,9 +1,8 @@
 import { faker } from '@faker-js/faker'
-import { type AccountModel } from 'domain/models'
-import { type AddAccount, type AddAccountParams } from 'domain/usecases'
-import { mockAccountModel } from './authentication'
+import { type AddAccount } from 'domain/usecases'
+import { mockAccountModel } from './account'
 
-export const mockAddAccount = (): AddAccountParams => {
+export const mockAddAccount = (): AddAccount.Params => {
   const password = faker.internet.password()
 
   return {
@@ -14,12 +13,14 @@ export const mockAddAccount = (): AddAccountParams => {
   }
 }
 
-export class AddAccountSpy implements AddAccount {
-  account: AccountModel = mockAccountModel()
-  calls: number = 0
-  params: AddAccountParams | null = null
+export const mockAddAccountModel = (): AddAccount.Model => mockAccountModel()
 
-  async add(body: AddAccountParams): Promise<AccountModel> {
+export class AddAccountSpy implements AddAccount {
+  account: AddAccount.Model = mockAddAccountModel()
+  calls: number = 0
+  params: AddAccount.Params | null = null
+
+  async add(body: AddAccount.Params): Promise<AddAccount.Model> {
     this.params = body
     this.calls += 1
     return this.account

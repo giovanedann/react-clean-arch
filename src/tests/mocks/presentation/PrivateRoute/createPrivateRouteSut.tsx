@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import PrivateRoute from 'main/Routes/PrivateRoute'
 import { ApiContext } from 'presentation/contexts/api'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { mockAccountModel } from 'tests/mocks/domain/models/authentication'
+import { mockAccountModel } from 'tests/mocks/domain/models/account'
 
 export default function createPrivateRouteSut(
   account = mockAccountModel()

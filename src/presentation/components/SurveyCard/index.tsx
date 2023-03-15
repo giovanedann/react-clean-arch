@@ -1,9 +1,9 @@
-import { type SurveyModel } from 'domain/models'
+import { type LoadSurveyList } from 'domain/usecases'
 import { memo, useMemo } from 'react'
 import { IoMdThumbsUp } from 'react-icons/io'
 import styles from './styles.module.scss'
 
-type Props = Pick<SurveyModel, 'date' | 'didAnswer' | 'question'>
+type Props = Pick<LoadSurveyList.Model, 'date' | 'didAnswer' | 'question'>
 
 function SurveyCard({ didAnswer, question, date }: Props): JSX.Element {
   const iconClassNames: string = useMemo(() => {

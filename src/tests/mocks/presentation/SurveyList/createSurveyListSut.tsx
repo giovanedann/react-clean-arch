@@ -1,5 +1,4 @@
 import { render } from '@testing-library/react'
-import { type SurveyModel } from 'domain/models'
 import { type LoadSurveyList } from 'domain/usecases'
 import SurveyList from 'presentation/pages/SurveyList'
 import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-get-client'
@@ -10,9 +9,9 @@ type SutTypes = {
 
 export class LoadSurveyListSpy implements LoadSurveyList {
   calls: number = 0
-  surveys: SurveyModel[] = mockLoadSurveyList()
+  surveys: LoadSurveyList.Model[] = mockLoadSurveyList()
 
-  async loadAll(): Promise<SurveyModel[]> {
+  async loadAll(): Promise<LoadSurveyList.Model[]> {
     this.calls += 1
     return this.surveys
   }

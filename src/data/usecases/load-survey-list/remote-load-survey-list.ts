@@ -1,12 +1,11 @@
 import { HttpStatusCode, type HttpGetClient } from 'data/protocols/http'
 import { UnexpectedError } from 'domain/errors'
-import { type SurveyModel } from 'domain/models'
-import { type LoadSurveyList } from 'domain/usecases/load-survey-list'
+import { type LoadSurveyList } from 'domain/usecases'
 
 export class RemoteLoadSurveyList implements LoadSurveyList {
   constructor(
     private readonly url: string,
-    private readonly httpGetClient: HttpGetClient<SurveyModel[]>
+    private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyList.Model[]>
   ) {}
 
   async loadAll(): Promise<any> {
@@ -24,4 +23,8 @@ export class RemoteLoadSurveyList implements LoadSurveyList {
         throw new UnexpectedError()
     }
   }
+}
+
+export namespace RemoteLoadSurveyList {
+  export type Model = LoadSurveyList.Model
 }
