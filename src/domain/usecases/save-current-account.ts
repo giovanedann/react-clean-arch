@@ -1,5 +1,5 @@
 import { type AccountModel } from 'domain/models'
 
 export interface SaveCurrentAccount {
-  save: (accountModel: AccountModel) => void
+  save: (accountModel: AccountModel | null) => void
 }

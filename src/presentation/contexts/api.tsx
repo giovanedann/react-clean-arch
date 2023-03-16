@@ -6,7 +6,7 @@ import {
 import { createContext, type ReactNode, useContext, useCallback } from 'react'
 
 type ApiContextProps = {
-  saveCurrentAccount: (account: AccountModel) => void
+  saveCurrentAccount: (account: AccountModel | null) => void
   getCurrentAccount: () => AccountModel
 }
 
@@ -18,7 +18,7 @@ type ApiProviderProps = {
 }
 
 function ApiProvider({ children }: ApiProviderProps): JSX.Element {
-  const saveCurrentAccount = useCallback((account: AccountModel) => {
+  const saveCurrentAccount = useCallback((account: AccountModel | null) => {
     setCurrentAccountAdapter(account)
   }, [])
 
