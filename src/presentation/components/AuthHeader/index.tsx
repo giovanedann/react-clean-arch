@@ -2,17 +2,16 @@ import { memo, type MouseEvent } from 'react'
 import Logo from 'presentation/components/Logo'
 import styles from './styles.module.scss'
 import { useApi } from 'presentation/contexts/api'
-import { useNavigate } from 'react-router-dom'
+import useLogout from 'presentation/hooks/useLogout'
 
 function AuthHeader(): JSX.Element {
-  const { saveCurrentAccount, getCurrentAccount } = useApi()
-  const navigate = useNavigate()
+  const { getCurrentAccount } = useApi()
+  const logout = useLogout()
 
   function handleLogout(event: MouseEvent<HTMLAnchorElement>): void {
     event.preventDefault()
 
-    saveCurrentAccount(null)
-    navigate('/login')
+    logout()
   }
 
   const currentAccount = getCurrentAccount()
