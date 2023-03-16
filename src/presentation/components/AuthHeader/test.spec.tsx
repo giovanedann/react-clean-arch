@@ -22,4 +22,10 @@ describe('<AuthHeader /> component', () => {
       await screen.findByRole('heading', { name: /login/i })
     ).toBeInTheDocument()
   })
+
+  it('should display the current account name on Header', () => {
+    const { account } = createAuthHeaderSut()
+
+    expect(screen.getByText(account.name)).toBeInTheDocument()
+  })
 })
