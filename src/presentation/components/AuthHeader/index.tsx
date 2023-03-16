@@ -5,7 +5,7 @@ import { useApi } from 'presentation/contexts/api'
 import { useNavigate } from 'react-router-dom'
 
 function AuthHeader(): JSX.Element {
-  const { saveCurrentAccount } = useApi()
+  const { saveCurrentAccount, getCurrentAccount } = useApi()
   const navigate = useNavigate()
 
   function handleLogout(event: MouseEvent<HTMLAnchorElement>): void {
@@ -15,12 +15,14 @@ function AuthHeader(): JSX.Element {
     navigate('/login')
   }
 
+  const currentAccount = getCurrentAccount()
+
   return (
     <header className={styles.headerWrapper}>
       <div className={styles.headerContent}>
         <Logo />
         <div className={styles.logoutWrapper}>
-          <span>User</span>
+          <span>{currentAccount.name}</span>
           <a href="#" onClick={handleLogout}>
             Logout
           </a>
