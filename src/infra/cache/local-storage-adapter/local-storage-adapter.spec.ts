@@ -23,7 +23,7 @@ function createSut(): SutTypes {
 describe('LocalStorageAdapter', () => {
   beforeEach(localStorage.clear)
 
-  it('should call localStorage.set with the correct values', () => {
+  it('should call localStorage.setItem with the correct values', () => {
     const { sut, key, value } = createSut()
     sut.set(key, value)
     expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -32,7 +32,13 @@ describe('LocalStorageAdapter', () => {
     )
   })
 
-  it('should call localStorage.get with the correct key', () => {
+  it('should call localStorage.removeItem if value is null', () => {
+    const { sut, key } = createSut()
+    sut.set(key, null)
+    expect(localStorage.removeItem).toHaveBeenCalledWith(key)
+  })
+
+  it('should call localStorage.getItem with the correct key', () => {
     const { sut, key } = createSut()
     sut.get(key)
     expect(localStorage.getItem).toHaveBeenCalledWith(key)
