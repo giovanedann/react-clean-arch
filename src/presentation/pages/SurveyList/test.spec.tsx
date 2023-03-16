@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { UnexpectedError } from 'domain/errors'
+import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import createSurveyListSut, {
   LoadSurveyListSpy
 } from 'tests/mocks/presentation/SurveyList/createSurveyListSut'
@@ -53,5 +53,18 @@ describe('<SurveyList /> component', () => {
     await user.click(await screen.findByRole('button', { name: /reload/i }))
 
     expect(loadSurveyListSpy.calls).toBe(1)
+  })
+
+  it('should redirect user to login and clear current account on AccessDeniedError', async () => {
+    const loadSurveyListSpy = new LoadSurveyListSpy()
+
+    jest
+      .spyOn(loadSurveyListSpy, 'loadAll')
+      .mockRejectedValueOnce(new AccessDeniedError())
+
+    const { saveCurrentAccount } = createSurveyListSut(loadSurveyListSpy)
+
+    expect(await screen.findByText(/login/i)).toBeInTheDocument()
+    expect(saveCurrentAccount).toHaveBeenCalledWith(null)
   })
 })

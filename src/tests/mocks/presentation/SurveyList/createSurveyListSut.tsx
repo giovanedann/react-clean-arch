@@ -2,12 +2,13 @@ import { render } from '@testing-library/react'
 import { type LoadSurveyList } from 'domain/usecases'
 import { ApiContext } from 'presentation/contexts/api'
 import SurveyList from 'presentation/pages/SurveyList'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-get-client'
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
 
 type SutTypes = {
   loadSurveyListSpy: LoadSurveyListSpy
+  saveCurrentAccount: jest.Mock
 }
 
 export class LoadSurveyListSpy implements LoadSurveyList {
@@ -23,18 +24,26 @@ export class LoadSurveyListSpy implements LoadSurveyList {
 export default function createSurveyListSut(
   loadSurveyListSpy = new LoadSurveyListSpy()
 ): SutTypes {
+  const saveCurrentAccount = jest.fn()
+
   render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={['/']}>
       <ApiContext.Provider
         value={{
-          saveCurrentAccount: jest.fn(),
+          saveCurrentAccount,
           getCurrentAccount: jest.fn(() => mockAccountModel())
         }}
       >
-        <SurveyList loadSurveyList={loadSurveyListSpy} />
+        <Routes>
+          <Route
+            path="/"
+            element={<SurveyList loadSurveyList={loadSurveyListSpy} />}
+          />
+          <Route path="login" element={<h1>Login</h1>} />
+        </Routes>
       </ApiContext.Provider>
     </MemoryRouter>
   )
 
-  return { loadSurveyListSpy }
+  return { loadSurveyListSpy, saveCurrentAccount }
 }
