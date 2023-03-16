@@ -8,15 +8,21 @@ export class RemoteLoadSurveyList implements LoadSurveyList {
     private readonly httpGetClient: HttpGetClient<RemoteLoadSurveyList.Model[]>
   ) {}
 
-  async loadAll(): Promise<any> {
+  async loadAll(): Promise<LoadSurveyList.Model[]> {
     const response = await this.httpGetClient.get({ url: this.url })
+
+    const remoteSurveys = response.body
 
     switch (response.statusCode) {
       case HttpStatusCode.ok:
-        if (!response.body) {
+        if (!remoteSurveys) {
           throw new UnexpectedError()
         }
-        return response.body
+
+        return remoteSurveys.map((item) => ({
+          ...item,
+          date: new Date(item.date)
+        }))
       case HttpStatusCode.noContent:
         return []
       default:
@@ -26,5 +32,11 @@ export class RemoteLoadSurveyList implements LoadSurveyList {
 }
 
 export namespace RemoteLoadSurveyList {
-  export type Model = LoadSurveyList.Model
+  export type Model = {
+    id: string
+    question: string
+    date: string
+    didAnswer: boolean
+    answers: LoadSurveyList.Answer[]
+  }
 }
