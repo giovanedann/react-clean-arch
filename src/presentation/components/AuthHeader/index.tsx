@@ -22,7 +22,7 @@ function AuthHeader(): JSX.Element {
       <div className={styles.headerContent}>
         <Logo />
         <div className={styles.logoutWrapper}>
-          <span>{currentAccount.name}</span>
+          <span>{currentAccount?.name}</span>
           <a href="#" onClick={handleLogout}>
             Logout
           </a>
