@@ -154,7 +154,16 @@ test.describe('Login Page', () => {
     }
 
     await page.route('http://localhost:5050/api/login', async (route) => {
-      await route.fulfill({ status: 200, json })
+      await route.fulfill({
+        status: 200,
+        json
+      })
+    })
+
+    await page.route('http://localhost:5050/api/surveys', async (route) => {
+      await route.fulfill({
+        status: 200
+      })
     })
 
     await page.getByLabel(/enter your e-mail/i).focus()

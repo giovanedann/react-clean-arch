@@ -167,6 +167,12 @@ test.describe('SignUp Page', () => {
       await route.fulfill({ status: 200, json })
     })
 
+    await page.route('http://localhost:5050/api/surveys', async (route) => {
+      await route.fulfill({
+        status: 200
+      })
+    })
+
     const password = faker.internet.password(6)
     await page.getByLabel(/enter your name/i).focus()
     await page.getByLabel(/enter your name/i).fill(faker.name.firstName())
