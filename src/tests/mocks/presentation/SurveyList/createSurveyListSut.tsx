@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react'
 import { type LoadSurveyList } from 'domain/usecases'
 import SurveyList from 'presentation/pages/SurveyList'
+import { MemoryRouter } from 'react-router-dom'
 import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-get-client'
 
 type SutTypes = {
@@ -20,7 +21,11 @@ export class LoadSurveyListSpy implements LoadSurveyList {
 export default function createSurveyListSut(
   loadSurveyListSpy = new LoadSurveyListSpy()
 ): SutTypes {
-  render(<SurveyList loadSurveyList={loadSurveyListSpy} />)
+  render(
+    <MemoryRouter>
+      <SurveyList loadSurveyList={loadSurveyListSpy} />
+    </MemoryRouter>
+  )
 
   return { loadSurveyListSpy }
 }
