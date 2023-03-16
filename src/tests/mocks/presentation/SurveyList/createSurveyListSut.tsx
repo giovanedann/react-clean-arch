@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react'
 import { type LoadSurveyList } from 'domain/usecases'
+import { ApiContext } from 'presentation/contexts/api'
 import SurveyList from 'presentation/pages/SurveyList'
 import { MemoryRouter } from 'react-router-dom'
 import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-get-client'
+import { mockAccountModel } from 'tests/mocks/domain/models/account'
 
 type SutTypes = {
   loadSurveyListSpy: LoadSurveyListSpy
@@ -23,7 +25,14 @@ export default function createSurveyListSut(
 ): SutTypes {
   render(
     <MemoryRouter>
-      <SurveyList loadSurveyList={loadSurveyListSpy} />
+      <ApiContext.Provider
+        value={{
+          saveCurrentAccount: jest.fn(),
+          getCurrentAccount: jest.fn(() => mockAccountModel())
+        }}
+      >
+        <SurveyList loadSurveyList={loadSurveyListSpy} />
+      </ApiContext.Provider>
     </MemoryRouter>
   )
 
