@@ -5,6 +5,7 @@ import {
   type HttpResponse,
   HttpStatusCode
 } from 'data/protocols/http'
+import { type RemoteLoadSurveyList } from 'data/usecases/load-survey-list/remote-load-survey-list'
 import { type LoadSurveyList } from 'domain/usecases'
 
 export class HttpGetClientSpy<T> implements HttpGetClient<T> {
@@ -43,6 +44,26 @@ export function mockLoadSurveyList(): LoadSurveyList.Model[] {
 
   for (let i = 0; i <= 10; i++) {
     surveyList.push(mockLoadSurveyItem())
+  }
+
+  return surveyList
+}
+
+export function mockRemoteSurveyItem(): RemoteLoadSurveyList.Model {
+  return {
+    id: faker.datatype.uuid(),
+    date: faker.date.soon().toISOString(),
+    didAnswer: faker.datatype.boolean(),
+    question: faker.random.words(6),
+    answers: [{ answer: faker.random.word(), image: faker.image.imageUrl() }]
+  }
+}
+
+export function mockRemoteSurveyList(): RemoteLoadSurveyList.Model[] {
+  const surveyList: RemoteLoadSurveyList.Model[] = []
+
+  for (let i = 0; i <= 10; i++) {
+    surveyList.push(mockRemoteSurveyItem())
   }
 
   return surveyList
