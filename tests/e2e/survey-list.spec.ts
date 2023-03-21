@@ -57,4 +57,28 @@ test.describe('SurveyList page', () => {
 
     await expect(page.getByTitle(/survey list skeleton/i)).toBeVisible()
   })
+
+  test('should present an error message and a reload button on errors different than 403', async ({
+    page
+  }) => {
+    const account = mockAccountModel()
+
+    await page.addInitScript((value) => {
+      window.localStorage.setItem('currentAccount', value)
+    }, JSON.stringify(account))
+
+    await page.route(API_URL, async (route) => {
+      await route.fulfill({
+        status: 400
+      })
+    })
+
+    await page.goto(URL)
+
+    await expect(
+      page.getByText(/an unexpected error has occurred/i)
+    ).toBeVisible()
+
+    await expect(page.getByRole('button', { name: /reload/i })).toBeVisible()
+  })
 })
