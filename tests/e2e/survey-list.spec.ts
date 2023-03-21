@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-get-client'
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
 import delay from '../utils/delay'
 
@@ -80,5 +81,27 @@ test.describe('SurveyList page', () => {
     ).toBeVisible()
 
     await expect(page.getByRole('button', { name: /reload/i })).toBeVisible()
+  })
+
+  test('should display the surveys list on success', async ({ page }) => {
+    const account = mockAccountModel()
+    const surveyList = mockLoadSurveyList()
+
+    await page.addInitScript((value) => {
+      window.localStorage.setItem('currentAccount', value)
+    }, JSON.stringify(account))
+
+    await page.route(API_URL, async (route) => {
+      await route.fulfill({
+        status: 200,
+        json: surveyList
+      })
+    })
+
+    await page.goto(URL)
+
+    for (const survey of surveyList) {
+      await expect(page.getByText(survey.question)).toBeVisible()
+    }
   })
 })
