@@ -25,6 +25,7 @@ export default function SurveyList({
   async function loadSurveys(): Promise<void> {
     try {
       const surveys = await loadSurveyList.loadAll()
+      setError('')
       setSurveys(surveys)
     } catch (error: any) {
       handler(error)
