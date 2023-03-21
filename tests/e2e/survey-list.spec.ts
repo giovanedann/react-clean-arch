@@ -104,4 +104,40 @@ test.describe('SurveyList page', () => {
       await expect(page.getByText(survey.question)).toBeVisible()
     }
   })
+
+  test('should request the survey list again if reload button is clicked', async ({
+    page
+  }) => {
+    const account = mockAccountModel()
+    const surveyList = mockLoadSurveyList()
+
+    await page.addInitScript((value) => {
+      window.localStorage.setItem('currentAccount', value)
+    }, JSON.stringify(account))
+
+    await page.route(API_URL, async (route) => {
+      await route.fulfill({
+        status: 400
+      })
+    })
+
+    await page.goto(URL)
+
+    await expect(page.getByRole('button', { name: /reload/i })).toBeVisible()
+
+    await page.unroute(API_URL)
+
+    await page.route(API_URL, async (route) => {
+      await route.fulfill({
+        status: 200,
+        json: surveyList
+      })
+    })
+
+    await page.getByRole('button', { name: /reload/i }).click()
+
+    for (const survey of surveyList) {
+      await expect(page.getByText(survey.question)).toBeVisible()
+    }
+  })
 })
