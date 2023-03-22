@@ -1,4 +1,5 @@
 import AuthHeader from 'presentation/components/AuthHeader'
+import Loader from 'presentation/components/Loader'
 import FlipMove from 'react-flip-move'
 import styles from './styles.module.scss'
 
@@ -32,7 +33,11 @@ export default function SurveyResult(): JSX.Element {
           </li>
         </FlipMove>
 
-        <button type="button">Voltar</button>
+        <button type="button">Back</button>
+
+        <div className={styles.loaderWrapper}>
+          <Loader message="Loading..." />
+        </div>
       </div>
     </main>
   )
