@@ -24,6 +24,12 @@ describe('RemoteLoadSurveyResult', () => {
   it('should call HttpGetClient with correct URL', () => {
     const url = faker.internet.url()
     const { httpGetClientSpy, sut } = createSut({ url })
+
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: {}
+    }
+
     sut.load()
     expect(httpGetClientSpy.url).toEqual(url)
   })
@@ -46,5 +52,16 @@ describe('RemoteLoadSurveyResult', () => {
     }
 
     await expect(sut.load()).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('should throw unexpected error if response have no body on 200', async () => {
+    const { httpGetClientSpy, sut } = createSut({})
+
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: null
+    }
+
+    await expect(sut.load()).rejects.toThrow()
   })
 })
