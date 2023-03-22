@@ -6,6 +6,7 @@ import {
   HttpStatusCode
 } from 'data/protocols/http'
 import { type RemoteLoadSurveyList } from 'data/usecases/load-survey-list/remote-load-survey-list'
+import { type RemoteLoadSurveyResult } from 'data/usecases/load-survey-result/remote-load-survey-result'
 import { type LoadSurveyList } from 'domain/usecases'
 
 export class HttpGetClientSpy<T> implements HttpGetClient<T> {
@@ -56,6 +57,22 @@ export function mockRemoteSurveyItem(): RemoteLoadSurveyList.Model {
     didAnswer: faker.datatype.boolean(),
     question: faker.random.words(6),
     answers: [{ answer: faker.random.word(), image: faker.image.imageUrl() }]
+  }
+}
+
+export function mockLoadSurveyResult(): RemoteLoadSurveyResult.Model {
+  return {
+    date: faker.date.soon().toISOString(),
+    didAnswer: faker.datatype.boolean(),
+    question: faker.random.words(6),
+    answers: [
+      {
+        answer: faker.random.word(),
+        image: faker.image.imageUrl(),
+        count: Number(faker.random.numeric()),
+        percent: Number(faker.random.numeric(100))
+      }
+    ]
   }
 }
 
