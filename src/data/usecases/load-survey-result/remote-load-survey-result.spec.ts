@@ -1,12 +1,15 @@
 import { faker } from '@faker-js/faker'
 import { HttpStatusCode } from 'data/protocols/http'
 import { AccessDeniedError, UnexpectedError } from 'domain/errors'
-import { HttpGetClientSpy } from 'tests/mocks/data/protocols/http/http-get-client'
-import RemoteLoadSurveyResult from './remote-load-survey-result'
+import {
+  HttpGetClientSpy,
+  mockLoadSurveyResult
+} from 'tests/mocks/data/protocols/http/http-get-client'
+import { RemoteLoadSurveyResult } from './remote-load-survey-result'
 
 type SutTypes = {
   sut: RemoteLoadSurveyResult
-  httpGetClientSpy: HttpGetClientSpy<any>
+  httpGetClientSpy: HttpGetClientSpy<RemoteLoadSurveyResult.Model>
 }
 
 type SutParams = {
@@ -14,7 +17,13 @@ type SutParams = {
 }
 
 function createSut({ url = faker.internet.url() }: SutParams): SutTypes {
-  const httpGetClientSpy = new HttpGetClientSpy()
+  const httpGetClientSpy = new HttpGetClientSpy<RemoteLoadSurveyResult.Model>()
+
+  httpGetClientSpy.response = {
+    ...httpGetClientSpy.response,
+    body: mockLoadSurveyResult()
+  }
+
   const sut = new RemoteLoadSurveyResult(url, httpGetClientSpy)
 
   return { sut, httpGetClientSpy }
@@ -24,11 +33,6 @@ describe('RemoteLoadSurveyResult', () => {
   it('should call HttpGetClient with correct URL', () => {
     const url = faker.internet.url()
     const { httpGetClientSpy, sut } = createSut({ url })
-
-    httpGetClientSpy.response = {
-      statusCode: HttpStatusCode.ok,
-      body: {}
-    }
 
     sut.load()
     expect(httpGetClientSpy.url).toEqual(url)
@@ -59,9 +63,29 @@ describe('RemoteLoadSurveyResult', () => {
 
     httpGetClientSpy.response = {
       statusCode: HttpStatusCode.ok,
-      body: null
+      body: null as any
     }
 
-    await expect(sut.load()).rejects.toThrow()
+    await expect(sut.load()).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('should return a survey result on 200', async () => {
+    const { httpGetClientSpy, sut } = createSut({})
+
+    const surveyResult = mockLoadSurveyResult()
+
+    const adaptedSurveyResult = {
+      ...surveyResult,
+      date: new Date(surveyResult.date)
+    }
+
+    httpGetClientSpy.response = {
+      ...httpGetClientSpy.response,
+      body: surveyResult
+    }
+
+    const response = await sut.load()
+
+    expect(response).toStrictEqual(adaptedSurveyResult)
   })
 })
