@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { HttpStatusCode } from 'data/protocols/http'
-import { AccessDeniedError } from 'domain/errors'
+import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import { HttpGetClientSpy } from 'tests/mocks/data/protocols/http/http-get-client'
 import RemoteLoadSurveyResult from './remote-load-survey-result'
 
@@ -36,5 +36,15 @@ describe('RemoteLoadSurveyResult', () => {
     }
 
     await expect(sut.load()).rejects.toThrow(new AccessDeniedError())
+  })
+
+  it('should throw UnexpectedError if HttpGetClient returns 500', async () => {
+    const { httpGetClientSpy, sut } = createSut({})
+
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    await expect(sut.load()).rejects.toThrow(new UnexpectedError())
   })
 })
