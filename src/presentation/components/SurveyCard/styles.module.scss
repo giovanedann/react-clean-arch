@@ -26,6 +26,10 @@
       linear-gradient(to right, $white, $white);
     position: relative;
 
+    .dateCardWrapper {
+      margin-left: 1.5rem;
+    }
+
     .icon {
       position: absolute;
       top: -0.5rem;

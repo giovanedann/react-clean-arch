@@ -22,7 +22,7 @@ function SurveyCard({ didAnswer, question, date }: Props): JSX.Element {
           size={25}
           title="Status icon"
         />
-        <DateCard date={date} />
+        <DateCard date={date} className={styles.dateCardWrapper} />
         <p>{question}</p>
       </div>
       <footer>See results</footer>
