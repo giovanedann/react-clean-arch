@@ -3,12 +3,18 @@ import AuthHeader from 'presentation/components/AuthHeader'
 import DateCard from 'presentation/components/DateCard'
 import Error from 'presentation/components/Error'
 import Loader from 'presentation/components/Loader'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
 import Skeleton from './Skeleton'
 import styles from './styles.module.scss'
 
-export default function SurveyResult(): JSX.Element {
+type SurveyResultProps = {
+  loadSurveyResult: LoadSurveyResult
+}
+
+export default function SurveyResult({
+  loadSurveyResult
+}: SurveyResultProps): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string>()
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -16,6 +22,14 @@ export default function SurveyResult(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [surveyResult, setsurveyResult] =
     useState<LoadSurveyResult.Model | null>(null)
+
+  async function loadResult(): Promise<void> {
+    await loadSurveyResult.load()
+  }
+
+  useEffect(() => {
+    loadResult()
+  }, [])
 
   return (
     <main className={styles.wrapper}>
