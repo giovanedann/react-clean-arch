@@ -4,7 +4,7 @@ import styles from './styles.module.scss'
 import SurveyListSkeleton from './Skeleton'
 import { type LoadSurveyList } from 'domain/usecases'
 import { useEffect, useState } from 'react'
-import Error from './Error'
+import Error from 'presentation/components/Error'
 import List from './List'
 import useHandleForbidden from 'presentation/hooks/useHandleForbidden'
 
