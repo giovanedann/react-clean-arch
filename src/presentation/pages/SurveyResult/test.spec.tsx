@@ -10,4 +10,10 @@ describe('<SurveyResult /> component', () => {
       screen.queryByRole('button', { name: /reload/i })
     ).not.toBeInTheDocument()
   })
+
+  it('should call LoadSurveyResult.load on mount', () => {
+    const { loadSurveyResultSpy } = createSurveyResultSut()
+
+    expect(loadSurveyResultSpy.calls).toEqual(1)
+  })
 })
