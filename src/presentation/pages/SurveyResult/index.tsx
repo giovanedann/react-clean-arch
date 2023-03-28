@@ -1,4 +1,5 @@
 import AuthHeader from 'presentation/components/AuthHeader'
+import DateCard from 'presentation/components/DateCard'
 import Loader from 'presentation/components/Loader'
 import FlipMove from 'react-flip-move'
 import styles from './styles.module.scss'
@@ -8,7 +9,10 @@ export default function SurveyResult(): JSX.Element {
     <main className={styles.wrapper}>
       <AuthHeader />
       <div className={styles.contentContainer}>
-        <h2>What is your favorite web framework?</h2>
+        <div className={styles.questionWrapper}>
+          <DateCard date={new Date()} className={styles.dateCardWrapper} />
+          <h2>What is your favorite web framework?</h2>
+        </div>
         <FlipMove className={styles.answersList}>
           <li>
             <img

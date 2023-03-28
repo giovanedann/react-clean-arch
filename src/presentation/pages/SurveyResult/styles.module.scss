@@ -17,6 +17,22 @@
     flex-grow: 1;
     padding: 2.5rem;
 
+    .questionWrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+
+      .dateCardWrapper {
+        margin-right: 1rem;
+        width: 5rem;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+      }
+    }
+
     h2 {
       color: $primaryDark;
       font-weight: bold;
