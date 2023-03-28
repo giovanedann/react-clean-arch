@@ -14,9 +14,10 @@ type SutTypes = {
   surveyResultMock: LoadSurveyResult.Model
 }
 
-export default function createSurveyResultSut(): SutTypes {
+export default function createSurveyResultSut(
+  loadSurveyResultSpy = new LoadSurveyResultSpy()
+): SutTypes {
   const surveyResultMock = mockSurveyResultModel()
-  const loadSurveyResultSpy = new LoadSurveyResultSpy()
 
   loadSurveyResultSpy.surveyResult = surveyResultMock
 

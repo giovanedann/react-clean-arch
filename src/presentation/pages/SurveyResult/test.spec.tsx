@@ -1,4 +1,6 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react'
+import { UnexpectedError } from 'domain/errors'
+import { LoadSurveyResultSpy } from 'tests/mocks/domain/models/load-survey-result'
 import createSurveyResultSut from 'tests/mocks/presentation/SurveyResult/createSurveyResultSut'
 
 describe('<SurveyResult /> component', () => {
@@ -69,5 +71,18 @@ describe('<SurveyResult /> component', () => {
         )
       }
     })
+  })
+
+  it('should display an error message if LoadSurveyResult.load fails', async () => {
+    const loadSurveyResultSpy = new LoadSurveyResultSpy()
+    const error = new UnexpectedError()
+
+    jest.spyOn(loadSurveyResultSpy, 'load').mockRejectedValueOnce(error)
+
+    createSurveyResultSut(loadSurveyResultSpy)
+
+    expect(await screen.findByText(error.message)).toBeInTheDocument()
+
+    expect(screen.queryAllByRole('listitem')).toHaveLength(0)
   })
 })
