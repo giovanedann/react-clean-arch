@@ -15,16 +15,21 @@ type SurveyResultProps = {
 export default function SurveyResult({
   loadSurveyResult
 }: SurveyResultProps): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState<string>()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [surveyResult, setsurveyResult] =
+  const [surveyResult, setSurveyResult] =
     useState<LoadSurveyResult.Model | null>(null)
 
   async function loadResult(): Promise<void> {
-    await loadSurveyResult.load()
+    setIsLoading(true)
+
+    try {
+      const response = await loadSurveyResult.load()
+      setSurveyResult(response)
+      setIsLoading(false)
+    } catch (error: any) {
+      setError(error.message)
+    }
   }
 
   useEffect(() => {
@@ -38,33 +43,24 @@ export default function SurveyResult({
         <div className={styles.contentContainer}>
           <div className={styles.questionWrapper}>
             <DateCard date={new Date()} className={styles.dateCardWrapper} />
-            <h2>What is your favorite web framework?</h2>
+            <h2>{surveyResult.question}</h2>
           </div>
           <FlipMove className={styles.answersList}>
-            <li>
-              <img
-                src="https://logospng.org/download/react/logo-react-1024.png"
-                alt=""
-              />
-              <span className={styles.answer}>ReactJS</span>
-              <span className={styles.percentage}>40%</span>
-            </li>
-            <li className={styles.voted}>
-              <img
-                src="https://cdn.cdnlogo.com/logos/n/80/next-js.svg"
-                alt=""
-              />
-              <span className={styles.answer}>NextJS</span>
-              <span className={styles.percentage}>50%</span>
-            </li>
-            <li>
-              <img
-                src="https://logospng.org/wp-content/uploads/vue-js.png"
-                alt=""
-              />
-              <span className={styles.answer}>VueJS</span>
-              <span className={styles.percentage}>10%</span>
-            </li>
+            {surveyResult.answers.map((answer, index) => (
+              <li
+                key={answer.answer}
+                className={answer.isCurrentAccountAnswer ? styles.voted : ''}
+              >
+                {answer.image && (
+                  <img
+                    src={answer.image}
+                    alt={`${answer.answer} representative image`}
+                  />
+                )}
+                <span className={styles.answer}>{answer.answer}</span>
+                <span className={styles.percentage}>{answer.percent}%</span>
+              </li>
+            ))}
           </FlipMove>
 
           <button type="button">Back</button>
