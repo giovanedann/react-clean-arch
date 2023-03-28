@@ -47,7 +47,10 @@ export default function SurveyResult({
       {!isLoading && !error && surveyResult && (
         <div className={styles.contentContainer}>
           <div className={styles.questionWrapper}>
-            <DateCard date={new Date()} className={styles.dateCardWrapper} />
+            <DateCard
+              date={surveyResult.date}
+              className={styles.dateCardWrapper}
+            />
             <h2>{surveyResult.question}</h2>
           </div>
           <FlipMove className={styles.answersList}>
