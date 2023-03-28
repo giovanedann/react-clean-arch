@@ -3,6 +3,7 @@ import AuthHeader from 'presentation/components/AuthHeader'
 import DateCard from 'presentation/components/DateCard'
 import Error from 'presentation/components/Error'
 import Loader from 'presentation/components/Loader'
+import useHandleForbidden from 'presentation/hooks/useHandleForbidden'
 import { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
 import Skeleton from './Skeleton'
@@ -20,6 +21,10 @@ export default function SurveyResult({
   const [surveyResult, setSurveyResult] =
     useState<LoadSurveyResult.Model | null>(null)
 
+  const handler = useHandleForbidden((error) => {
+    setError(error.message)
+  })
+
   async function loadResult(): Promise<void> {
     setIsLoading(true)
 
@@ -28,7 +33,7 @@ export default function SurveyResult({
       setSurveyResult(response)
       setIsLoading(false)
     } catch (error: any) {
-      setError(error.message)
+      handler(error)
     }
   }
 
