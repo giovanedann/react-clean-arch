@@ -2,7 +2,6 @@ import { type LoadSurveyResult } from 'domain/usecases/load-survey-result'
 import AuthHeader from 'presentation/components/AuthHeader'
 import DateCard from 'presentation/components/DateCard'
 import Error from 'presentation/components/Error'
-import Loader from 'presentation/components/Loader'
 import useHandleForbidden from 'presentation/hooks/useHandleForbidden'
 import { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
@@ -81,10 +80,6 @@ export default function SurveyResult({
           <button onClick={handleBackButtonClick} type="button">
             Back
           </button>
-
-          <div className={styles.loaderWrapper}>
-            <Loader message="Loading..." />
-          </div>
         </div>
       )}
 
