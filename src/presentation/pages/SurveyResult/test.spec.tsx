@@ -20,7 +20,7 @@ describe('<SurveyResult /> component', () => {
     expect(loadSurveyResultSpy.calls).toEqual(1)
   })
 
-  it('should display the survey result if LoadSurveyResult succeeds', async () => {
+  it('should display the survey result if LoadSurveyResult.load succeeds', async () => {
     const { surveyResultMock } = createSurveyResultSut()
 
     await waitForElementToBeRemoved(

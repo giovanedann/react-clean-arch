@@ -8,11 +8,13 @@ import {
   mockSurveyResultModel
 } from 'tests/mocks/domain/models/load-survey-result'
 import { type LoadSurveyResult } from 'domain/usecases/load-survey-result'
+import { faker } from '@faker-js/faker'
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
   surveyResultMock: LoadSurveyResult.Model
   saveCurrentAccount: jest.Mock
+  surveyId: string
 }
 
 export default function createSurveyResultSut(
@@ -20,10 +22,11 @@ export default function createSurveyResultSut(
 ): SutTypes {
   const surveyResultMock = mockSurveyResultModel()
   const saveCurrentAccount = jest.fn()
+  const surveyId = faker.datatype.uuid()
   loadSurveyResultSpy.surveyResult = surveyResultMock
 
   render(
-    <MemoryRouter initialEntries={['/surveys']}>
+    <MemoryRouter initialEntries={[`/surveys/${surveyId}`]}>
       <ApiContext.Provider
         value={{
           saveCurrentAccount,
@@ -34,7 +37,7 @@ export default function createSurveyResultSut(
           <Route path="/" element={<h1>Home</h1>} />
           <Route path="/login" element={<h1>Login</h1>} />
           <Route
-            path="surveys"
+            path="surveys/:id"
             element={<SurveyResult loadSurveyResult={loadSurveyResultSpy} />}
           />
         </Routes>
@@ -42,5 +45,5 @@ export default function createSurveyResultSut(
     </MemoryRouter>
   )
 
-  return { loadSurveyResultSpy, surveyResultMock, saveCurrentAccount }
+  return { loadSurveyResultSpy, surveyResultMock, saveCurrentAccount, surveyId }
 }
