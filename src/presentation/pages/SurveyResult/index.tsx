@@ -73,12 +73,7 @@ export default function SurveyResult({
 
       {isLoading && !error && <Skeleton />}
 
-      {error && (
-        <Error
-          message="Oops... Something got wrong"
-          onReloadButtonClick={() => {}}
-        />
-      )}
+      {error && <Error message={error} onReloadButtonClick={() => {}} />}
     </main>
   )
 }
