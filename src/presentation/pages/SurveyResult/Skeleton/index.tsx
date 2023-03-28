@@ -2,7 +2,7 @@ import styles from './styles.module.scss'
 
 export default function Skeleton(): JSX.Element {
   return (
-    <main className={styles.wrapper}>
+    <main className={styles.wrapper} title="survey result skeleton">
       <div className={styles.contentContainer}>
         <div className={styles.questionWrapper}>
           <div className={styles.dateCardWrapper} />
