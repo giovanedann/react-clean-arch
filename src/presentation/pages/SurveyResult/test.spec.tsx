@@ -1,4 +1,5 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import { LoadSurveyResultSpy } from 'tests/mocks/domain/models/load-survey-result'
 import createSurveyResultSut from 'tests/mocks/presentation/SurveyResult/createSurveyResultSut'
@@ -97,5 +98,19 @@ describe('<SurveyResult /> component', () => {
 
     expect(await screen.findByText(/login/i)).toBeInTheDocument()
     expect(saveCurrentAccount).toHaveBeenCalledWith(null)
+  })
+
+  it('should call LoadSurveyResult.load on reload button click', async () => {
+    const user = userEvent.setup()
+    const loadSurveyResultSpy = new LoadSurveyResultSpy()
+    const error = new UnexpectedError()
+
+    jest.spyOn(loadSurveyResultSpy, 'load').mockRejectedValueOnce(error)
+
+    createSurveyResultSut(loadSurveyResultSpy)
+
+    await user.click(await screen.findByRole('button', { name: /reload/i }))
+
+    expect(loadSurveyResultSpy.calls).toBe(1)
   })
 })
