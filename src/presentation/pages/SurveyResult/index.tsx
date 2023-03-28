@@ -6,6 +6,7 @@ import Loader from 'presentation/components/Loader'
 import useHandleForbidden from 'presentation/hooks/useHandleForbidden'
 import { useEffect, useState } from 'react'
 import FlipMove from 'react-flip-move'
+import { useNavigate } from 'react-router-dom'
 import Skeleton from './Skeleton'
 import styles from './styles.module.scss'
 
@@ -21,6 +22,8 @@ export default function SurveyResult({
   const [surveyResult, setSurveyResult] =
     useState<LoadSurveyResult.Model | null>(null)
 
+  const navigate = useNavigate()
+
   const handler = useHandleForbidden((error) => {
     setError(error.message)
   })
@@ -35,6 +38,10 @@ export default function SurveyResult({
     } catch (error: any) {
       handler(error)
     }
+  }
+
+  function handleBackButtonClick(): void {
+    navigate('/')
   }
 
   useEffect(() => {
@@ -71,7 +78,9 @@ export default function SurveyResult({
             ))}
           </FlipMove>
 
-          <button type="button">Back</button>
+          <button onClick={handleBackButtonClick} type="button">
+            Back
+          </button>
 
           <div className={styles.loaderWrapper}>
             <Loader message="Loading..." />
