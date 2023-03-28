@@ -12,25 +12,27 @@ import { type LoadSurveyResult } from 'domain/usecases/load-survey-result'
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
   surveyResultMock: LoadSurveyResult.Model
+  saveCurrentAccount: jest.Mock
 }
 
 export default function createSurveyResultSut(
   loadSurveyResultSpy = new LoadSurveyResultSpy()
 ): SutTypes {
   const surveyResultMock = mockSurveyResultModel()
-
+  const saveCurrentAccount = jest.fn()
   loadSurveyResultSpy.surveyResult = surveyResultMock
 
   render(
     <MemoryRouter initialEntries={['/surveys']}>
       <ApiContext.Provider
         value={{
-          saveCurrentAccount: jest.fn(),
+          saveCurrentAccount,
           getCurrentAccount: jest.fn(() => mockAccountModel())
         }}
       >
         <Routes>
           <Route path="/" element={<h1>Home</h1>} />
+          <Route path="/login" element={<h1>Login</h1>} />
           <Route
             path="surveys"
             element={<SurveyResult loadSurveyResult={loadSurveyResultSpy} />}
@@ -40,5 +42,5 @@ export default function createSurveyResultSut(
     </MemoryRouter>
   )
 
-  return { loadSurveyResultSpy, surveyResultMock }
+  return { loadSurveyResultSpy, surveyResultMock, saveCurrentAccount }
 }

@@ -1,5 +1,5 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react'
-import { UnexpectedError } from 'domain/errors'
+import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import { LoadSurveyResultSpy } from 'tests/mocks/domain/models/load-survey-result'
 import createSurveyResultSut from 'tests/mocks/presentation/SurveyResult/createSurveyResultSut'
 
@@ -84,5 +84,18 @@ describe('<SurveyResult /> component', () => {
     expect(await screen.findByText(error.message)).toBeInTheDocument()
 
     expect(screen.queryAllByRole('listitem')).toHaveLength(0)
+  })
+
+  it('should redirect user to login and clear current account on AccessDeniedError', async () => {
+    const loadSurveyResultSpy = new LoadSurveyResultSpy()
+
+    jest
+      .spyOn(loadSurveyResultSpy, 'load')
+      .mockRejectedValueOnce(new AccessDeniedError())
+
+    const { saveCurrentAccount } = createSurveyResultSut(loadSurveyResultSpy)
+
+    expect(await screen.findByText(/login/i)).toBeInTheDocument()
+    expect(saveCurrentAccount).toHaveBeenCalledWith(null)
   })
 })
