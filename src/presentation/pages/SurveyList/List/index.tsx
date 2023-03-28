@@ -10,6 +10,7 @@ export default function List({ surveys }: ListProps): JSX.Element {
     <ul>
       {surveys.map((survey) => (
         <SurveyCard
+          id={survey.id}
           key={survey.id}
           question={survey.question}
           didAnswer={survey.didAnswer}
