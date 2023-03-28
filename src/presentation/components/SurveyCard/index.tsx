@@ -1,18 +1,21 @@
 import { type LoadSurveyList } from 'domain/usecases'
 import { memo, useMemo } from 'react'
 import { IoMdThumbsUp } from 'react-icons/io'
+import { useNavigate } from 'react-router-dom'
 import DateCard from '../DateCard'
 import styles from './styles.module.scss'
 
-type Props = Pick<LoadSurveyList.Model, 'date' | 'didAnswer' | 'question'>
+type Props = Pick<LoadSurveyList.Model, 'date' | 'didAnswer' | 'question' | 'id'>
 
-function SurveyCard({ didAnswer, question, date }: Props): JSX.Element {
+function SurveyCard({ didAnswer, question, date, id }: Props): JSX.Element {
   const iconClassNames: string = useMemo(() => {
     if (!didAnswer) {
       return `${styles.icon} ${styles.notAnswered}`
     }
     return `${styles.icon}`
   }, [didAnswer])
+
+  const navigate = useNavigate()
 
   return (
     <li className={styles.listItem}>
@@ -25,7 +28,9 @@ function SurveyCard({ didAnswer, question, date }: Props): JSX.Element {
         <DateCard date={date} className={styles.dateCardWrapper} />
         <p>{question}</p>
       </div>
-      <footer>See results</footer>
+      <footer onClick={() => { navigate(`/surveys/${id}`) }}>
+        See results
+      </footer>
     </li>
   )
 }
