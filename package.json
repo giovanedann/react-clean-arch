@@ -50,7 +50,7 @@
     "jest-localstorage-mock": "^2.4.26",
     "lint-staged": "^13.2.0",
     "node-sass": "^8.0.0",
-    "sass-loader": "^13.2.1",
+    "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
