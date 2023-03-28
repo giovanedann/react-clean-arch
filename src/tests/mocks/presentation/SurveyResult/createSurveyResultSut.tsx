@@ -3,14 +3,22 @@ import SurveyResult from 'presentation/pages/SurveyResult'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { ApiContext } from 'presentation/contexts/api'
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
-import { LoadSurveyResultSpy } from 'tests/mocks/domain/models/load-survey-result'
+import {
+  LoadSurveyResultSpy,
+  mockSurveyResultModel
+} from 'tests/mocks/domain/models/load-survey-result'
+import { type LoadSurveyResult } from 'domain/usecases/load-survey-result'
 
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
+  surveyResultMock: LoadSurveyResult.Model
 }
 
 export default function createSurveyResultSut(): SutTypes {
+  const surveyResultMock = mockSurveyResultModel()
   const loadSurveyResultSpy = new LoadSurveyResultSpy()
+
+  loadSurveyResultSpy.surveyResult = surveyResultMock
 
   render(
     <MemoryRouter initialEntries={['/surveys']}>
@@ -31,5 +39,5 @@ export default function createSurveyResultSut(): SutTypes {
     </MemoryRouter>
   )
 
-  return { loadSurveyResultSpy }
+  return { loadSurveyResultSpy, surveyResultMock }
 }

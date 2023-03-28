@@ -11,13 +11,13 @@ export function mockSurveyResultModel(): LoadSurveyResult.Model {
         count: Number(faker.random.numeric()),
         percent: Number(faker.random.numeric(2)),
         image: faker.image.imageUrl(),
-        isCurrentAccountAnswer: faker.datatype.boolean()
+        isCurrentAccountAnswer: true
       },
       {
         answer: faker.random.word(),
         count: Number(faker.random.numeric()),
         percent: Number(faker.random.numeric(2)),
-        isCurrentAccountAnswer: faker.datatype.boolean()
+        isCurrentAccountAnswer: false
       }
     ],
     date: faker.date.recent()
