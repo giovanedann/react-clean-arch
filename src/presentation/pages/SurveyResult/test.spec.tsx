@@ -113,4 +113,13 @@ describe('<SurveyResult /> component', () => {
 
     expect(loadSurveyResultSpy.calls).toBe(1)
   })
+
+  it('should redirect user to home on Back button click', async () => {
+    const user = userEvent.setup()
+    createSurveyResultSut()
+
+    await user.click(await screen.findByRole('button', { name: /back/i }))
+
+    expect(screen.getByText(/home/i)).toBeInTheDocument()
+  })
 })
