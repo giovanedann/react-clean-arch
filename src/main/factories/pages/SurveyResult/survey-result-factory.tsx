@@ -2,12 +2,12 @@ import remoteLoadSurveyResultFactory from 'main/factories/usecases/load-survey-r
 import SurveyResult from 'presentation/pages/SurveyResult'
 import { useParams } from 'react-router-dom'
 
-export default function surveyResultPageFactory(): JSX.Element {
-  const { id } = useParams<{ id: string }>()
+export default function SurveyResultPageFactory(): JSX.Element {
+  const params = useParams()
 
   return (
     <SurveyResult
-      loadSurveyResult={remoteLoadSurveyResultFactory(String(id))}
+      loadSurveyResult={remoteLoadSurveyResultFactory(String(params.id))}
     />
   )
 }

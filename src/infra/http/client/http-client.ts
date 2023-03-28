@@ -10,8 +10,8 @@ import axios, { type AxiosResponse } from 'axios'
 export class HttpClient implements HttpPostClient, HttpGetClient<any> {
   private adapt(axiosResponse: AxiosResponse): HttpResponse {
     return {
-      statusCode: axiosResponse.status,
-      body: axiosResponse.data
+      statusCode: axiosResponse?.status,
+      body: axiosResponse?.data
     }
   }
 
