@@ -5,9 +5,11 @@ import delay from '../utils/delay'
 
 const URL = 'http://localhost:3000/'
 const API_URL = 'http://localhost:5050/api/surveys'
+const SURVEY_RESULT_API_URL = (id: string): string =>
+  `http://localhost:5050/api/surveys/${id}/results`
 
 test.describe('SurveyList page', () => {
-  test('should redirect to login', async ({ page }) => {
+  test('should redirect to login on 403', async ({ page }) => {
     await page.route(API_URL, async (route) => {
       await route.fulfill({
         status: 403
@@ -139,5 +141,33 @@ test.describe('SurveyList page', () => {
     for (const survey of surveyList) {
       await expect(page.getByText(survey.question)).toBeVisible()
     }
+  })
+
+  test('should redirect to survey result page', async ({ page }) => {
+    const account = mockAccountModel()
+    const [surveyList] = mockLoadSurveyList()
+
+    await page.addInitScript((value) => {
+      window.localStorage.setItem('currentAccount', value)
+    }, JSON.stringify(account))
+
+    await page.route(API_URL, async (route) => {
+      await route.fulfill({
+        status: 200,
+        json: [surveyList]
+      })
+    })
+
+    await page.route(SURVEY_RESULT_API_URL(surveyList.id), async (route) => {
+      await route.fulfill({ status: 200 })
+    })
+
+    await page.goto(URL)
+
+    await page.getByText(/see results/i).click()
+
+    await expect(page).toHaveURL(
+      `http://localhost:3000/surveys/${surveyList.id}`
+    )
   })
 })
