@@ -55,4 +55,18 @@ test.describe('SurveyResult page', () => {
       await expect(page.getByRole('button', { name: /reload/i })).toBeVisible()
     })
   })
+
+  test('should redirect to login on 403', async ({ page }) => {
+    const surveyId = faker.datatype.uuid()
+
+    await page.route(SURVEY_RESULT_API_URL(surveyId), async (route) => {
+      await route.fulfill({
+        status: 403
+      })
+    })
+
+    await page.goto(SURVEY_RESULT_CLIENT_URL(surveyId))
+
+    await expect(page).toHaveURL('http://localhost:3000/login')
+  })
 })

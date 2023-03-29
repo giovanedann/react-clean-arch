@@ -9,7 +9,7 @@ const SURVEY_RESULT_API_URL = (id: string): string =>
   `http://localhost:5050/api/surveys/${id}/results`
 
 test.describe('SurveyList page', () => {
-  test('should redirect to login', async ({ page }) => {
+  test('should redirect to login on 403', async ({ page }) => {
     await page.route(API_URL, async (route) => {
       await route.fulfill({
         status: 403
