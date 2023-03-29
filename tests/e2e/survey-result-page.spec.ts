@@ -1,10 +1,17 @@
 import { faker } from '@faker-js/faker'
 import { test, expect } from '@playwright/test'
+import {
+  mockLoadSurveyList,
+  mockLoadSurveyResult
+} from 'tests/mocks/data/protocols/http/http-get-client'
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
 import delay from '../utils/delay'
 
 const SURVEY_RESULT_API_URL = (id: string): string =>
   `http://localhost:5050/api/surveys/${id}/results`
+
+const LOAD_SURVEY_LIST_API_URL = 'http://localhost:5050/api/surveys'
+
 const SURVEY_RESULT_CLIENT_URL = (id: string): string =>
   `http://localhost:3000/surveys/${id}`
 
@@ -68,5 +75,35 @@ test.describe('SurveyResult page', () => {
     await page.goto(SURVEY_RESULT_CLIENT_URL(surveyId))
 
     await expect(page).toHaveURL('http://localhost:3000/login')
+  })
+
+  test('should back to home on back button click', async ({ page }) => {
+    const account = mockAccountModel()
+
+    await page.addInitScript((value) => {
+      window.localStorage.setItem('currentAccount', value)
+    }, JSON.stringify(account))
+
+    const surveyId = faker.datatype.uuid()
+
+    await page.route(SURVEY_RESULT_API_URL(surveyId), async (route) => {
+      await route.fulfill({
+        status: 200,
+        json: mockLoadSurveyResult()
+      })
+    })
+
+    await page.route(LOAD_SURVEY_LIST_API_URL, async (route) => {
+      await route.fulfill({
+        status: 200,
+        json: mockLoadSurveyList()
+      })
+    })
+
+    await page.goto(SURVEY_RESULT_CLIENT_URL(surveyId))
+
+    await page.getByRole('button', { name: /back/i }).click()
+
+    await expect(page).toHaveURL('http://localhost:3000/')
   })
 })
