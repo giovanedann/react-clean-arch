@@ -67,14 +67,14 @@ export function mockLoadSurveyResult(): RemoteLoadSurveyResult.Model {
     question: faker.random.words(6),
     answers: [
       {
-        answer: faker.random.word(),
+        answer: faker.random.words(2),
         image: faker.image.imageUrl(),
         count: faker.datatype.number(),
         percent: faker.datatype.number({ min: 1, max: 100 }),
         isCurrentAccountAnswer: faker.datatype.boolean()
       },
       {
-        answer: faker.random.word(),
+        answer: faker.random.words(2),
         image: faker.image.imageUrl(),
         count: faker.datatype.number(),
         percent: faker.datatype.number({ min: 1, max: 100 }),
