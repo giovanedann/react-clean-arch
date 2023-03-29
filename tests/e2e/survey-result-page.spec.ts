@@ -106,4 +106,47 @@ test.describe('SurveyResult page', () => {
 
     await expect(page).toHaveURL('http://localhost:3000/')
   })
+
+  test('should display the survey result', async ({ page }) => {
+    const account = mockAccountModel()
+
+    await page.addInitScript((value) => {
+      window.localStorage.setItem('currentAccount', value)
+    }, JSON.stringify(account))
+
+    const surveyId = faker.datatype.uuid()
+    const surveyResult = mockLoadSurveyResult()
+    const surveyResultDate = new Date(surveyResult.date)
+
+    await page.route(SURVEY_RESULT_API_URL(surveyId), async (route) => {
+      await route.fulfill({
+        status: 200,
+        json: surveyResult
+      })
+    })
+
+    await page.goto(SURVEY_RESULT_CLIENT_URL(surveyId))
+
+    await expect(page.getByText(surveyResult.question)).toBeVisible()
+
+    await expect(
+      page.getByText(String(surveyResultDate.getDay()), { exact: true })
+    ).toBeVisible()
+
+    await expect(
+      page.getByText(
+        surveyResultDate.toLocaleString('en-US', { month: 'short' }),
+        { exact: true }
+      )
+    ).toBeVisible()
+
+    await expect(
+      page.getByText(String(surveyResultDate.getFullYear()), { exact: true })
+    ).toBeVisible()
+
+    for (const answer of surveyResult.answers) {
+      await expect(page.getByText(answer.answer)).toBeVisible()
+      await expect(page.getByText(`${answer.percent}%`)).toBeVisible()
+    }
+  })
 })
