@@ -1,36 +1,38 @@
 import { type GetStorage } from 'data/protocols/cache'
 import {
-  type HttpGetParams,
+  type HttpRequest,
   type HttpResponse,
-  type HttpGetClient
+  type HttpClient
 } from 'data/protocols/http'
 
-export class AuthHttpGetClientDecorator implements HttpGetClient<any> {
+export class AuthHttpClientDecorator implements HttpClient<any> {
   constructor(
     private readonly getStorage: GetStorage,
-    private readonly httpGetClient: HttpGetClient<any>
+    private readonly httpGetClient: HttpClient<any>
   ) {}
 
-  async get({ url, headers }: HttpGetParams): Promise<HttpResponse> {
+  async request(data: HttpRequest): Promise<HttpResponse> {
     const account = this.getStorage.get('currentAccount')
 
-    let requestHeaders = { ...headers }
+    let requestHeaders = { ...data.headers }
 
-    if (headers && account?.accessToken) {
+    if (data.headers && account?.accessToken) {
       requestHeaders = {
         ...requestHeaders,
         'x-access-token': account.accessToken
       }
     }
 
-    if (!headers && account?.accessToken) {
+    if (!data.headers && account?.accessToken) {
       requestHeaders = {
         'x-access-token': account.accessToken
       }
     }
 
-    const response = await this.httpGetClient.get({
-      url,
+    const response = await this.httpGetClient.request({
+      url: data.url,
+      method: data.method,
+      body: data.body,
       headers: requestHeaders
     })
 

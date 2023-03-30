@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-get-client'
+import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-client'
 import List from '.'
 
 jest.mock('react-router-dom', () => ({

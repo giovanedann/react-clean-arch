@@ -1,7 +1,7 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { AccessDeniedError, UnexpectedError } from 'domain/errors'
-import { LoadSurveyResultSpy } from 'tests/mocks/domain/models/load-survey-result'
+import { LoadSurveyResultSpy } from 'tests/mocks/domain/models/survey-result'
 import createSurveyResultSut from 'tests/mocks/presentation/SurveyResult/createSurveyResultSut'
 
 describe('<SurveyResult /> component', () => {
@@ -80,7 +80,7 @@ describe('<SurveyResult /> component', () => {
 
     jest.spyOn(loadSurveyResultSpy, 'load').mockRejectedValueOnce(error)
 
-    createSurveyResultSut(loadSurveyResultSpy)
+    createSurveyResultSut({ loadSurveyResultSpy })
 
     expect(await screen.findByText(error.message)).toBeInTheDocument()
 
@@ -94,7 +94,9 @@ describe('<SurveyResult /> component', () => {
       .spyOn(loadSurveyResultSpy, 'load')
       .mockRejectedValueOnce(new AccessDeniedError())
 
-    const { saveCurrentAccount } = createSurveyResultSut(loadSurveyResultSpy)
+    const { saveCurrentAccount } = createSurveyResultSut({
+      loadSurveyResultSpy
+    })
 
     expect(await screen.findByText(/login/i)).toBeInTheDocument()
     expect(saveCurrentAccount).toHaveBeenCalledWith(null)
@@ -107,7 +109,7 @@ describe('<SurveyResult /> component', () => {
 
     jest.spyOn(loadSurveyResultSpy, 'load').mockRejectedValueOnce(error)
 
-    createSurveyResultSut(loadSurveyResultSpy)
+    createSurveyResultSut({ loadSurveyResultSpy })
 
     await user.click(await screen.findByRole('button', { name: /reload/i }))
 
@@ -121,5 +123,42 @@ describe('<SurveyResult /> component', () => {
     await user.click(await screen.findByRole('button', { name: /back/i }))
 
     expect(screen.getByText(/home/i)).toBeInTheDocument()
+  })
+
+  it('should not present loading status on voted answer click', async () => {
+    const user = userEvent.setup()
+
+    createSurveyResultSut()
+
+    await waitForElementToBeRemoved(
+      screen.getByTitle(/survey result skeleton/i)
+    )
+
+    await user.click(screen.getAllByRole('listitem')[0])
+
+    expect(
+      screen.queryByTitle(/survey result skeleton/)
+    ).not.toBeInTheDocument()
+  })
+
+  it('should call SaveSurveyResult with correct params and present loading status on unvoted answer click', async () => {
+    const user = userEvent.setup()
+
+    const { saveSurveyResultSpy, surveyResultMock } = createSurveyResultSut()
+    jest.spyOn(saveSurveyResultSpy, 'save')
+
+    const [, unvotedAnswer] = surveyResultMock.answers
+
+    await waitForElementToBeRemoved(
+      screen.getByTitle(/survey result skeleton/i)
+    )
+
+    await user.click(screen.getAllByRole('listitem')[1])
+
+    expect(screen.getByTitle(/survey result skeleton/)).toBeInTheDocument()
+    expect(saveSurveyResultSpy.calls).toEqual(1)
+    expect(saveSurveyResultSpy.save).toHaveBeenCalledWith({
+      answer: unvotedAnswer.answer
+    })
   })
 })

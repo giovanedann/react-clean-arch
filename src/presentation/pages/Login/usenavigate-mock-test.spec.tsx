@@ -17,7 +17,7 @@ describe('<Login />', () => {
 
   it('should display the loader during submit request', async () => {
     const user = userEvent.setup()
-    createLoginSut({})
+    createLoginSut()
 
     await user.type(
       screen.getByLabelText(/enter your e-mail/i),
@@ -38,7 +38,7 @@ describe('<Login />', () => {
     const email = faker.internet.email()
     const password = faker.internet.password()
 
-    const { authenticationSpy } = createLoginSut({})
+    const { authenticationSpy } = createLoginSut()
 
     await user.type(screen.getByLabelText(/enter your e-mail/i), email)
     await user.type(screen.getByLabelText(/enter your password/i), password)

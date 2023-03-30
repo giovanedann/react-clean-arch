@@ -2,67 +2,68 @@ import { faker } from '@faker-js/faker'
 import { HttpStatusCode } from 'data/protocols/http'
 import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import {
-  HttpGetClientSpy,
+  HttpClientSpy,
   mockRemoteSurveyList
-} from 'tests/mocks/data/protocols/http/http-get-client'
+} from 'tests/mocks/data/protocols/http/http-client'
 import { RemoteLoadSurveyList } from './remote-load-survey-list'
 
 type SutTypes = {
   sut: RemoteLoadSurveyList
-  httpGetClientSpy: HttpGetClientSpy<RemoteLoadSurveyList.Model[]>
+  httpClientSpy: HttpClientSpy<RemoteLoadSurveyList.Model[]>
 }
 
 function createSut(url: string = faker.internet.url()): SutTypes {
-  const httpGetClientSpy = new HttpGetClientSpy<RemoteLoadSurveyList.Model[]>()
-  const sut = new RemoteLoadSurveyList(url, httpGetClientSpy)
+  const httpClientSpy = new HttpClientSpy<RemoteLoadSurveyList.Model[]>()
+  const sut = new RemoteLoadSurveyList(url, httpClientSpy)
 
-  httpGetClientSpy.response.body = []
+  httpClientSpy.response.body = []
 
-  return { sut, httpGetClientSpy }
+  return { sut, httpClientSpy }
 }
 
 describe('RemoteLoadSurveyList', () => {
-  it('should call HttpGetClient with correct url', async () => {
+  it('should call HttpClient with correct url and method', async () => {
     const url = faker.internet.url()
-    const { httpGetClientSpy, sut } = createSut(url)
+    const { httpClientSpy, sut } = createSut(url)
 
     await sut.loadAll()
 
-    expect(httpGetClientSpy.url).toBe(url)
+    expect(httpClientSpy.url).toBe(url)
+    expect(httpClientSpy.method).toBe('get')
   })
 
-  it('should throw UnexpectedError if HttpGetClient returns 404', async () => {
-    const { httpGetClientSpy, sut } = createSut()
+  it('should throw UnexpectedError if HttpClient returns 404', async () => {
+    const { httpClientSpy, sut } = createSut()
 
-    httpGetClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.notFound
     }
 
     await expect(sut.loadAll()).rejects.toThrow(new UnexpectedError())
   })
 
-  it('should throw AccessDeniedError if HttpGetClient returns 403', async () => {
-    const { httpGetClientSpy, sut } = createSut()
+  it('should throw AccessDeniedError if HttpClient returns 403', async () => {
+    const { httpClientSpy, sut } = createSut()
 
-    httpGetClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.forbidden
     }
 
     await expect(sut.loadAll()).rejects.toThrow(new AccessDeniedError())
   })
 
-  it('should throw UnexpectedError if HttpGetClient returns 500', async () => {
-    const { httpGetClientSpy, sut } = createSut()
+  it('should throw UnexpectedError if HttpClient returns 500', async () => {
+    const { httpClientSpy, sut } = createSut()
 
-    httpGetClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.serverError
     }
 
     await expect(sut.loadAll()).rejects.toThrow(new UnexpectedError())
   })
 
-  it('should return a list of RemoteLoadSurveyList models if HttpGetClient returns 200', async () => {
-    const { httpGetClientSpy, sut } = createSut()
+  it('should return a list of RemoteLoadSurveyList models if HttpClient returns 200', async () => {
+    const { httpClientSpy, sut } = createSut()
     const body = mockRemoteSurveyList()
 
     const adaptedData = body.map((item) => ({
@@ -70,7 +71,7 @@ describe('RemoteLoadSurveyList', () => {
       date: new Date(item.date)
     }))
 
-    httpGetClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.ok,
       body
     }
@@ -80,9 +81,9 @@ describe('RemoteLoadSurveyList', () => {
   })
 
   it('should throw unexpected error if response have no body on 200', async () => {
-    const { httpGetClientSpy, sut } = createSut()
+    const { httpClientSpy, sut } = createSut()
 
-    httpGetClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.ok,
       body: undefined
     }
@@ -91,9 +92,9 @@ describe('RemoteLoadSurveyList', () => {
   })
 
   it('should return an empty array on 204', async () => {
-    const { httpGetClientSpy, sut } = createSut()
+    const { httpClientSpy, sut } = createSut()
 
-    httpGetClientSpy.response = {
+    httpClientSpy.response = {
       statusCode: HttpStatusCode.noContent,
       body: undefined
     }

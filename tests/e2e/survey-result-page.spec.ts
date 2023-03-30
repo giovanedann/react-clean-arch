@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 import {
   mockLoadSurveyList,
   mockLoadSurveyResult
-} from 'tests/mocks/data/protocols/http/http-get-client'
+} from 'tests/mocks/data/protocols/http'
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
 import delay from '../utils/delay'
 

@@ -3,7 +3,7 @@ import { type LoadSurveyList } from 'domain/usecases'
 import { ApiContext } from 'presentation/contexts/api'
 import SurveyList from 'presentation/pages/SurveyList'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-get-client'
+import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-client'
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
 
 type SutTypes = {
