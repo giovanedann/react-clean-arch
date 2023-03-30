@@ -118,8 +118,28 @@ describe('<SurveyResult /> component', () => {
     const user = userEvent.setup()
     createSurveyResultSut()
 
+    screen.debug()
+
     await user.click(await screen.findByRole('button', { name: /back/i }))
 
     expect(screen.getByText(/home/i)).toBeInTheDocument()
+  })
+
+  it('should not present loading status on voted answer click', async () => {
+    const user = userEvent.setup()
+
+    const { surveyResultMock } = createSurveyResultSut()
+
+    await waitForElementToBeRemoved(
+      screen.getByTitle(/survey result skeleton/i)
+    )
+
+    const [votedAnswer] = surveyResultMock.answers
+
+    await user.click(screen.getByText(votedAnswer.answer))
+
+    expect(
+      screen.queryByTitle(/survey result skeleton/)
+    ).not.toBeInTheDocument()
   })
 })

@@ -59,6 +59,7 @@ export default function SurveyResult({
             />
             <h2>{surveyResult.question}</h2>
           </div>
+
           <FlipMove className={styles.answersList}>
             {surveyResult.answers.map((answer, index) => (
               <li
