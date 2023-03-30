@@ -5,24 +5,33 @@ import { ApiContext } from 'presentation/contexts/api'
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
 import {
   LoadSurveyResultSpy,
-  mockSurveyResultModel
-} from 'tests/mocks/domain/models/load-survey-result'
+  mockSurveyResultModel,
+  SaveSurveyResultSpy
+} from 'tests/mocks/domain/models/survey-result'
 import { type LoadSurveyResult } from 'domain/usecases/load-survey-result'
 import { faker } from '@faker-js/faker'
 
+type SutParams = {
+  loadSurveyResultSpy?: LoadSurveyResultSpy
+  saveSurveyResultSpy?: SaveSurveyResultSpy
+}
+
 type SutTypes = {
   loadSurveyResultSpy: LoadSurveyResultSpy
+  saveSurveyResultSpy: SaveSurveyResultSpy
   surveyResultMock: LoadSurveyResult.Model
   saveCurrentAccount: jest.Mock
   surveyId: string
 }
 
-export default function createSurveyResultSut(
-  loadSurveyResultSpy = new LoadSurveyResultSpy()
-): SutTypes {
+export default function createSurveyResultSut({
+  loadSurveyResultSpy = new LoadSurveyResultSpy(),
+  saveSurveyResultSpy = new SaveSurveyResultSpy()
+}: SutParams = {}): SutTypes {
   const surveyResultMock = mockSurveyResultModel()
   const saveCurrentAccount = jest.fn()
   const surveyId = faker.datatype.uuid()
+
   loadSurveyResultSpy.surveyResult = surveyResultMock
 
   render(
@@ -38,12 +47,23 @@ export default function createSurveyResultSut(
           <Route path="/login" element={<h1>Login</h1>} />
           <Route
             path="surveys/:id"
-            element={<SurveyResult loadSurveyResult={loadSurveyResultSpy} />}
+            element={
+              <SurveyResult
+                loadSurveyResult={loadSurveyResultSpy}
+                saveSurveyResult={saveSurveyResultSpy}
+              />
+            }
           />
         </Routes>
       </ApiContext.Provider>
     </MemoryRouter>
   )
 
-  return { loadSurveyResultSpy, surveyResultMock, saveCurrentAccount, surveyId }
+  return {
+    loadSurveyResultSpy,
+    surveyResultMock,
+    saveCurrentAccount,
+    surveyId,
+    saveSurveyResultSpy
+  }
 }

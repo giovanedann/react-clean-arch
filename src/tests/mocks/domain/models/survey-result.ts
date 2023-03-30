@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { type LoadSurveyResult } from 'domain/usecases/load-survey-result'
+import { type SaveSurveyResult } from 'domain/usecases/save-survey-result'
 
 export function mockSurveyResultModel(): LoadSurveyResult.Model {
   return {
@@ -29,6 +30,16 @@ export class LoadSurveyResultSpy implements LoadSurveyResult {
   surveyResult = mockSurveyResultModel()
 
   async load(): Promise<LoadSurveyResult.Model> {
+    this.calls += 1
+    return this.surveyResult
+  }
+}
+
+export class SaveSurveyResultSpy implements SaveSurveyResult {
+  calls: number = 0
+  surveyResult = mockSurveyResultModel()
+
+  async save(params: SaveSurveyResult.Params): Promise<SaveSurveyResult.Model> {
     this.calls += 1
     return this.surveyResult
   }
