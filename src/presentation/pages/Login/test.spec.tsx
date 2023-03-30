@@ -55,7 +55,7 @@ describe('<Login /> component', () => {
 
   it('should display the success status if validation does not return errors', async () => {
     const user = userEvent.setup()
-    createLoginSut({})
+    createLoginSut()
 
     await populateValidInputs(user)
 
@@ -68,7 +68,7 @@ describe('<Login /> component', () => {
 
   it('should enable submit button if form data is valid', async () => {
     const user = userEvent.setup()
-    createLoginSut({})
+    createLoginSut()
 
     await populateValidInputs(user)
 
@@ -78,7 +78,7 @@ describe('<Login /> component', () => {
   it('should call authentication with correct values', async () => {
     const user = userEvent.setup()
 
-    const { authenticationSpy } = createLoginSut({})
+    const { authenticationSpy } = createLoginSut()
 
     const { email, password } = await populateValidInputs(user)
 
@@ -108,7 +108,7 @@ describe('<Login /> component', () => {
     const user = userEvent.setup()
     const error = new InvalidCredentialsError()
 
-    const { authenticationSpy } = createLoginSut({})
+    const { authenticationSpy } = createLoginSut()
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
 
     await populateValidInputs(user)
@@ -123,7 +123,7 @@ describe('<Login /> component', () => {
     const user = userEvent.setup()
     const error = new InvalidCredentialsError()
 
-    const { authenticationSpy } = createLoginSut({})
+    const { authenticationSpy } = createLoginSut()
     jest.spyOn(authenticationSpy, 'auth').mockRejectedValueOnce(error)
 
     await populateValidInputs(user)
@@ -141,7 +141,7 @@ describe('<Login /> component', () => {
   it('should call SaveAccessToken if auth succeed', async () => {
     const user = userEvent.setup()
 
-    const { authenticationSpy, saveCurrentAccountMock } = createLoginSut({})
+    const { authenticationSpy, saveCurrentAccountMock } = createLoginSut()
 
     await populateValidInputs(user)
 
@@ -152,7 +152,7 @@ describe('<Login /> component', () => {
 
   it('should go to the home page if the authentication succeeds', async () => {
     const user = userEvent.setup()
-    createLoginSut({})
+    createLoginSut()
 
     await populateValidInputs(user)
 
@@ -163,7 +163,7 @@ describe('<Login /> component', () => {
 
   it('should go to the sign-up page if the sign up button is clicked', async () => {
     const user = userEvent.setup()
-    createLoginSut({})
+    createLoginSut()
 
     await user.click(screen.getByRole('link', { name: /sign up/i }))
 

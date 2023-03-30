@@ -16,7 +16,7 @@ describe('<Login />', () => {
 
   it('should show loader during submit request', async () => {
     const user = userEvent.setup()
-    createSignUpSut({})
+    createSignUpSut()
 
     await user.click(screen.getByRole('button', { name: /sign up/i }))
 

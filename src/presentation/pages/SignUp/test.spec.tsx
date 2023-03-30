@@ -92,7 +92,7 @@ describe('<SignUp /> component', () => {
 
   it('should display the success status if validation does not return errors', async () => {
     const user = userEvent.setup()
-    createSignUpSut({})
+    createSignUpSut()
 
     await populateValidInputs(user)
 
@@ -120,7 +120,7 @@ describe('<SignUp /> component', () => {
 
   it('should enable submit button if form data is valid', async () => {
     const user = userEvent.setup()
-    createSignUpSut({})
+    createSignUpSut()
 
     await populateValidInputs(user)
 
@@ -130,7 +130,7 @@ describe('<SignUp /> component', () => {
   it('should call AddAccount with correct values', async () => {
     const user = userEvent.setup()
 
-    const { addAccountSpy } = createSignUpSut({})
+    const { addAccountSpy } = createSignUpSut()
 
     const data = await populateValidInputs(user)
     await user.click(screen.getByRole('button', { name: /sign up/i }))
@@ -144,7 +144,7 @@ describe('<SignUp /> component', () => {
   it('should call AddAccount only once if multiple submits', async () => {
     const user = userEvent.setup()
 
-    const { addAccountSpy } = createSignUpSut({})
+    const { addAccountSpy } = createSignUpSut()
 
     await populateValidInputs(user)
     await user.dblClick(screen.getByRole('button', { name: /sign up/i }))
@@ -166,7 +166,7 @@ describe('<SignUp /> component', () => {
     const user = userEvent.setup()
     const error = new EmailAlreadyInUseError()
 
-    const { addAccountSpy } = createSignUpSut({})
+    const { addAccountSpy } = createSignUpSut()
     jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(error)
 
     await populateValidInputs(user)
@@ -179,7 +179,7 @@ describe('<SignUp /> component', () => {
 
   it('should call SaveAccessToken with correct accessToken on success', async () => {
     const user = userEvent.setup()
-    const { saveCurrentAccountMock, addAccountSpy } = createSignUpSut({})
+    const { saveCurrentAccountMock, addAccountSpy } = createSignUpSut()
 
     await populateValidInputs(user)
 
@@ -191,7 +191,7 @@ describe('<SignUp /> component', () => {
   it('should redirect user to home if submit succeeds', async () => {
     const user = userEvent.setup()
 
-    createSignUpSut({})
+    createSignUpSut()
     await populateValidInputs(user)
     await user.click(screen.getByRole('button', { name: /sign up/i }))
 
@@ -201,7 +201,7 @@ describe('<SignUp /> component', () => {
   it('should redirect user to Login if link is clicked', async () => {
     const user = userEvent.setup()
 
-    createSignUpSut({})
+    createSignUpSut()
     await user.click(screen.getByRole('link', { name: /back to login/i }))
 
     expect(screen.getByText(/login/i)).toBeInTheDocument()

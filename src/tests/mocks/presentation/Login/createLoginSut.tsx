@@ -16,7 +16,9 @@ export type SutParams = {
   error?: string
 }
 
-export default function createLoginSut({ error = '' }: SutParams): SutTypes {
+export default function createLoginSut({
+  error = ''
+}: SutParams = {}): SutTypes {
   const validationStub = new ValidationStub()
   const authenticationSpy = new AuthenticationSpy()
   const saveCurrentAccountMock = jest.fn()
