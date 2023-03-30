@@ -22,7 +22,7 @@ function createSut(url: string = faker.internet.url()): SutTypes {
 }
 
 describe('RemoteLoadSurveyList', () => {
-  it('should call HttpGetClient with correct url and method', async () => {
+  it('should call HttpClient with correct url and method', async () => {
     const url = faker.internet.url()
     const { httpClientSpy, sut } = createSut(url)
 
@@ -32,7 +32,7 @@ describe('RemoteLoadSurveyList', () => {
     expect(httpClientSpy.method).toBe('get')
   })
 
-  it('should throw UnexpectedError if HttpGetClient returns 404', async () => {
+  it('should throw UnexpectedError if HttpClient returns 404', async () => {
     const { httpClientSpy, sut } = createSut()
 
     httpClientSpy.response = {
@@ -42,7 +42,7 @@ describe('RemoteLoadSurveyList', () => {
     await expect(sut.loadAll()).rejects.toThrow(new UnexpectedError())
   })
 
-  it('should throw AccessDeniedError if HttpGetClient returns 403', async () => {
+  it('should throw AccessDeniedError if HttpClient returns 403', async () => {
     const { httpClientSpy, sut } = createSut()
 
     httpClientSpy.response = {
@@ -52,7 +52,7 @@ describe('RemoteLoadSurveyList', () => {
     await expect(sut.loadAll()).rejects.toThrow(new AccessDeniedError())
   })
 
-  it('should throw UnexpectedError if HttpGetClient returns 500', async () => {
+  it('should throw UnexpectedError if HttpClient returns 500', async () => {
     const { httpClientSpy, sut } = createSut()
 
     httpClientSpy.response = {
@@ -62,7 +62,7 @@ describe('RemoteLoadSurveyList', () => {
     await expect(sut.loadAll()).rejects.toThrow(new UnexpectedError())
   })
 
-  it('should return a list of RemoteLoadSurveyList models if HttpGetClient returns 200', async () => {
+  it('should return a list of RemoteLoadSurveyList models if HttpClient returns 200', async () => {
     const { httpClientSpy, sut } = createSut()
     const body = mockRemoteSurveyList()
 

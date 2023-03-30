@@ -30,7 +30,7 @@ function createSut({ url = faker.internet.url() }: SutParams): SutTypes {
 }
 
 describe('RemoteLoadSurveyResult', () => {
-  it('should call HttpGetClient with correct URL and method', () => {
+  it('should call HttpClient with correct URL and method', () => {
     const url = faker.internet.url()
     const { httpClientSpy, sut } = createSut({ url })
 
@@ -39,7 +39,7 @@ describe('RemoteLoadSurveyResult', () => {
     expect(httpClientSpy.method).toEqual('get')
   })
 
-  it('should throw AccessDeniedError if HttpGetClient returns 403', async () => {
+  it('should throw AccessDeniedError if HttpClient returns 403', async () => {
     const { httpClientSpy, sut } = createSut({})
 
     httpClientSpy.response = {
@@ -49,7 +49,7 @@ describe('RemoteLoadSurveyResult', () => {
     await expect(sut.load()).rejects.toThrow(new AccessDeniedError())
   })
 
-  it('should throw UnexpectedError if HttpGetClient returns 500', async () => {
+  it('should throw UnexpectedError if HttpClient returns 500', async () => {
     const { httpClientSpy, sut } = createSut({})
 
     httpClientSpy.response = {
