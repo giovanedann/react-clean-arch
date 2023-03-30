@@ -59,7 +59,7 @@ describe('RemoteLoadSurveyResult', () => {
     await expect(sut.load()).rejects.toThrow(new UnexpectedError())
   })
 
-  it('should throw unexpected error if response have no body on 200', async () => {
+  it('should throw UnexpectedError if response have no body on 200', async () => {
     const { httpClientSpy, sut } = createSut({})
 
     httpClientSpy.response = {

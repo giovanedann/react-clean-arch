@@ -65,4 +65,15 @@ describe('RemoteSaveSurveyResult', () => {
 
     await expect(sut.save(sutParams)).rejects.toThrow(new UnexpectedError())
   })
+
+  it('should throw UnexpectedError if response have no body on 200', async () => {
+    const { httpClientSpy, sut, sutParams } = createSut({})
+
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: null as any
+    }
+
+    await expect(sut.save(sutParams)).rejects.toThrow(new UnexpectedError())
+  })
 })
