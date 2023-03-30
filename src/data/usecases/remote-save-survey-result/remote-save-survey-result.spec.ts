@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { HttpStatusCode } from 'data/protocols/http'
-import { AccessDeniedError } from 'domain/errors'
+import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import { type SaveSurveyResult } from 'domain/usecases/save-survey-result'
 import {
   HttpClientSpy,
@@ -54,5 +54,15 @@ describe('RemoteSaveSurveyResult', () => {
     }
 
     await expect(sut.save(sutParams)).rejects.toThrow(new AccessDeniedError())
+  })
+
+  it('should throw UnexpectedError if HttpClient returns 500', async () => {
+    const { httpClientSpy, sut, sutParams } = createSut({})
+
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError
+    }
+
+    await expect(sut.save(sutParams)).rejects.toThrow(new UnexpectedError())
   })
 })
