@@ -2,7 +2,7 @@ import { HttpStatusCode, type HttpClient } from 'data/protocols/http'
 import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import { type LoadSurveyResult } from 'domain/usecases/load-survey-result'
 
-export class RemoteLoadSurveyResult implements RemoteLoadSurveyResult {
+export class RemoteLoadSurveyResult implements LoadSurveyResult {
   constructor(
     private readonly url: string,
     private readonly httpGetClient: HttpClient<RemoteLoadSurveyResult.Model>
