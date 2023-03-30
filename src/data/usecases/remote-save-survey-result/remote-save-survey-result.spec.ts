@@ -1,17 +1,18 @@
 import { faker } from '@faker-js/faker'
+import { type RemoteSurveyResultModel } from 'data/models/remote-survey-result'
 import { HttpStatusCode } from 'data/protocols/http'
 import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import { type SaveSurveyResult } from 'domain/usecases/save-survey-result'
 import {
   HttpClientSpy,
+  mockLoadSurveyResult,
   mockRemoteSaveSurveyParams
 } from 'tests/mocks/data/protocols/http/http-client'
-import { mockSurveyResultModel } from 'tests/mocks/domain/models/load-survey-result'
 import { RemoteSaveSurveyResult } from './remote-save-survey-result'
 
 type SutTypes = {
   sut: RemoteSaveSurveyResult
-  httpClientSpy: HttpClientSpy<RemoteSaveSurveyResult.Model>
+  httpClientSpy: HttpClientSpy<RemoteSurveyResultModel>
   sutParams: SaveSurveyResult.Params
 }
 
@@ -20,13 +21,13 @@ type SutParams = {
 }
 
 function createSut({ url = faker.internet.url() }: SutParams): SutTypes {
-  const httpClientSpy = new HttpClientSpy<RemoteSaveSurveyResult.Model>()
+  const httpClientSpy = new HttpClientSpy<RemoteSurveyResultModel>()
 
   const sutParams = mockRemoteSaveSurveyParams()
 
   httpClientSpy.response = {
     ...httpClientSpy.response,
-    body: mockSurveyResultModel()
+    body: mockLoadSurveyResult()
   }
 
   const sut = new RemoteSaveSurveyResult(url, httpClientSpy)
@@ -75,5 +76,25 @@ describe('RemoteSaveSurveyResult', () => {
     }
 
     await expect(sut.save(sutParams)).rejects.toThrow(new UnexpectedError())
+  })
+
+  it('should return a survey result on 200', async () => {
+    const { httpClientSpy, sut, sutParams } = createSut({})
+
+    const surveyResult = mockLoadSurveyResult()
+
+    const adaptedSurveyResult = {
+      ...surveyResult,
+      date: new Date(surveyResult.date)
+    }
+
+    httpClientSpy.response = {
+      ...httpClientSpy.response,
+      body: surveyResult
+    }
+
+    const response = await sut.save(sutParams)
+
+    expect(response).toStrictEqual(adaptedSurveyResult)
   })
 })
