@@ -1,3 +1,4 @@
+import { type RemoteSurveyResultModel } from 'data/models/remote-survey-result'
 import { HttpStatusCode, type HttpClient } from 'data/protocols/http'
 import { AccessDeniedError, UnexpectedError } from 'domain/errors'
 import { type SurveyResultModel } from 'domain/models'
@@ -6,25 +7,28 @@ import { type SaveSurveyResult } from 'domain/usecases/save-survey-result'
 export class RemoteSaveSurveyResult implements SaveSurveyResult {
   constructor(
     private readonly url: string,
-    private readonly httpClient: HttpClient<RemoteSaveSurveyResult.Model>
+    private readonly httpClient: HttpClient<RemoteSurveyResultModel>
   ) {}
 
-  async save(
-    params: SaveSurveyResult.Params
-  ): Promise<RemoteSaveSurveyResult.Model> {
+  async save(params: SaveSurveyResult.Params): Promise<SaveSurveyResult.Model> {
     const httpResponse = await this.httpClient.request({
       method: 'put',
       url: this.url,
       body: params
     })
 
+    const updatedSurveyResult = httpResponse.body
+
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
-        if (httpResponse.body) {
-          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-          return {} as RemoteSaveSurveyResult.Model
+        if (!updatedSurveyResult) {
+          throw new UnexpectedError()
         }
-        throw new UnexpectedError()
+
+        return {
+          ...updatedSurveyResult,
+          date: new Date(updatedSurveyResult.date)
+        }
       case HttpStatusCode.forbidden:
         throw new AccessDeniedError()
       default:
