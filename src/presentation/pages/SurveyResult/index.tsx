@@ -43,6 +43,12 @@ export default function SurveyResult({
     navigate('/')
   }
 
+  function handleListItemClick(isListItemVoted: boolean): void {
+    if (isListItemVoted) return
+
+    setIsLoading(true)
+  }
+
   useEffect(() => {
     loadResult()
   }, [])
@@ -65,6 +71,9 @@ export default function SurveyResult({
               <li
                 key={answer.answer}
                 className={answer.isCurrentAccountAnswer ? styles.voted : ''}
+                onClick={() => {
+                  handleListItemClick(answer.isCurrentAccountAnswer)
+                }}
               >
                 {answer.image && (
                   <img
