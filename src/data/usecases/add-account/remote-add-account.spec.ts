@@ -28,7 +28,7 @@ describe('RemoteAddAccount', () => {
     jest.restoreAllMocks()
   })
 
-  it('should call httpClient with the correct URL and method', async () => {
+  it('should call httpClient with the correct values', async () => {
     const url = faker.internet.url()
     const { sut, httpClientSpy, body } = createSut(url)
     const result = mockAuthenticationModel()
@@ -38,15 +38,6 @@ describe('RemoteAddAccount', () => {
 
     expect(httpClientSpy.url).toBe(url)
     expect(httpClientSpy.method).toBe('post')
-  })
-
-  it('should call httpClient with correct body', async () => {
-    const { sut, httpClientSpy, body } = createSut()
-    const result = mockAuthenticationModel()
-
-    httpClientSpy.response = { statusCode: HttpStatusCode.ok, body: result }
-    await sut.add(body)
-
     expect(httpClientSpy.body).toStrictEqual(body)
   })
 

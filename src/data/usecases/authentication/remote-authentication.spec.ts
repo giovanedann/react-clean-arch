@@ -22,23 +22,9 @@ function createSut(url: string = faker.internet.url()): SutTypes {
 }
 
 describe('RemoteAuthentication', () => {
-  it('should call httpClient with the correct url and method', async () => {
+  it('should call httpClient with the correct values', async () => {
     const url = faker.internet.url()
     const { sut, httpClientSpy } = createSut(url)
-
-    httpClientSpy.response = {
-      statusCode: 200,
-      body: { accessToken: faker.datatype.uuid(), name: faker.name.firstName() }
-    }
-
-    await sut.auth(mockAuthentication())
-
-    expect(httpClientSpy.url).toBe(url)
-    expect(httpClientSpy.method).toBe('post')
-  })
-
-  it('should call httpClient with the correct body', async () => {
-    const { sut, httpClientSpy } = createSut()
 
     httpClientSpy.response = {
       statusCode: 200,
@@ -48,6 +34,8 @@ describe('RemoteAuthentication', () => {
     const loginCredentials = mockAuthentication()
     await sut.auth(loginCredentials)
 
+    expect(httpClientSpy.url).toBe(url)
+    expect(httpClientSpy.method).toBe('post')
     expect(httpClientSpy.body).toStrictEqual(loginCredentials)
   })
 
