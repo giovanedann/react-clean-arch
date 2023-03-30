@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { mockLoadSurveyItem } from 'tests/mocks/data/protocols/http/http-get-client'
+import { mockLoadSurveyItem } from 'tests/mocks/data/protocols/http/http-client'
 import SurveyCard from '.'
 import userEvent from '@testing-library/user-event'
 

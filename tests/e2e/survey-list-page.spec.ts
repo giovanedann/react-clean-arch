@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-get-client'
+import { mockLoadSurveyList } from 'tests/mocks/data/protocols/http/http-client'
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
 import delay from '../utils/delay'
 
