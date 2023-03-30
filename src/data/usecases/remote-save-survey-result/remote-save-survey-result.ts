@@ -13,7 +13,8 @@ export class RemoteSaveSurveyResult implements SaveSurveyResult {
   ): Promise<RemoteSaveSurveyResult.Model> {
     await this.httpClient.request({
       method: 'put',
-      url: this.url
+      url: this.url,
+      body: params
     })
 
     // eslint-disable-next-line @typescript-eslint/consistent-type-assertions

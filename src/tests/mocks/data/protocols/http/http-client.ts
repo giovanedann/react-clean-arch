@@ -8,6 +8,7 @@ import {
 import { type RemoteLoadSurveyList } from 'data/usecases/load-survey-list/remote-load-survey-list'
 import { type RemoteLoadSurveyResult } from 'data/usecases/load-survey-result/remote-load-survey-result'
 import { type LoadSurveyList } from 'domain/usecases'
+import { type SaveSurveyResult } from 'domain/usecases/save-survey-result'
 
 export class HttpClientSpy<T> implements HttpClient<T> {
   url: string = ''
@@ -106,4 +107,8 @@ export function mockRemoteSurveyList(): RemoteLoadSurveyList.Model[] {
   }
 
   return surveyList
+}
+
+export function mockRemoteSaveSurveyParams(): SaveSurveyResult.Params {
+  return { answer: faker.random.words(3) }
 }
