@@ -1,4 +1,6 @@
+import { type SurveyResultAnswerModel } from 'domain/models'
 import { type LoadSurveyResult } from 'domain/usecases/load-survey-result'
+import { type SaveSurveyResult } from 'domain/usecases/save-survey-result'
 import AuthHeader from 'presentation/components/AuthHeader'
 import DateCard from 'presentation/components/DateCard'
 import Error from 'presentation/components/Error'
@@ -11,10 +13,12 @@ import styles from './styles.module.scss'
 
 type SurveyResultProps = {
   loadSurveyResult: LoadSurveyResult
+  saveSurveyResult: SaveSurveyResult
 }
 
 export default function SurveyResult({
-  loadSurveyResult
+  loadSurveyResult,
+  saveSurveyResult
 }: SurveyResultProps): JSX.Element {
   const [error, setError] = useState<string>()
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -43,10 +47,11 @@ export default function SurveyResult({
     navigate('/')
   }
 
-  function handleListItemClick(isListItemVoted: boolean): void {
-    if (isListItemVoted) return
+  function handleListItemClick(answer: SurveyResultAnswerModel): void {
+    if (answer.isCurrentAccountAnswer) return
 
     setIsLoading(true)
+    saveSurveyResult.save({ answer: answer.answer })
   }
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export default function SurveyResult({
                 key={answer.answer}
                 className={answer.isCurrentAccountAnswer ? styles.voted : ''}
                 onClick={() => {
-                  handleListItemClick(answer.isCurrentAccountAnswer)
+                  handleListItemClick(answer)
                 }}
               >
                 {answer.image && (
