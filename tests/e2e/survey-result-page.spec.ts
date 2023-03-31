@@ -7,6 +7,7 @@ import {
 import { mockAccountModel } from 'tests/mocks/domain/models/account'
 import { mockSurveyResultModel } from 'tests/mocks/domain/models/survey-result'
 import delay from '../utils/delay'
+import updateSurveyResultModelMock from '../utils/updateSurveyResultModelMock'
 
 const SURVEY_RESULT_API_URL = (id: string): string =>
   `http://localhost:5050/api/surveys/${id}/results`
@@ -253,6 +254,52 @@ test.describe('SurveyResult page', () => {
       await page.getByText(result.answers[1].answer, { exact: true }).click()
 
       await expect(page.getByText(/login/i)).toBeVisible()
+    })
+
+    test('should update the survey result after unvoted answer click', async ({
+      page
+    }) => {
+      const surveyId = faker.datatype.uuid()
+      const result = mockSurveyResultModel()
+      const updatedResult = updateSurveyResultModelMock(result)
+
+      await page.route(SURVEY_RESULT_API_URL(surveyId), async (route) => {
+        route.request()
+        await route.fulfill({
+          status: 200,
+          json: result
+        })
+      })
+
+      await page.goto(SURVEY_RESULT_CLIENT_URL(surveyId))
+
+      await expect(
+        page.getByRole('listitem').filter({ hasText: result.answers[0].answer })
+      ).toHaveCSS('box-shadow', 'rgb(101, 93, 187) -1px 1px 3px 1px')
+
+      await expect(
+        page.getByRole('listitem').filter({ hasText: result.answers[1].answer })
+      ).not.toHaveCSS('box-shadow', 'rgb(101, 93, 187) -1px 1px 3px 1px')
+
+      await page.unroute(SURVEY_RESULT_API_URL(surveyId))
+
+      await page.route(SURVEY_RESULT_API_URL(surveyId), async (route) => {
+        route.request()
+        await route.fulfill({
+          status: 200,
+          json: updatedResult
+        })
+      })
+
+      await page.getByText(result.answers[1].answer, { exact: true }).click()
+
+      await expect(
+        page.getByRole('listitem').filter({ hasText: result.answers[0].answer })
+      ).not.toHaveCSS('box-shadow', 'rgb(101, 93, 187) -1px 1px 3px 1px')
+
+      await expect(
+        page.getByRole('listitem').filter({ hasText: result.answers[1].answer })
+      ).toHaveCSS('box-shadow', 'rgb(101, 93, 187) -1px 1px 3px 1px')
     })
   })
 })
