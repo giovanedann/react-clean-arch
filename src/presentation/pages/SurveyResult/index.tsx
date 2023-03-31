@@ -47,11 +47,22 @@ export default function SurveyResult({
     navigate('/')
   }
 
-  function handleListItemClick(answer: SurveyResultAnswerModel): void {
+  async function handleListItemClick(
+    answer: SurveyResultAnswerModel
+  ): Promise<void> {
     if (answer.isCurrentAccountAnswer) return
 
     setIsLoading(true)
-    saveSurveyResult.save({ answer: answer.answer })
+
+    try {
+      const response = await saveSurveyResult.save({ answer: answer.answer })
+
+      setSurveyResult(response)
+      setIsLoading(false)
+    } catch (error: any) {
+      setIsLoading(false)
+      handler(error)
+    }
   }
 
   useEffect(() => {
