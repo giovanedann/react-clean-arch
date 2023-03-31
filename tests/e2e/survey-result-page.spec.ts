@@ -161,6 +161,38 @@ test.describe('SurveyResult page', () => {
       }, JSON.stringify(account))
     })
 
+    test('should present skeleton after unvoted answer click', async ({
+      page
+    }) => {
+      const surveyId = faker.datatype.uuid()
+      const result = mockSurveyResultModel()
+
+      await page.route(SURVEY_RESULT_API_URL(surveyId), async (route) => {
+        route.request()
+        await route.fulfill({
+          status: 200,
+          json: result
+        })
+      })
+
+      await page.goto(SURVEY_RESULT_CLIENT_URL(surveyId))
+
+      await page.unroute(SURVEY_RESULT_API_URL(surveyId))
+
+      await page.route(SURVEY_RESULT_API_URL(surveyId), async (route) => {
+        route.request()
+        await delay(1000)
+        await route.fulfill({
+          status: 200,
+          json: result
+        })
+      })
+
+      await page.getByText(result.answers[1].answer, { exact: true }).click()
+
+      await expect(page.getByTitle(/survey result skeleton/i)).toBeVisible()
+    })
+
     test('should present an error message and a reload button on errors different than 403', async ({
       page
     }) => {
