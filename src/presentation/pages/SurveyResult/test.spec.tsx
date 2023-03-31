@@ -5,6 +5,11 @@ import { LoadSurveyResultSpy } from 'tests/mocks/domain/models/survey-result'
 import createSurveyResultSut from 'tests/mocks/presentation/SurveyResult/createSurveyResultSut'
 
 describe('<SurveyResult /> component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    jest.restoreAllMocks()
+  })
+
   it('should display the survey result skeleton on mount', () => {
     createSurveyResultSut()
 
@@ -143,22 +148,38 @@ describe('<SurveyResult /> component', () => {
 
   it('should call SaveSurveyResult with correct params and present loading status on unvoted answer click', async () => {
     const user = userEvent.setup()
-
     const { saveSurveyResultSpy, surveyResultMock } = createSurveyResultSut()
-    jest.spyOn(saveSurveyResultSpy, 'save')
 
     const [, unvotedAnswer] = surveyResultMock.answers
 
-    await waitForElementToBeRemoved(
-      screen.getByTitle(/survey result skeleton/i)
+    jest.spyOn(saveSurveyResultSpy, 'save')
+
+    await user.click(
+      await screen.findByText(unvotedAnswer.answer, { exact: true })
     )
 
-    await user.click(screen.getAllByRole('listitem')[1])
-
-    expect(screen.getByTitle(/survey result skeleton/)).toBeInTheDocument()
     expect(saveSurveyResultSpy.calls).toEqual(1)
     expect(saveSurveyResultSpy.save).toHaveBeenCalledWith({
       answer: unvotedAnswer.answer
     })
+  })
+
+  it('should display an error message if SaveSurveyResult fails', async () => {
+    const user = userEvent.setup()
+    const error = new UnexpectedError()
+
+    const { saveSurveyResultSpy, surveyResultMock } = createSurveyResultSut()
+
+    jest.spyOn(saveSurveyResultSpy, 'save').mockRejectedValueOnce(error)
+
+    const [, unvotedAnswer] = surveyResultMock.answers
+
+    await user.click(
+      await screen.findByText(unvotedAnswer.answer, { exact: true })
+    )
+
+    expect(await screen.findByText(error.message)).toBeInTheDocument()
+
+    expect(screen.queryAllByRole('listitem')).toHaveLength(0)
   })
 })
