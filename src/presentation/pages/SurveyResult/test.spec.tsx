@@ -202,4 +202,49 @@ describe('<SurveyResult /> component', () => {
     expect(screen.getByText(/login/i)).toBeInTheDocument()
     expect(saveCurrentAccount).toHaveBeenCalledWith(null)
   })
+
+  it('should display the new survey result if SaveSurveyResult.save succeeds', async () => {
+    const user = userEvent.setup()
+    const { surveyResultMock } = createSurveyResultSut()
+
+    await waitForElementToBeRemoved(
+      screen.getByTitle(/survey result skeleton/i)
+    )
+
+    // tests the initial answers state (LoadSurveyResult)
+    surveyResultMock.answers.forEach((answer, index) => {
+      if (index === 0) {
+        expect(screen.getByText(answer.answer).parentElement).toHaveClass(
+          'voted'
+        )
+      }
+
+      if (index === 1) {
+        expect(screen.getByText(answer.answer).parentElement).not.toHaveClass(
+          'voted'
+        )
+      }
+    })
+
+    // tests the update state (SaveSurveyResult)
+    const [, unvotedAnswer] = surveyResultMock.answers
+
+    await user.click(
+      await screen.findByText(unvotedAnswer.answer, { exact: true })
+    )
+
+    surveyResultMock.answers.forEach((answer, index) => {
+      if (index === 0) {
+        expect(screen.getByText(answer.answer).parentElement).not.toHaveClass(
+          'voted'
+        )
+      }
+
+      if (index === 1) {
+        expect(screen.getByText(answer.answer).parentElement).toHaveClass(
+          'voted'
+        )
+      }
+    })
+  })
 })

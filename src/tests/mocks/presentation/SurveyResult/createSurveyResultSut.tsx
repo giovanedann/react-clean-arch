@@ -34,6 +34,24 @@ export default function createSurveyResultSut({
 
   loadSurveyResultSpy.surveyResult = surveyResultMock
 
+  // mocking the state of the surveyResult, changing answers isCurrentAccountAnswer property
+  saveSurveyResultSpy.surveyResult = {
+    ...surveyResultMock,
+    answers: surveyResultMock.answers.map((item, index) => {
+      if (index === 0) {
+        return {
+          ...item,
+          isCurrentAccountAnswer: false
+        }
+      }
+
+      return {
+        ...item,
+        isCurrentAccountAnswer: true
+      }
+    })
+  }
+
   render(
     <MemoryRouter initialEntries={[`/surveys/${surveyId}`]}>
       <ApiContext.Provider
