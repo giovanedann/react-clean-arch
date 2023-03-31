@@ -182,4 +182,24 @@ describe('<SurveyResult /> component', () => {
 
     expect(screen.queryAllByRole('listitem')).toHaveLength(0)
   })
+
+  it('should redirect to login and clean localStorage on AccessDenied error', async () => {
+    const user = userEvent.setup()
+
+    const { saveSurveyResultSpy, surveyResultMock, saveCurrentAccount } =
+      createSurveyResultSut()
+
+    jest
+      .spyOn(saveSurveyResultSpy, 'save')
+      .mockRejectedValueOnce(new AccessDeniedError())
+
+    const [, unvotedAnswer] = surveyResultMock.answers
+
+    await user.click(
+      await screen.findByText(unvotedAnswer.answer, { exact: true })
+    )
+
+    expect(screen.getByText(/login/i)).toBeInTheDocument()
+    expect(saveCurrentAccount).toHaveBeenCalledWith(null)
+  })
 })
