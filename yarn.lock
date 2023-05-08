@@ -2191,6 +2191,14 @@ commander@^9.4.1:
   resolved "https://registry.yarnpkg.com/commander/-/commander-9.5.0.tgz#bc08d1eb5cedf7ccb797a96199d41c7bc3e60d30"
   integrity sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==
 
+commit-msg-linter@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/commit-msg-linter/-/commit-msg-linter-1.0.0.tgz#45a29e9c38d8bb71e98d4da67f230abf01b46463"
+  integrity sha512-Di9oAjfjIwAcASQ8abW1936twemUdDQq4D1dBL42Y+S6rNXykauIBPztj8Ej4/MjI6zIziLVzfhmdkg0z4I4rg==
+  dependencies:
+    did-you-mean "^0.0.1"
+    supports-color "^8.1.1"
+
 compressible@~2.0.16:
   version "2.0.18"
   resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.18.tgz#af53cca6b070d4c3c0750fbd77286a6d7cc46fba"
@@ -3408,14 +3416,13 @@ get-symbol-description@^1.0.0:
     call-bind "^1.0.2"
     get-intrinsic "^1.1.1"
 
-git-commit-msg-linter@^4.9.2:
-  version "4.9.2"
-  resolved "https://registry.yarnpkg.com/git-commit-msg-linter/-/git-commit-msg-linter-4.9.2.tgz#ad41895a95f36ecf01472fdd6167f45c5f408a0f"
-  integrity sha512-a51/JHhnMTJwrIAK0yN/RtTL967KfmQdQEX6XrsIiSuJcrUIpgOTan1fVNWW4pWBe2m7TqF06Ha319FBDVvYww==
+git-commit-msg-linter@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/git-commit-msg-linter/-/git-commit-msg-linter-5.0.4.tgz#c89aefd82902948196821850dfd5a2ac584a8d92"
+  integrity sha512-XxdvLbgQDbPlZwru9Tns2zgFvk4UhcWT+LVVNP2tSiAjkY0RJws9zqhUgolXJvpiPDvSbbDMpGu3EtXiKN/IeA==
   dependencies:
     chalk "^2.4.2"
-    did-you-mean "^0.0.1"
-    supports-color "^8.1.1"
+    commit-msg-linter "^1.0.0"
 
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"
